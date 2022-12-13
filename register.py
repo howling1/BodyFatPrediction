@@ -6,9 +6,9 @@ from tqdm import tqdm
 import open3d as o3d
 
 
-DATA_ROOT = Path("D:/ADLM_Data/decimated")
-TARGET_ROOT = "D:/ADLM_Data/registered"
-TARGET_SAMPLE = "D:/ADLM_Data/icp_target/4266049_25.ply"
+DATA_ROOT = Path("/data1/practical-wise2223/decimated_25")
+TARGET_ROOT = "/data1/practical-wise2223/registered"
+TARGET_SAMPLE = "/data1/practical-wise2223/4266049_5/4266049_25.ply"
 THRESHOLD = 0.02
 EXTENSION = ".ply"
 
