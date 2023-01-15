@@ -7,9 +7,9 @@ import open3d as o3d
 import nibabel as nib
 from skimage.measure import marching_cubes
 
-DATA_ROOT = Path("D:/ADLM_Data/samples")
-TARGET_ROOT = "D:/ADLM_Data/decimated"
-VERTICES = 25000
+DATA_ROOT = Path("/vol/chameleon/projects/mesh_gnn/body_segmentations")
+TARGET_ROOT = "/data1/practical-wise2223/decimated_5"
+VERTICES = 5000
 EXTENSION = ".ply"
 LIMIT = 10000
 COUNT = 0
