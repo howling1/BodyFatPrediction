@@ -51,6 +51,7 @@ def registering_ICP(DATA_ROOT, TARGET_ROOT, TARGET_SAMPLE, THRESHOLD, EXTENSION)
 
 
 def main():
+    
     registering_ICP(DATA_ROOT, TARGET_ROOT, TARGET_SAMPLE, THRESHOLD, EXTENSION)
 
 if __name__ == "__main__":
