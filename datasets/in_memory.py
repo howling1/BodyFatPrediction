@@ -9,12 +9,16 @@ import torch
 from torch_geometric.data import InMemoryDataset, Data
 
 class IMDataset(InMemoryDataset):
-    def __init__(self, raw_data_root, InMemoryDataset_root, basic_features_path, target_name, transform=None, pre_transform=None):
+ 
+    def __init__(self, raw_data_root, dataset_root, basic_features_path, target_name, gender, transform=None, pre_transform=None):
         self.raw_data_root = raw_data_root
         self.basic_features_df = pd.read_csv(basic_features_path)
         self.target_name = target_name
-        super(IMDataset, self).__init__(root=InMemoryDataset_root, transform=transform, pre_transform=pre_transform)
-        self.data, self.slices = torch.load(self.processed_paths[0])
+        super(IMDataset, self).__init__(root=dataset_root, transform=transform, pre_transform=pre_transform)
+        if gender == 0: #female
+            self.data, self.slices = torch.load(self.processed_paths[0])
+        elif gender == 1: #male
+            self.data, self.slices = torch.load(self.processed_paths[1])
  
     @property
     def raw_file_names(self):
@@ -22,21 +26,27 @@ class IMDataset(InMemoryDataset):
 
     @property
     def processed_file_names(self):
-        return self.root + '/' + self.target_name + "_dataset.pt"
+        processed_root = self.root + "/" + self.target_name
+
+        if not os.path.exists(processed_root):
+            os.makedirs(processed_root)
+
+        return [processed_root + "/female_dataset.pt", processed_root + "/male_dataset.pt"]
  
     def download(self):
         pass
     
     def process(self):
-        data_list = []
+        male_data_list = []
+        female_data_list = []
 
         for file_path in tqdm(self.raw_file_names):
             _id = os.path.splitext(os.path.basename(file_path))[0]
-
+            _sex = int(self.basic_features_df["31-0.0"][self.basic_features_df.index[self.basic_features_df['eid'] == int(_id)]]) #female: 0, male: 1
+                
             if self.target_name == "sex":
-                _sex = [[0, 1]] if int(self.basic_features_df["31-0.0"][self.basic_features_df.index[self.basic_features_df['eid'] == int(_id)]]) == 0 else [[1, 0]]# [0,1] = female, [1,0] = male
-                _y = torch.tensor(_sex).double()
-            elif self.target_name == "BMI":
+                _y = torch.tensor([[0, 1]] if _sex == 0 else [[1, 0]]).double() # [0,1] = female, [1,0] = male
+            elif self.target_name == "bmi":
                 _bmi = self.basic_features_df["21001-2.0"][self.basic_features_df.index[self.basic_features_df['eid'] == int(_id)]].values
                 if math.isnan(_bmi[0]):
                     continue
@@ -75,10 +85,14 @@ class IMDataset(InMemoryDataset):
                 edge_list.append([t[2], t[1]])
 
             _edges = torch.from_numpy(np.unique(np.array(edge_list), axis=0).reshape(2,-1)).long()
-            data_list.append(Data(x=_vertices, edge_index=_edges, y=_y))
+
+            if _sex == 0:
+                female_data_list.append(Data(x=_vertices, edge_index=_edges, y=_y))
+            else:
+                male_data_list.append(Data(x=_vertices, edge_index=_edges, y=_y))
         
-        data, slices = self.collate(data_list)
-        torch.save((data, slices), self.processed_paths[0])
-
-
-
+        data_female, slices_female = self.collate(female_data_list)
+        data_male, slices_male = self.collate(male_data_list)
+        
+        torch.save((data_female, slices_female), self.processed_paths[0])
+        torch.save((data_male, slices_male), self.processed_paths[1])

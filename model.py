@@ -319,6 +319,6 @@ class MeshProcessingNetwork(torch.nn.Module):
         x = self.gnn(x, edge_index)
         x = scatter_mean(x, batch, dim=0)
         x = self.final_projection(x)
-        print(x)
+        #print(x)
         return torch.squeeze(x, 1)
         
