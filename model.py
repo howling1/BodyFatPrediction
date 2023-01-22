@@ -292,6 +292,7 @@ class MeshProcessingNetwork(torch.nn.Module):
         gf_encoder_params: dict # graph feature encoder dict params
     ):
         super().__init__()
+        self.num_classes = num_classes
         self.input_encoder = get_mlp_layers(
             channels=[in_features] + encoder_channels,
             activation=nn.ReLU,
@@ -319,6 +320,9 @@ class MeshProcessingNetwork(torch.nn.Module):
         x = self.gnn(x, edge_index)
         x = scatter_mean(x, batch, dim=0)
         x = self.final_projection(x)
-        #print(x)
-        return torch.squeeze(x, 1)
+
+        if self.num_classes > 1:
+            return x
+        else:
+            return torch.squeeze(x, 1)
         
