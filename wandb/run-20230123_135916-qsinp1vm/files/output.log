@@ -1,0 +1,52 @@
+
+current GPU: NVIDIA A40
+0it [00:00, ?it/s]
+ModuleList(
+  (0): GAT_NET(
+    (conv): GATConv(16, 32, heads=4)
+  )
+  (1): GAT_NET(
+    (conv): GATConv(128, 64, heads=4)
+  )
+  (2): GAT_NET(
+    (conv): GATConv(256, 128, heads=4)
+  )
+  (3): GAT_NET(
+    (conv): GATConv(512, 64, heads=4)
+  )
+0it [00:01, ?it/s]
+Traceback (most recent call last):
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/message_passing.py", line 239, in __lift__
+    return src.index_select(self.node_dim, index)
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 1.12 GiB (GPU 4; 44.37 GiB total capacity; 452.13 MiB already allocated; 137.31 MiB free; 616.00 MiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "training.py", line 189, in <module>
+    main()
+  File "training.py", line 184, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 43, in train
+    prediction = model(data)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 315, in forward
+    x = self.gnn(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 270, in forward
+    x = conv_layer(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 232, in forward
+    x = self.conv(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/gat_conv.py", line 241, in forward
+    out = self.propagate(edge_index, x=x, alpha=alpha, size=size)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/message_passing.py", line 429, in propagate
+    coll_dict = self.__collect__(self.__user_args__, edge_index,
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/message_passing.py", line 301, in __collect__
+    data = self.__lift__(data, edge_index, dim)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/message_passing.py", line 242, in __lift__
+    raise ValueError(
+ValueError: Encountered a CUDA error. Please ensure that all indices in 'edge_index' point to valid indices in the interval [0, 222447) in your node feature matrix and try again.

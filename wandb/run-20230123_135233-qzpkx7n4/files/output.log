@@ -1,0 +1,77 @@
+
+current GPU: NVIDIA A40
+0it [00:00, ?it/s]
+ModuleList(
+  (0): GAT_NET(
+    (conv): GATConv(16, 32, heads=4)
+  )
+  (1): GAT_NET(
+    (conv): GATConv(128, 64, heads=4)
+  )
+  (2): GAT_NET(
+    (conv): GATConv(256, 128, heads=4)
+  )
+  (3): GAT_NET(
+    (conv): GATConv(512, 64, heads=4)
+  )
+)
+ModuleList(
+  (0): GAT_NET(
+    (conv): GATConv(16, 32, heads=4)
+  )
+  (1): GAT_NET(
+    (conv): GATConv(128, 64, heads=4)
+  )
+  (2): GAT_NET(
+    (conv): GATConv(256, 128, heads=4)
+  )
+  (3): GAT_NET(
+    (conv): GATConv(512, 64, heads=4)
+  )
+
+1it [00:02,  2.62s/it]
+ModuleList(
+  (0): GAT_NET(
+    (conv): GATConv(16, 32, heads=4)
+  )
+  (1): GAT_NET(
+    (conv): GATConv(128, 64, heads=4)
+  )
+  (2): GAT_NET(
+    (conv): GATConv(256, 128, heads=4)
+  )
+  (3): GAT_NET(
+    (conv): GATConv(512, 64, heads=4)
+  )
+
+3it [00:05,  1.59s/it]
+ModuleList(
+  (0): GAT_NET(
+    (conv): GATConv(16, 32, heads=4)
+  )
+  (1): GAT_NET(
+    (conv): GATConv(128, 64, heads=4)
+  )
+  (2): GAT_NET(
+    (conv): GATConv(256, 128, heads=4)
+  )
+  (3): GAT_NET(
+    (conv): GATConv(512, 64, heads=4)
+  )
+3it [00:05,  1.89s/it]
+Traceback (most recent call last):
+  File "training.py", line 189, in <module>
+    main()
+  File "training.py", line 184, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 43, in train
+    prediction = model(data)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 316, in forward
+    x = scatter_mean(x, batch, dim=0)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_scatter/scatter.py", line 41, in scatter_mean
+    out = scatter_sum(src, index, dim, out, dim_size)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_scatter/scatter.py", line 19, in scatter_sum
+    size[dim] = int(index.max()) + 1
+KeyboardInterrupt

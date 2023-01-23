@@ -3,24 +3,21 @@ import os
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
+import torch.nn.functional as F
 import random
 
 import torch
 from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split
 from torch_geometric.loader import DataLoader
-from model import FeatureSteeredConvolution,  MeshProcessingNetwork
+from model import FeatureSteeredConvolution, GAT_NET, SAGE_NET, GCN_NET, MeshProcessingNetwork
 from datasets.in_memory import IMDataset
 import wandb
 
-TARGET = "bmi"
-REGISTERED_ROOT = Path("D:/ADLM_Data/registered_25/") # the path of the directory that includes the .ply registered data
-INMEMORY_ROOT = 'D:/ADLM_Data/registered25_InMemoryDataset_root' # the root directory to save all the artifacts related of the InMemoryDataset
-PROCESSED_PATH = 'D:/ADLM_Data/registered25_InMemoryDataset_root/'+ TARGET + '_dataset.pt' # the path of the InMemoryDataset file to be created
-
-raw_file_paths = [os.path.join(str(REGISTERED_ROOT), file).replace('\\', '/') for file in os.listdir(str(REGISTERED_ROOT))]
-basic_features_path = "D:/ADLM_Data/basic_features.csv"
-basic_features = pd.read_csv(basic_features_path)
+REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path of the dir saving the .ply registered data
+INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
+FEATURES_PATH = "/vol/chameleon/projects/mesh_gnn/basic_features.csv"
+TARGET = "height"
 
 def train(model, trainloader, valloader, device, config):
     
@@ -78,7 +75,10 @@ def train(model, trainloader, valloader, device, config):
                     
                     with torch.no_grad():
                         # Get prediction scores
-                        prediction = model(val_data).detach().cpu()
+                        if config["task"] == "classification":
+                            prediction = F.softmax(model(val_data).detach().cpu())
+                        elif config["tasl"] == "regression":
+                            prediction = model(val_data).detach().cpu()
                                   
                     val_label = val_data.y.detach().cpu()
                     #keep track of loss_total_val                                  
@@ -100,12 +100,30 @@ def train(model, trainloader, valloader, device, config):
                 # set model back to train
                 model.train()
 
-def main():
-
-    #dataset = IMDataset(REGISTERED_ROOT, INMEMORY_ROOT, basic_features_path, TARGET)
+def test(model, loader, device, task):
+    model.eval()
+ 
+    crit = torch.nn.MSELoss() if task == "regression" else torch.nn.CrossEntropyLoss()
+    predictions = torch.tensor([])
+    targets = torch.tensor([])
     
-    dataset_female = IMDataset(REGISTERED_ROOT, INMEMORY_ROOT, basic_features_path, TARGET, 0)
-    dataset_male = IMDataset(REGISTERED_ROOT, INMEMORY_ROOT, basic_features_path, TARGET, 1)
+    with torch.no_grad():
+        for data in loader:
+            data = data.to(device)
+            pred = model(data).detach().cpu() if task == "regression" else F.softmax(model(data).detach().cpu(), dim=1)
+            target = data.y.detach().cpu()
+            predictions = torch.cat((predictions, pred))
+            targets = torch.cat((targets, target))
+
+    loss = crit(predictions, targets)
+    acc = r2_score(targets, predictions) if task == "regression" else np.mean((torch.argmax(predictions,1)==torch.argmax(targets,1)).numpy())
+
+    return loss, acc
+
+def main():    
+
+    dataset_female = IMDataset(REGISTERED_ROOT, INMEMORY_ROOT, FEATURES_PATH, TARGET, 0)
+    dataset_male = IMDataset(REGISTERED_ROOT, INMEMORY_ROOT, FEATURES_PATH, TARGET, 1)
 
     dev_data_female, test_data_female = train_test_split(dataset_female, test_size=0.2, random_state=42, shuffle=True)
     train_data_female, val_data_female = train_test_split(dev_data_female, test_size=0.25, random_state=43, shuffle=True)
@@ -128,9 +146,9 @@ def main():
  """
 
     config = {
-        "experiment_name" : "sex_prediction_25k", # there should be a folder named exactly this under the folder runs/
-        "batch_size" : 4,
-        "epochs" : 10,
+        "experiment_name" : "height_prediction_5k", # there should be a folder named exactly this under the folder runs/
+        "batch_size" : 32,
+        "epochs" : 500,
         "learning_rate" : 0.001,
         "task" : "regression", # "regression" or "classification"
         "print_every_n" : 200,
@@ -141,18 +159,15 @@ def main():
     n_class = 1 if config["task"] == "regression" else 2
 
     model_params = dict(
-    GNN_conv = FeatureSteeredConvolution, # GCN
-    in_features = 3,
-    encoder_channels = [16],
-    conv_channels = [32, 64, 128, 64],
-    decoder_channels = [32],
-    num_classes = n_class,
-    apply_batch_norm = True,
-    gf_encoder_params = dict(
-        num_heads = 1,
-        ensure_trans_invar = True,
-        bias = True,
-        with_self_loops = True
+        GNN_conv = GAT_NET, # GCN
+        in_features = 3,
+        encoder_channels = [16],
+        conv_channels = [32, 64, 128, 64],
+        decoder_channels = [32],
+        num_classes = n_class,
+        apply_batch_norm = True,
+        gf_encoder_params = dict(
+            num_heads=4
         )
     )
 
@@ -164,9 +179,11 @@ def main():
 
     train_loader = DataLoader(train_data_all, batch_size = config["batch_size"], shuffle = True)
     val_loader = DataLoader(val_data_all, batch_size = config["batch_size"], shuffle = True)
-    #test_loader = DataLoader(test_data, batch_size = config["batch_size"])
+    # test_loader = DataLoader(test_data_all, batch_size = config["batch_size"])
 
     train(model, train_loader, val_loader, device, config)
-
+    
 if __name__ == "__main__":
+    torch.cuda.set_device(1)
+    print("using GPU:", torch.cuda.current_device())
     main()

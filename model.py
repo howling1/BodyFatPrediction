@@ -254,20 +254,19 @@ class GraphFeatureEncoder(torch.nn.Module):
             conv=GNN_conv,
             conv_params=gf_encoder_params,
         )
-
-        # conv_layers = get_conv_layers(
-        #     channels=[in_features] + conv_channels,
-        #     conv=GCN_NET,
-        #     conv_params=gf_encoder_params,
-        # )
         
         self.conv_layers = nn.ModuleList(conv_layers)
 
         self.batch_layers = [None for _ in first_conv_channels]
         if apply_batch_norm:
-            self.batch_layers = nn.ModuleList(
-                [nn.BatchNorm1d(channel) for channel in first_conv_channels]
-            )
+            if GNN_conv == GAT_NET:
+                self.batch_layers = nn.ModuleList(
+                    [nn.BatchNorm1d(channel * gf_encoder_params['num_heads']) for channel in first_conv_channels]
+                )
+            else:  
+                self.batch_layers = nn.ModuleList(
+                    [nn.BatchNorm1d(channel) for channel in first_conv_channels]
+                )
 
     def forward(self, x, edge_index):
         *first_conv_layers, final_conv_layer = self.conv_layers
@@ -321,8 +320,5 @@ class MeshProcessingNetwork(torch.nn.Module):
         x = scatter_mean(x, batch, dim=0)
         x = self.final_projection(x)
 
-        if self.num_classes > 1:
-            return x
-        else:
-            return torch.squeeze(x, 1)
+        return torch.squeeze(x, 1) if self.num_classes == 1 else x
         

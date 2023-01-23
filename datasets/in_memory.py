@@ -9,7 +9,6 @@ import torch
 from torch_geometric.data import InMemoryDataset, Data
 
 class IMDataset(InMemoryDataset):
- 
     def __init__(self, raw_data_root, dataset_root, basic_features_path, target_name, gender, transform=None, pre_transform=None):
         self.raw_data_root = raw_data_root
         self.basic_features_df = pd.read_csv(basic_features_path)
@@ -40,7 +39,7 @@ class IMDataset(InMemoryDataset):
         male_data_list = []
         female_data_list = []
 
-        for file_path in tqdm(self.raw_file_names):
+        for file_path in self.raw_file_names:
             _id = os.path.splitext(os.path.basename(file_path))[0]
             _sex = int(self.basic_features_df["31-0.0"][self.basic_features_df.index[self.basic_features_df['eid'] == int(_id)]]) #female: 0, male: 1
                 
@@ -59,13 +58,13 @@ class IMDataset(InMemoryDataset):
                 else:
                     _y = torch.tensor(_height).double()
             elif self.target_name == "weight":
-                _weight = self.basic_features["21002-2.0"][self.basic_features.index[self.basic_features['eid'] == int(_id)]].values
+                _weight = self.basic_features_df["21002-2.0"][self.basic_features_df.index[self.basic_features_df['eid'] == int(_id)]].values
                 if math.isnan(_weight[0]):
                     continue
                 else:
                     _y = torch.tensor(_weight).double()
             elif self.target_name == "age":
-                _age = self.basic_features["21003-2.0"][self.basic_features.index[self.basic_features['eid'] == int(_id)]].values
+                _age = self.basic_features_df["21003-2.0"][self.basic_features_df.index[self.basic_features_df['eid'] == int(_id)]].values
                 if math.isnan(_age[0]):
                     continue
                 else:
