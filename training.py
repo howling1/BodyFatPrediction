@@ -77,7 +77,7 @@ def train(model, trainloader, valloader, device, config):
                         # Get prediction scores
                         if config["task"] == "classification":
                             prediction = F.softmax(model(val_data).detach().cpu())
-                        elif config["tasl"] == "regression":
+                        elif config["task"] == "regression":
                             prediction = model(val_data).detach().cpu()
                                   
                     val_label = val_data.y.detach().cpu()

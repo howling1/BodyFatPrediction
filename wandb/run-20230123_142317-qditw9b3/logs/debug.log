@@ -22,3 +22,4 @@ config: {'experiment_name': 'height_prediction_5k', 'batch_size': 32, 'epochs': 
 2023-01-23 14:23:21,274 INFO    MainThread:3138004 [wandb_run.py:_redirect():2024] Wrapping output streams.
 2023-01-23 14:23:21,274 INFO    MainThread:3138004 [wandb_run.py:_redirect():2046] Redirects installed.
 2023-01-23 14:23:21,275 INFO    MainThread:3138004 [wandb_init.py:init():798] run started, returning control to user process
+2023-01-23 14:26:11,257 WARNING MsgRouterThr:3138004 [router.py:message_loop():77] message_loop has been closed
