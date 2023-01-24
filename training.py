@@ -33,7 +33,6 @@ def train(model, trainloader, valloader, device, config):
     model.train()
 
     best_accuracy = 0.
-    loss_all = 0
     train_loss_running = 0.
 
     for epoch in range(config['epochs']):
@@ -42,12 +41,9 @@ def train(model, trainloader, valloader, device, config):
             optimizer.zero_grad()
             prediction = model(data)
             label = data.y.to(device)
-            #print(prediction.shape)
-            #print(label.shape)
             loss = loss_criterion(prediction, label)  
             loss.to(device)
             loss.backward()
-            loss_all += data.num_graphs * float(loss)
             optimizer.step()
             
             # loss logging
@@ -159,10 +155,10 @@ def main():
     n_class = 1 if config["task"] == "regression" else 2
 
     model_params = dict(
-        GNN_conv = GAT_NET, # GCN
+        GNN_conv = GAT_NET,
         in_features = 3,
         encoder_channels = [16],
-        conv_channels = [32, 64, 128, 64],
+        conv_channels = [32, 64, 128, 256, 64],
         decoder_channels = [32],
         num_classes = n_class,
         apply_batch_norm = True,
@@ -173,6 +169,7 @@ def main():
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print("current GPU:", torch.cuda.get_device_name(device))
+    print("using GPU:", torch.cuda.current_device())
 
     model = MeshProcessingNetwork(**model_params).to(device)
     model = model.double()
@@ -184,6 +181,5 @@ def main():
     train(model, train_loader, val_loader, device, config)
     
 if __name__ == "__main__":
-    torch.cuda.set_device(1)
-    print("using GPU:", torch.cuda.current_device())
+    torch.cuda.set_device(2)
     main()
