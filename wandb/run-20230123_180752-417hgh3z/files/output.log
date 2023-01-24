@@ -1,0 +1,31 @@
+
+current GPU: NVIDIA A40
+0it [00:05, ?it/s]
+Traceback (most recent call last):
+  File "training.py", line 147, in <module>
+    main()
+  File "training.py", line 142, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 42, in train
+    prediction = model(data)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 319, in forward
+    x = self.gnn(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 274, in forward
+    x = conv_layer(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 232, in forward
+    x = self.conv(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/gat_conv.py", line 241, in forward
+    out = self.propagate(edge_index, x=x, alpha=alpha, size=size)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/message_passing.py", line 437, in propagate
+    out = self.message(**msg_kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/gat_conv.py", line 280, in message
+    return alpha.unsqueeze(-1) * x_j
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 4.48 GiB (GPU 3; 44.37 GiB total capacity; 11.80 GiB already allocated; 4.08 GiB free; 12.47 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
