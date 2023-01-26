@@ -1,0 +1,192 @@
+current GPU: NVIDIA A40
+using GPU: 2
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:27,  6.97it/s]
+3it [00:00,  7.70it/s]
+
+10it [00:01,  8.81it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:34,  5.46it/s]
+13it [00:01,  5.71it/s]
+
+
+23it [00:07,  1.08s/it]
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:32,  5.79it/s]
+
+
+28it [00:05,  5.62it/s]
+
+
+34it [00:11,  1.22s/it]
+
+
+
+
+
+
+
+
+
+
+189it [00:31,  5.94it/s]
+
+
+43it [00:05,  9.09it/s]
+[004/00043] train_loss: 60.657
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:34,  5.47it/s]
+
+
+
+54it [00:06,  9.31it/s]
+[005/00054] train_loss: 60.002
+
+
+
+
+
+
+
+
+
+189it [00:29,  6.46it/s]
+
+
+
+
+65it [00:09,  6.02it/s]
+[006/00065] train_loss: 60.816
+
+
+
+
+
+
+
+
+
+189it [00:34,  5.46it/s]
+
+
+
+
+70it [00:09,  9.29it/s]
+
+
+81it [00:15,  2.17it/s]
+
+
+
+
+
+
+
+189it [00:30,  6.18it/s]
+
+
+
+
+
+
+
+82it [00:14,  8.71it/s]
+
+
+92it [00:20,  2.14it/s]
+
+
+
+
+
+
+189it [00:33,  5.59it/s]
+
+
+
+
+
+88it [00:11,  9.14it/s]
+
+
+99it [00:17,  1.55s/it]
+
+
+
+
+
+
+
+
+189it [00:33,  5.59it/s]
+
+
+
+
+
+
+101it [00:13,  9.09it/s]
+
+109it [00:16,  6.55it/s]
+Traceback (most recent call last):
+  File "training.py", line 183, in <module>
+    main()
+  File "training.py", line 179, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 77, in train
+    prediction = model(val_data).detach().cpu()
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 325, in forward
+    x = scatter_mean(x, batch, dim=0)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_scatter/scatter.py", line 41, in scatter_mean
+    out = scatter_sum(src, index, dim, out, dim_size)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_scatter/scatter.py", line 19, in scatter_sum
+    size[dim] = int(index.max()) + 1
+KeyboardInterrupt

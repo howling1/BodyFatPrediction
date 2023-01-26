@@ -1,0 +1,83 @@
+current GPU: NVIDIA A40
+using GPU: 2
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:25,  7.28it/s]
+10it [00:01,  8.07it/s]training.py:75: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  prediction = F.softmax(model(val_data).detach().cpu())
+[001/00010] train_loss: 0.535
+[001/00010] val_loss: 0.539, val_accuracy: 0.787
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:34,  5.41it/s]
+
+21it [00:02,  8.28it/s]
+
+28it [00:08,  2.79it/s]
+
+
+
+
+
+
+
+
+
+189it [00:28,  6.64it/s]
+
+
+31it [00:04,  5.19it/s]
+
+32it [00:04,  5.02it/s]
+
+47it [00:15,  3.02it/s]
+Traceback (most recent call last):
+  File "training.py", line 183, in <module>
+    main()
+  File "training.py", line 179, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 42, in train
+    prediction = model(data)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 324, in forward
+    x = self.gnn(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 279, in forward
+    x = conv_layer(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 208, in forward
+    x = self.conv(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/gcn_conv.py", line 198, in forward
+    out = self.propagate(edge_index, x=x, edge_weight=edge_weight,
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/message_passing.py", line 454, in propagate
+    out = self.aggregate(out, **aggr_kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/message_passing.py", line 578, in aggregate
+    return self.aggr_module(inputs, index, ptr=ptr, dim_size=dim_size,
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/aggr/base.py", line 126, in __call__
+    if index.numel() > 0 and dim_size <= int(index.max()):
+KeyboardInterrupt

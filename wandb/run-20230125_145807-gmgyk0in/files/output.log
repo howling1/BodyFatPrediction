@@ -1,0 +1,21 @@
+current GPU: NVIDIA A40
+using GPU: 2
+0it [00:00, ?it/s]/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/loss.py:536: UserWarning: Using a target size (torch.Size([32, 2])) that is different to the input size (torch.Size([32])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  return F.mse_loss(input, target, reduction=self.reduction)
+0it [00:03, ?it/s]
+Traceback (most recent call last):
+  File "training.py", line 183, in <module>
+    main()
+  File "training.py", line 179, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 44, in train
+    loss = loss_criterion(prediction, label)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/loss.py", line 536, in forward
+    return F.mse_loss(input, target, reduction=self.reduction)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/functional.py", line 3291, in mse_loss
+    expanded_input, expanded_target = torch.broadcast_tensors(input, target)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/functional.py", line 74, in broadcast_tensors
+    return _VF.broadcast_tensors(tensors)  # type: ignore[attr-defined]
+RuntimeError: The size of tensor a (32) must match the size of tensor b (2) at non-singleton dimension 1

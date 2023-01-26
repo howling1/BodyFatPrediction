@@ -4,6 +4,7 @@ from torch_scatter import scatter_mean
 import torch.nn.functional as F
 from torch_geometric.nn import GCNConv, SAGEConv, GATConv, MessagePassing
 from torch_geometric.utils import add_self_loops, remove_self_loops
+from torch_geometric.utils.dropout import dropout_edge, dropout_node, dropout_path
 from itertools import tee
 
 
@@ -241,12 +242,12 @@ class GraphFeatureEncoder(torch.nn.Module):
         GNN_conv,
         in_features,
         conv_channels,
-        apply_batch_norm: bool,
+        bn_or_dropout: str,
         gf_encoder_params: dict
     ):
         super().__init__()
 
-        self.apply_batch_norm = apply_batch_norm
+        self.bn_or_dropout = bn_or_dropout
 
         *first_conv_channels, final_conv_channel = conv_channels
         conv_layers = get_conv_layers(
@@ -257,24 +258,33 @@ class GraphFeatureEncoder(torch.nn.Module):
         
         self.conv_layers = nn.ModuleList(conv_layers)
 
-        self.batch_layers = [None for _ in first_conv_channels]
-        if apply_batch_norm:
+        self.bn_layers = [None for _ in first_conv_channels]
+
+        if bn_or_dropout == 'bn':
             if GNN_conv == GAT_NET:
-                self.batch_layers = nn.ModuleList(
+                self.bn_layers = nn.ModuleList(
                     [nn.BatchNorm1d(channel * gf_encoder_params['num_heads']) for channel in first_conv_channels]
                 )
             else:  
-                self.batch_layers = nn.ModuleList(
+                self.bn_layers = nn.ModuleList(
                     [nn.BatchNorm1d(channel) for channel in first_conv_channels]
                 )
 
     def forward(self, x, edge_index):
         *first_conv_layers, final_conv_layer = self.conv_layers
-        for conv_layer, batch_layer in zip(first_conv_layers, self.batch_layers):
-            x = conv_layer(x, edge_index)
+
+        for conv_layer, bn_layer in zip(first_conv_layers, self.bn_layers):
+            x = conv_layer(x, edge_index) 
+            if self.training == True:
+                if self.bn_or_dropout == 'drop_edge':
+                    edge_index, _ = dropout_edge(edge_index)
+                elif self.bn_or_dropout == 'drop_path':
+                    edge_index, _ = dropout_path(edge_index)
+
             x = F.relu(x)
-            if batch_layer is not None:
-                x = batch_layer(x)
+            if self.bn_or_dropout == 'bn':
+                x = bn_layer(x)
+
         return final_conv_layer(x, edge_index)
 
 class MeshProcessingNetwork(torch.nn.Module):
@@ -287,7 +297,7 @@ class MeshProcessingNetwork(torch.nn.Module):
         conv_channels, # features of conv
         decoder_channels, # features of the prediction MLP
         num_classes,
-        apply_batch_norm,
+        bn_or_dropout, # bn, dropout, None
         gf_encoder_params: dict # graph feature encoder dict params
     ):
         super().__init__()
@@ -300,7 +310,7 @@ class MeshProcessingNetwork(torch.nn.Module):
             GNN_conv=GNN_conv,
             in_features=encoder_channels[-1],
             conv_channels=conv_channels,
-            apply_batch_norm=apply_batch_norm,
+            bn_or_dropout=bn_or_dropout,
             gf_encoder_params=gf_encoder_params
         )
         *_, final_conv_channel = conv_channels

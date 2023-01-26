@@ -72,7 +72,7 @@ def train(model, trainloader, valloader, device, config):
                     with torch.no_grad():
                         # Get prediction scores
                         if config["task"] == "classification":
-                            prediction = F.softmax(model(val_data).detach().cpu())
+                            prediction = F.softmax(model(val_data).detach().cpu(), dim=1)
                         elif config["task"] == "regression":
                             prediction = model(val_data).detach().cpu()
                                   
@@ -117,14 +117,13 @@ def test(model, loader, device, task):
     return loss, acc
 
 def main():    
-
     dataset_female = IMDataset(REGISTERED_ROOT, INMEMORY_ROOT, FEATURES_PATH, TARGET, 0)
     dataset_male = IMDataset(REGISTERED_ROOT, INMEMORY_ROOT, FEATURES_PATH, TARGET, 1)
 
-    dev_data_female, test_data_female = train_test_split(dataset_female, test_size=0.2, random_state=42, shuffle=True)
-    train_data_female, val_data_female = train_test_split(dev_data_female, test_size=0.25, random_state=43, shuffle=True)
-    dev_data_male, test_data_male = train_test_split(dataset_male, test_size=0.2, random_state=42, shuffle=True)
-    train_data_male, val_data_male = train_test_split(dev_data_male, test_size=0.25, random_state=43, shuffle=True)
+    dev_data_female, test_data_female = train_test_split(dataset_female, test_size=0.1, random_state=42, shuffle=True)
+    train_data_female, val_data_female = train_test_split(dev_data_female, test_size=0.33, random_state=43, shuffle=True)
+    dev_data_male, test_data_male = train_test_split(dataset_male, test_size=0.1, random_state=42, shuffle=True)
+    train_data_male, val_data_male = train_test_split(dev_data_male, test_size=0.33, random_state=43, shuffle=True)
 
     train_data_all = train_data_male + train_data_female
     val_data_all = val_data_male + val_data_female
@@ -142,10 +141,10 @@ def main():
  """
 
     config = {
-        "experiment_name" : "height_prediction_5k", # there should be a folder named exactly this under the folder runs/
+        "experiment_name" : "sex_prediction_5k", # there should be a folder named exactly this under the folder runs/
         "batch_size" : 32,
-        "epochs" : 500,
-        "learning_rate" : 0.001,
+        "epochs" : 2000,
+        "learning_rate" : 0.003,
         "task" : "regression", # "regression" or "classification"
         "print_every_n" : 200,
         "validate_every_n" : 200}
@@ -155,15 +154,14 @@ def main():
     n_class = 1 if config["task"] == "regression" else 2
 
     model_params = dict(
-        GNN_conv = GAT_NET,
+        GNN_conv = SAGE_NET,
         in_features = 3,
         encoder_channels = [16],
-        conv_channels = [32, 64, 128, 256, 64],
+        conv_channels = [32, 64, 128, 64],
         decoder_channels = [32],
         num_classes = n_class,
-        apply_batch_norm = True,
+        bn_or_dropout = 'dropedge', # bn, dropedge, droppath
         gf_encoder_params = dict(
-            num_heads=4
         )
     )
 
