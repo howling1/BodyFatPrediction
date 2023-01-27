@@ -156,9 +156,9 @@ def main():
     model_params = dict(
         GNN_conv = SAGE_NET,
         in_features = 3,
-        encoder_channels = [16],
-        conv_channels = [32, 64, 128, 64],
-        decoder_channels = [32],
+        encoder_channels = [],
+        conv_channels = [32, 128, 64],
+        decoder_channels = [32, 8],
         num_classes = n_class,
         bn_or_dropout = 'dropedge', # bn, dropedge, droppath
         gf_encoder_params = dict(
@@ -179,5 +179,5 @@ def main():
     train(model, train_loader, val_loader, device, config)
     
 if __name__ == "__main__":
-    torch.cuda.set_device(2)
+    torch.cuda.set_device(3)
     main()

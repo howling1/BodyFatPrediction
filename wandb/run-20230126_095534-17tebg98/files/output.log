@@ -1,0 +1,10 @@
+current GPU: NVIDIA A40
+using GPU: 3
+Traceback (most recent call last):
+  File "training.py", line 183, in <module>
+    main()
+  File "training.py", line 172, in main
+    model = MeshProcessingNetwork(**model_params).to(device)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 314, in __init__
+    in_features=encoder_channels[-1],
+IndexError: list index out of range

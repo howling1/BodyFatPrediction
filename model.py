@@ -49,6 +49,9 @@ def get_conv_layers(channels: list, conv, conv_params: dict):
 
 def get_mlp_layers(channels: list, activation, output_activation=nn.Identity):
     """Define basic multilayered perceptron network."""
+    if len(channels) == 1:
+        return None
+
     layers = []
     *intermediate_layer_definitions, final_layer_definition = pairwise(channels)
 
@@ -308,7 +311,7 @@ class MeshProcessingNetwork(torch.nn.Module):
         )
         self.gnn = GraphFeatureEncoder(
             GNN_conv=GNN_conv,
-            in_features=encoder_channels[-1],
+            in_features=encoder_channels[-1] if len(encoder_channels) > 0 else in_features,
             conv_channels=conv_channels,
             bn_or_dropout=bn_or_dropout,
             gf_encoder_params=gf_encoder_params
@@ -325,7 +328,7 @@ class MeshProcessingNetwork(torch.nn.Module):
 
     def forward(self, data):
         x, edge_index, batch = data.x, data.edge_index, data.batch
-        x = self.input_encoder(x)
+        x = self.input_encoder(x) if self.input_encoder != None else x
         x = self.gnn(x, edge_index)
         x = scatter_mean(x, batch, dim=0)
         x = self.final_projection(x)
