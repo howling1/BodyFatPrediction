@@ -1,0 +1,81 @@
+current GPU: NVIDIA A40
+using GPU: 3
+
+
+
+
+
+
+186it [00:13, 16.06it/s]
+189it [00:13, 13.92it/s]
+10it [00:00, 17.17it/s]
+
+
+
+
+
+189it [00:14, 13.36it/s]
+20it [00:01, 18.53it/s]
+[002/00021] train_loss: 52.802
+
+
+
+
+189it [00:13, 14.14it/s]
+
+32it [00:01, 18.84it/s]
+
+34it [00:08,  1.05s/it]
+
+
+
+
+
+
+
+
+
+
+189it [00:29,  6.40it/s]
+
+42it [00:02, 18.11it/s]
+[004/00043] train_loss: 49.665
+
+
+
+
+189it [00:13, 14.10it/s]
+
+54it [00:03, 17.29it/s]
+[005/00054] train_loss: 49.131
+
+
+
+
+189it [00:14, 13.47it/s]
+
+64it [00:03, 18.04it/s]
+75it [00:07, 10.29it/s]
+Traceback (most recent call last):
+  File "training.py", line 199, in <module>
+    main()
+  File "training.py", line 196, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 43, in train
+    prediction = model(data)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 373, in forward
+    x = conv_layer(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/gcn_conv.py", line 198, in forward
+    out = self.propagate(edge_index, x=x, edge_weight=edge_weight,
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/message_passing.py", line 454, in propagate
+    out = self.aggregate(out, **aggr_kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/message_passing.py", line 578, in aggregate
+    return self.aggr_module(inputs, index, ptr=ptr, dim_size=dim_size,
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/aggr/base.py", line 126, in __call__
+    if index.numel() > 0 and dim_size <= int(index.max()):
+KeyboardInterrupt
+[006/00065] val_loss: 1568.229, val_accuracy: -25.967

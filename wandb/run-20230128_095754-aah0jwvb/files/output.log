@@ -1,0 +1,384 @@
+current GPU: NVIDIA A40
+using GPU: 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+188it [00:35,  9.22it/s]
+189it [00:35,  5.30it/s]
+10it [00:01,  9.23it/s]
+
+
+
+
+
+
+
+
+
+
+
+189it [00:31,  6.09it/s]
+
+
+17it [00:04,  3.10it/s]
+
+21it [00:05,  3.77it/s]
+
+
+
+
+
+
+
+
+
+189it [00:40,  4.62it/s]
+
+19it [00:02,  9.09it/s]
+
+32it [00:03,  9.13it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:54,  3.45it/s]
+
+
+
+39it [00:07,  5.30it/s]
+
+43it [00:08,  5.32it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [01:08,  2.77it/s]
+
+
+
+
+
+52it [00:11,  3.41it/s]
+
+54it [00:11,  4.02it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [01:07,  2.79it/s]
+
+
+
+
+
+
+65it [00:13,  4.66it/s]
+[006/00065] train_loss: 67.511
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [01:08,  2.76it/s]
+
+
+
+
+
+
+
+75it [00:15,  4.94it/s]
+
+76it [00:15,  4.47it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [01:03,  2.96it/s]
+
+
+
+
+
+
+
+
+
+79it [00:19,  5.23it/s]
+
+
+89it [00:33,  2.74s/it]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [01:04,  2.91it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+97it [00:27,  4.48it/s]
+
+98it [00:27,  4.48it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [01:07,  2.79it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+108it [00:29,  4.88it/s]
+
+109it [00:29,  4.87it/s]
+
+
+
+
+
+
+
+
+
+
+
+189it [01:05,  2.89it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+119it [00:34,  4.59it/s]
+
+
+121it [00:48,  4.26s/it]
+
+
+
+
+
+
+189it [01:02,  3.05it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+130it [00:32,  2.39it/s]
+
+
+132it [00:56,  7.45s/it]
+
+
+
+
+
+
+189it [01:08,  2.75it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+141it [00:31,  3.24it/s]
+
+142it [00:48,  2.92it/s]
+Traceback (most recent call last):
+  File "training.py", line 206, in <module>
+    main()
+  File "training.py", line 203, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 78, in train
+    prediction = model(val_data).detach().cpu()
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 393, in forward
+    x = conv_layer(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 213, in forward
+    x = self.conv(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/gcn_conv.py", line 176, in forward
+    edge_index, edge_weight = gcn_norm(  # yapf: disable
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/gcn_conv.py", line 61, in gcn_norm
+    edge_index, tmp_edge_weight = add_remaining_self_loops(
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/utils/loop.py", line 298, in add_remaining_self_loops
+    loop_attr[edge_index[0][inv_mask]] = edge_attr[inv_mask]
+KeyboardInterrupt

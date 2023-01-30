@@ -1,0 +1,305 @@
+current GPU: NVIDIA A40
+using GPU: 3
+
+
+
+
+
+
+189it [00:14, 12.87it/s]
+10it [00:00, 12.49it/s]
+[001/00010] train_loss: 858.049
+
+
+
+
+
+
+
+
+
+
+
+
+187it [00:32, 14.98it/s]
+189it [00:32,  5.74it/s]
+20it [00:01, 15.00it/s]
+
+
+
+
+
+
+189it [00:17, 10.96it/s]
+10it [00:00, 14.27it/s]
+
+32it [00:02, 14.89it/s]
+
+
+
+
+
+
+189it [00:16, 11.20it/s]
+
+
+36it [00:05,  5.34it/s]
+
+43it [00:06,  6.59it/s]
+
+
+
+
+
+
+
+
+189it [00:32,  5.81it/s]
+
+52it [00:03, 15.07it/s]
+
+
+56it [00:07,  1.60it/s]
+
+
+
+
+189it [00:16, 11.20it/s]
+
+38it [00:02, 15.05it/s]
+
+64it [00:04, 15.15it/s]
+
+
+
+
+189it [00:16, 11.59it/s]
+
+
+
+
+
+
+75it [00:12,  5.11it/s]
+
+76it [00:12,  5.18it/s]
+
+
+
+
+
+189it [00:32,  5.83it/s]
+
+
+
+86it [00:05, 15.04it/s]
+[008/00087] train_loss: 47.338
+
+
+
+
+189it [00:16, 11.13it/s]
+
+
+76it [00:05, 15.03it/s]
+
+98it [00:06, 15.09it/s]
+
+
+
+189it [00:17, 11.07it/s]
+
+
+
+
+
+
+
+
+99it [00:16,  6.87it/s]
+
+108it [00:17,  6.90it/s]
+
+
+189it [00:31,  6.00it/s]
+
+
+
+100it [00:06, 15.20it/s]
+
+
+122it [00:12,  1.32it/s]
+
+
+189it [00:17, 10.57it/s]
+
+
+
+
+124it [00:08, 14.67it/s]
+
+130it [00:09, 14.60it/s]
+
+
+189it [00:17, 10.96it/s]
+
+
+
+
+
+
+
+
+
+
+132it [00:21,  7.22it/s]
+
+141it [00:22,  7.02it/s]
+
+
+189it [00:32,  5.84it/s]
+
+
+
+
+138it [00:09, 15.06it/s]
+
+152it [00:10, 15.14it/s]
+
+189it [00:16, 11.28it/s]
+
+
+
+
+
+158it [00:10, 15.31it/s]
+
+164it [00:10, 15.25it/s]
+
+
+189it [00:18, 10.12it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+174it [00:25, 14.53it/s]
+[016/00175] train_loss: 47.100
+
+189it [00:30,  6.29it/s]
+
+
+
+
+
+169it [00:11, 14.72it/s]
+
+185it [00:12, 15.03it/s]
+189it [00:16, 11.27it/s]
+
+
+
+
+
+189it [00:12, 15.03it/s]
+8it [00:00, 15.23it/s]
+[019/00008] train_loss: 47.156
+
+
+
+
+
+
+
+
+
+
+
+189it [00:32,  5.85it/s]
+4it [00:00, 15.14it/s]
+
+18it [00:01, 15.12it/s]
+
+
+
+
+
+
+189it [00:17, 11.10it/s]
+20it [00:01, 15.19it/s]
+
+30it [00:01, 15.18it/s]
+
+
+
+
+
+189it [00:17, 11.04it/s]
+
+
+
+39it [00:06,  5.41it/s]
+
+41it [00:06,  5.15it/s]
+
+
+
+
+
+
+
+
+189it [00:31,  5.91it/s]
+
+34it [00:02, 14.48it/s]
+
+52it [00:03, 14.70it/s]
+
+
+
+
+
+189it [00:17, 10.96it/s]
+
+44it [00:03, 14.23it/s]
+
+62it [00:04, 14.17it/s]
+
+
+
+
+
+
+
+189it [00:21,  8.65it/s]
+
+
+
+
+
+69it [00:11,  5.82it/s]
+
+74it [00:15,  4.85it/s]
+Traceback (most recent call last):
+  File "training.py", line 199, in <module>
+    main()
+  File "training.py", line 196, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 78, in train
+    prediction = model(val_data).detach().cpu()
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 373, in forward
+    x = conv_layer(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/gcn_conv.py", line 202, in forward
+    out = out + self.bias
+KeyboardInterrupt

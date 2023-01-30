@@ -1,0 +1,450 @@
+current GPU: NVIDIA A40
+using GPU: 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:35,  5.40it/s]
+
+10it [00:01,  5.63it/s]
+
+19it [00:10,  3.35it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:40,  4.65it/s]
+
+21it [00:03,  5.60it/s]
+
+27it [00:11,  1.87it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:40,  4.64it/s]
+
+
+
+32it [00:05,  5.56it/s]
+
+34it [00:13,  1.66s/it]
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:40,  4.64it/s]
+
+
+
+
+43it [00:07,  5.61it/s]
+
+54it [00:16,  4.24it/s]
+
+
+
+
+
+
+
+
+
+
+
+189it [00:40,  4.67it/s]
+
+
+
+
+
+54it [00:09,  5.68it/s]
+
+63it [00:18,  3.35it/s]
+
+
+
+
+
+
+
+
+
+
+
+189it [00:40,  4.67it/s]
+
+
+
+
+
+65it [00:11,  5.65it/s]
+
+72it [00:19,  2.34it/s]
+
+
+
+
+
+
+
+
+
+
+189it [00:40,  4.68it/s]
+
+
+
+
+
+
+
+76it [00:13,  5.69it/s]
+
+81it [00:21,  1.48it/s]
+
+
+
+
+
+
+
+
+
+189it [00:40,  4.67it/s]
+
+
+
+
+
+
+
+
+87it [00:15,  5.65it/s]
+
+92it [00:23,  1.50it/s]
+
+
+
+
+
+
+
+
+189it [00:40,  4.70it/s]
+
+
+
+
+
+
+
+
+
+98it [00:17,  5.70it/s]
+
+101it [00:24,  1.21s/it]
+
+
+
+
+
+
+
+189it [00:40,  4.68it/s]
+
+
+
+
+
+
+
+
+
+
+109it [00:19,  5.71it/s]
+
+111it [00:26,  1.63s/it]
+
+
+
+
+
+
+189it [00:40,  4.70it/s]
+
+
+
+
+
+
+
+
+
+
+
+120it [00:21,  5.71it/s]
+
+122it [00:28,  1.61s/it]
+
+
+
+
+
+189it [00:40,  4.71it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+131it [00:22,  5.63it/s]
+
+134it [00:30,  1.19s/it]
+
+
+
+
+189it [00:39,  4.73it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+139it [00:24,  5.73it/s]
+
+142it [00:25,  5.71it/s]
+
+
+
+
+189it [00:39,  4.73it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+152it [00:26,  5.72it/s]
+
+153it [00:26,  5.69it/s]
+
+
+
+189it [00:40,  4.72it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+163it [00:28,  5.67it/s]
+
+164it [00:28,  5.68it/s]
+
+
+189it [00:39,  4.74it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+175it [00:30,  5.72it/s]
+[016/00175] train_loss: 189.349
+
+189it [00:39,  4.73it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+186it [00:32,  5.63it/s]
+[017/00186] train_loss: 193.496
+189it [00:39,  4.74it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:33,  5.70it/s]
+1it [00:00,  5.71it/s]
+
+8it [00:01,  5.74it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:39,  4.74it/s]
+10it [00:01,  5.71it/s]
+
+19it [00:03,  5.70it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:40,  4.72it/s]
+
+22it [00:03,  5.69it/s]
+
+30it [00:05,  5.73it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:39,  4.73it/s]
+
+
+
+34it [00:05,  5.73it/s]
+
+41it [00:10,  3.85it/s]
+Traceback (most recent call last):
+  File "training.py", line 215, in <module>
+    main()
+  File "training.py", line 212, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 71, in train
+    val_data = val_data.to(device)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/data/data.py", line 251, in to
+    return self.apply(
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/data/data.py", line 234, in apply
+    store.apply(func, *args)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/data/storage.py", line 163, in apply
+    self[key] = recursive_apply(value, func)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/data/storage.py", line 523, in recursive_apply
+    return func(data)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/data/data.py", line 252, in <lambda>
+    lambda x: x.to(device=device, non_blocking=non_blocking), *args)
+KeyboardInterrupt

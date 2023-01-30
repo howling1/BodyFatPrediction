@@ -1,0 +1,86 @@
+current GPU: NVIDIA A40
+using GPU: 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+182it [00:27,  6.41it/s]
+189it [00:28,  6.60it/s]
+9it [00:00, 14.44it/s]
+
+
+
+
+
+
+189it [00:15, 12.15it/s]
+13it [00:01, 12.68it/s]
+
+21it [00:01, 14.72it/s]
+
+
+
+
+
+
+189it [00:15, 11.85it/s]
+24it [00:01, 16.17it/s]
+
+32it [00:01, 15.88it/s]
+
+
+
+
+
+
+
+
+
+
+
+189it [00:31,  6.06it/s]
+
+38it [00:02, 15.82it/s]
+
+42it [00:02, 15.74it/s]
+
+
+
+
+
+189it [00:15, 12.35it/s]
+
+41it [00:03, 16.08it/s]
+
+53it [00:03, 15.52it/s]
+
+
+
+146it [00:13, 11.04it/s]
+Traceback (most recent call last):
+  File "training.py", line 206, in <module>
+    main()
+  File "training.py", line 203, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 43, in train
+    prediction = model(data)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 300, in forward
+    x = self.gnn(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 255, in forward
+    x = F.relu(x)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/functional.py", line 1457, in relu
+    result = torch.relu(input)
+KeyboardInterrupt

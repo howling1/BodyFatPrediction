@@ -1,0 +1,30 @@
+current GPU: NVIDIA A40
+using GPU: 3
+ModuleList(
+  (0): SAGEConv(3, 64, aggr=mean)
+  (1): SAGEConv(128, 64, aggr=mean)
+  (2): SAGEConv(256, 64, aggr=mean)
+  (3): SAGEConv(512, 64, aggr=mean)
+  (4): SAGEConv(1024, 64, aggr=mean)
+)
+0it [00:03, ?it/s]
+Traceback (most recent call last):
+  File "training.py", line 217, in <module>
+    main()
+  File "training.py", line 214, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 43, in train
+    prediction = model(data)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 478, in forward
+    x = conv_layer(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/sage_conv.py", line 132, in forward
+    out = self.lin_l(out)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/dense/linear.py", line 136, in forward
+    return F.linear(x, self.weight, self.bias)
+RuntimeError: mat1 and mat2 shapes cannot be multiplied (111837x67 and 128x64)

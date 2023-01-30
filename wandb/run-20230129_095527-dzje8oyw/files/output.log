@@ -1,0 +1,15 @@
+current GPU: NVIDIA A40
+using GPU: 3
+0it [00:03, ?it/s]
+Traceback (most recent call last):
+  File "training.py", line 214, in <module>
+    main()
+  File "training.py", line 211, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 43, in train
+    prediction = model(data)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 385, in forward
+    copied_global_features = torch.cat([global_feature for i in range(local_features.size()[0])], dim=0)
+TypeError: expected Tensor as element 0 in argument 0, but got tuple

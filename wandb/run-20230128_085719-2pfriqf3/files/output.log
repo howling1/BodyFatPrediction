@@ -1,0 +1,14 @@
+current GPU: NVIDIA A40
+using GPU: 3
+Traceback (most recent call last):
+  File "training.py", line 206, in <module>
+    main()
+  File "training.py", line 195, in main
+    model = ResGNN(**model_params).to(device)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 368, in __init__
+    self.conv_layers = get_conv_layers(
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 41, in get_conv_layers
+    conv_layers = [
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 42, in <listcomp>
+    conv(in_out[0], in_out[1], num_heads) if i == 0 else conv(in_out[0] * num_heads, in_out[1], num_heads) for i, in_out in enumerate(pairwise(channels))
+TypeError: __init__() takes 3 positional arguments but 4 were given

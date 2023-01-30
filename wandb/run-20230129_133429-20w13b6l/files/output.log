@@ -1,0 +1,291 @@
+current GPU: NVIDIA A40
+using GPU: 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:35,  5.38it/s]
+1it [00:00,  5.61it/s]
+
+10it [00:01,  5.55it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:41,  4.59it/s]
+
+17it [00:03,  5.47it/s]
+
+
+22it [00:11,  2.32s/it]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:40,  4.61it/s]
+
+
+23it [00:04,  5.62it/s]
+
+32it [00:05,  5.61it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:41,  4.60it/s]
+
+
+
+39it [00:07,  5.59it/s]
+
+
+44it [00:15,  2.32s/it]
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:40,  4.62it/s]
+
+
+
+
+46it [00:08,  5.62it/s]
+
+54it [00:09,  5.60it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:40,  4.62it/s]
+
+
+
+
+
+63it [00:11,  5.59it/s]
+
+65it [00:11,  5.59it/s]
+
+
+
+
+
+
+
+
+
+
+
+189it [00:41,  4.60it/s]
+
+
+
+
+
+
+68it [00:12,  5.59it/s]
+
+76it [00:13,  5.48it/s]
+
+
+
+
+
+
+
+
+
+
+189it [00:41,  4.60it/s]
+
+
+
+
+
+
+
+85it [00:15,  5.51it/s]
+
+87it [00:15,  5.53it/s]
+
+
+
+
+
+
+
+
+
+189it [00:41,  4.60it/s]
+
+
+
+
+
+
+
+
+91it [00:16,  5.59it/s]
+
+98it [00:17,  5.62it/s]
+
+
+
+
+
+
+
+
+189it [00:41,  4.60it/s]
+
+
+
+
+
+
+
+
+
+107it [00:19,  5.59it/s]
+
+109it [00:19,  5.60it/s]
+
+
+
+
+
+
+
+189it [00:41,  4.60it/s]
+
+
+
+
+
+
+
+
+
+
+113it [00:20,  5.63it/s]
+
+120it [00:21,  5.59it/s]
+
+
+
+
+
+
+189it [00:41,  4.61it/s]
+
+
+
+
+
+
+
+
+
+
+
+129it [00:23,  5.54it/s]
+
+
+133it [00:31,  1.69s/it]
+
+
+
+
+189it [00:41,  4.58it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+134it [00:24,  5.55it/s]
+
+142it [00:25,  5.50it/s]
+
+151it [00:34,  4.37it/s]
+Traceback (most recent call last):
+  File "training.py", line 214, in <module>
+    main()
+  File "training.py", line 211, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 43, in train
+    prediction = model(data)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 387, in forward
+    x = F.relu(x)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_scatter/scatter.py", line 72, in scatter_max
+    return torch.ops.torch_scatter.scatter_max(src, index, dim, out, dim_size)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/_ops.py", line 442, in __call__
+    return self._op(*args, **kwargs or {})
+KeyboardInterrupt

@@ -1,0 +1,276 @@
+2023-01-28 14:54:29,371 INFO    StreamThr :3435398 [internal.py:wandb_internal():87] W&B internal server running at pid: 3435398, started at: 2023-01-28 14:54:29.370868
+2023-01-28 14:54:29,374 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: status
+2023-01-28 14:54:29,376 INFO    WriterThread:3435398 [datastore.py:open_for_write():85] open: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/run-tfjca0mi.wandb
+2023-01-28 14:54:29,378 DEBUG   SenderThread:3435398 [sender.py:send():334] send: header
+2023-01-28 14:54:29,498 DEBUG   SenderThread:3435398 [sender.py:send():334] send: run
+2023-01-28 14:54:29,882 INFO    SenderThread:3435398 [dir_watcher.py:__init__():216] watching files in: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files
+2023-01-28 14:54:29,883 INFO    SenderThread:3435398 [sender.py:_start_run_threads():1065] run started: tfjca0mi with start time 1674914069.36979
+2023-01-28 14:54:29,883 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: summary_record
+2023-01-28 14:54:29,883 INFO    SenderThread:3435398 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-01-28 14:54:29,889 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: check_version
+2023-01-28 14:54:29,890 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: check_version
+2023-01-28 14:54:29,963 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: run_start
+2023-01-28 14:54:29,976 DEBUG   HandlerThread:3435398 [system_info.py:__init__():31] System info init
+2023-01-28 14:54:29,976 DEBUG   HandlerThread:3435398 [system_info.py:__init__():46] System info init done
+2023-01-28 14:54:29,976 INFO    HandlerThread:3435398 [system_monitor.py:start():151] Starting system monitor
+2023-01-28 14:54:29,976 INFO    SystemMonitor:3435398 [system_monitor.py:_start():116] Starting system asset monitoring threads
+2023-01-28 14:54:29,977 INFO    HandlerThread:3435398 [system_monitor.py:probe():172] Collecting system info
+2023-01-28 14:54:29,977 INFO    SystemMonitor:3435398 [interfaces.py:start():168] Started cpu
+2023-01-28 14:54:29,978 INFO    SystemMonitor:3435398 [interfaces.py:start():168] Started disk
+2023-01-28 14:54:29,978 INFO    SystemMonitor:3435398 [interfaces.py:start():168] Started gpu
+2023-01-28 14:54:29,980 INFO    SystemMonitor:3435398 [interfaces.py:start():168] Started memory
+2023-01-28 14:54:29,980 INFO    SystemMonitor:3435398 [interfaces.py:start():168] Started network
+2023-01-28 14:54:30,103 DEBUG   HandlerThread:3435398 [system_info.py:probe():195] Probing system
+2023-01-28 14:54:30,115 DEBUG   HandlerThread:3435398 [system_info.py:_probe_git():180] Probing git
+2023-01-28 14:54:30,133 DEBUG   HandlerThread:3435398 [system_info.py:_probe_git():188] Probing git done
+2023-01-28 14:54:30,133 DEBUG   HandlerThread:3435398 [system_info.py:probe():241] Probing system done
+2023-01-28 14:54:30,133 DEBUG   HandlerThread:3435398 [system_monitor.py:probe():181] {'os': 'Linux-5.4.0-131-generic-x86_64-with-glibc2.17', 'python': '3.8.15', 'heartbeatAt': '2023-01-28T13:54:30.103992', 'startedAt': '2023-01-28T13:54:29.360780', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': 'training.py', 'codePath': 'training.py', 'git': {'remote': 'git@github.com:danie1ll/BodyMeshGNN.git', 'commit': 'ac9263a88a1d9e96e142a2d2fccfa7ba82d257b7'}, 'email': '782132508@qq.com', 'root': '/data2/practical-wise2223/MeshBody/BodyMeshGNN', 'host': 'chameleon', 'username': 'zhousiy', 'executable': '/u/home/zhousiy/.conda/envs/BodyMeshGNN/bin/python', 'cpu_count': 128, 'cpu_count_logical': 256, 'cpu_freq': {'current': 2350.416203125001, 'min': 1500.0, 'max': 2000.0}, 'cpu_freq_per_core': [{'current': 2917.609, 'min': 1500.0, 'max': 2000.0}, {'current': 1456.74, 'min': 1500.0, 'max': 2000.0}, {'current': 2948.071, 'min': 1500.0, 'max': 2000.0}, {'current': 2908.492, 'min': 1500.0, 'max': 2000.0}, {'current': 1663.871, 'min': 1500.0, 'max': 2000.0}, {'current': 1462.12, 'min': 1500.0, 'max': 2000.0}, {'current': 2852.1, 'min': 1500.0, 'max': 2000.0}, {'current': 2917.799, 'min': 1500.0, 'max': 2000.0}, {'current': 1663.813, 'min': 1500.0, 'max': 2000.0}, {'current': 1461.557, 'min': 1500.0, 'max': 2000.0}, {'current': 2913.783, 'min': 1500.0, 'max': 2000.0}, {'current': 2909.676, 'min': 1500.0, 'max': 2000.0}, {'current': 1462.352, 'min': 1500.0, 'max': 2000.0}, {'current': 2918.728, 'min': 1500.0, 'max': 2000.0}, {'current': 2918.747, 'min': 1500.0, 'max': 2000.0}, {'current': 2918.633, 'min': 1500.0, 'max': 2000.0}, {'current': 2918.534, 'min': 1500.0, 'max': 2000.0}, {'current': 2918.776, 'min': 1500.0, 'max': 2000.0}, {'current': 2399.082, 'min': 1500.0, 'max': 2000.0}, {'current': 2678.726, 'min': 1500.0, 'max': 2000.0}, {'current': 2912.81, 'min': 1500.0, 'max': 2000.0}, {'current': 1661.964, 'min': 1500.0, 'max': 2000.0}, {'current': 2914.32, 'min': 1500.0, 'max': 2000.0}, {'current': 2917.805, 'min': 1500.0, 'max': 2000.0}, {'current': 2915.813, 'min': 1500.0, 'max': 2000.0}, {'current': 2909.373, 'min': 1500.0, 'max': 2000.0}, {'current': 2918.858, 'min': 1500.0, 'max': 2000.0}, {'current': 2915.888, 'min': 1500.0, 'max': 2000.0}, {'current': 2053.641, 'min': 1500.0, 'max': 2000.0}, {'current': 2915.415, 'min': 1500.0, 'max': 2000.0}, {'current': 2918.862, 'min': 1500.0, 'max': 2000.0}, {'current': 1670.155, 'min': 1500.0, 'max': 2000.0}, {'current': 1663.148, 'min': 1500.0, 'max': 2000.0}, {'current': 2919.824, 'min': 1500.0, 'max': 2000.0}, {'current': 1455.438, 'min': 1500.0, 'max': 2000.0}, {'current': 1456.691, 'min': 1500.0, 'max': 2000.0}, {'current': 1462.281, 'min': 1500.0, 'max': 2000.0}, {'current': 1453.759, 'min': 1500.0, 'max': 2000.0}, {'current': 2922.105, 'min': 1500.0, 'max': 2000.0}, {'current': 2920.082, 'min': 1500.0, 'max': 2000.0}, {'current': 2914.26, 'min': 1500.0, 'max': 2000.0}, {'current': 2924.577, 'min': 1500.0, 'max': 2000.0}, {'current': 2915.544, 'min': 1500.0, 'max': 2000.0}, {'current': 1453.494, 'min': 1500.0, 'max': 2000.0}, {'current': 2912.495, 'min': 1500.0, 'max': 2000.0}, {'current': 2918.168, 'min': 1500.0, 'max': 2000.0}, {'current': 2918.074, 'min': 1500.0, 'max': 2000.0}, {'current': 2905.142, 'min': 1500.0, 'max': 2000.0}, {'current': 2921.867, 'min': 1500.0, 'max': 2000.0}, {'current': 2919.419, 'min': 1500.0, 'max': 2000.0}, {'current': 2919.273, 'min': 1500.0, 'max': 2000.0}, {'current': 2915.499, 'min': 1500.0, 'max': 2000.0}, {'current': 2933.189, 'min': 1500.0, 'max': 2000.0}, {'current': 1462.461, 'min': 1500.0, 'max': 2000.0}, {'current': 2917.06, 'min': 1500.0, 'max': 2000.0}, {'current': 2924.817, 'min': 1500.0, 'max': 2000.0}, {'current': 2917.001, 'min': 1500.0, 'max': 2000.0}, {'current': 1664.417, 'min': 1500.0, 'max': 2000.0}, {'current': 2916.324, 'min': 1500.0, 'max': 2000.0}, {'current': 1455.382, 'min': 1500.0, 'max': 2000.0}, {'current': 1456.593, 'min': 1500.0, 'max': 2000.0}, {'current': 1457.099, 'min': 1500.0, 'max': 2000.0}, {'current': 2919.281, 'min': 1500.0, 'max': 2000.0}, {'current': 1455.16, 'min': 1500.0, 'max': 2000.0}, {'current': 1497.677, 'min': 1500.0, 'max': 2000.0}, {'current': 1796.945, 'min': 1500.0, 'max': 2000.0}, {'current': 1497.394, 'min': 1500.0, 'max': 2000.0}, {'current': 1497.226, 'min': 1500.0, 'max': 2000.0}, {'current': 3296.13, 'min': 1500.0, 'max': 2000.0}, {'current': 1648.25, 'min': 1500.0, 'max': 2000.0}, {'current': 1645.804, 'min': 1500.0, 'max': 2000.0}, {'current': 3084.503, 'min': 1500.0, 'max': 2000.0}, {'current': 3299.226, 'min': 1500.0, 'max': 2000.0}, {'current': 3297.765, 'min': 1500.0, 'max': 2000.0}, {'current': 3290.591, 'min': 1500.0, 'max': 2000.0}, {'current': 1467.465, 'min': 1500.0, 'max': 2000.0}, {'current': 3296.418, 'min': 1500.0, 'max': 2000.0}, {'current': 1647.899, 'min': 1500.0, 'max': 2000.0}, {'current': 1464.701, 'min': 1500.0, 'max': 2000.0}, {'current': 1459.223, 'min': 1500.0, 'max': 2000.0}, {'current': 1465.393, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.807, 'min': 1500.0, 'max': 2000.0}, {'current': 3300.185, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.484, 'min': 1500.0, 'max': 2000.0}, {'current': 3297.848, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.461, 'min': 1500.0, 'max': 2000.0}, {'current': 1647.141, 'min': 1500.0, 'max': 2000.0}, {'current': 1465.188, 'min': 1500.0, 'max': 2000.0}, {'current': 1463.457, 'min': 1500.0, 'max': 2000.0}, {'current': 1462.854, 'min': 1500.0, 'max': 2000.0}, {'current': 1465.419, 'min': 1500.0, 'max': 2000.0}, {'current': 3294.314, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.543, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.159, 'min': 1500.0, 'max': 2000.0}, {'current': 1465.597, 'min': 1500.0, 'max': 2000.0}, {'current': 3299.851, 'min': 1500.0, 'max': 2000.0}, {'current': 3300.106, 'min': 1500.0, 'max': 2000.0}, {'current': 1467.417, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.294, 'min': 1500.0, 'max': 2000.0}, {'current': 3296.217, 'min': 1500.0, 'max': 2000.0}, {'current': 3292.284, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.396, 'min': 1500.0, 'max': 2000.0}, {'current': 3296.462, 'min': 1500.0, 'max': 2000.0}, {'current': 1993.364, 'min': 1500.0, 'max': 2000.0}, {'current': 1497.926, 'min': 1500.0, 'max': 2000.0}, {'current': 1501.151, 'min': 1500.0, 'max': 2000.0}, {'current': 1500.067, 'min': 1500.0, 'max': 2000.0}, {'current': 1498.88, 'min': 1500.0, 'max': 2000.0}, {'current': 3295.393, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.684, 'min': 1500.0, 'max': 2000.0}, {'current': 3300.003, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.324, 'min': 1500.0, 'max': 2000.0}, {'current': 3297.852, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.554, 'min': 1500.0, 'max': 2000.0}, {'current': 1465.445, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.691, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.057, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.623, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.804, 'min': 1500.0, 'max': 2000.0}, {'current': 3299.103, 'min': 1500.0, 'max': 2000.0}, {'current': 3300.409, 'min': 1500.0, 'max': 2000.0}, {'current': 3288.082, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.742, 'min': 1500.0, 'max': 2000.0}, {'current': 3296.005, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.202, 'min': 1500.0, 'max': 2000.0}, {'current': 1651.198, 'min': 1500.0, 'max': 2000.0}, {'current': 1464.653, 'min': 1500.0, 'max': 2000.0}, {'current': 3294.332, 'min': 1500.0, 'max': 2000.0}, {'current': 2923.966, 'min': 1500.0, 'max': 2000.0}, {'current': 1457.675, 'min': 1500.0, 'max': 2000.0}, {'current': 2917.123, 'min': 1500.0, 'max': 2000.0}, {'current': 2918.928, 'min': 1500.0, 'max': 2000.0}, {'current': 1741.547, 'min': 1500.0, 'max': 2000.0}, {'current': 1462.115, 'min': 1500.0, 'max': 2000.0}, {'current': 2911.928, 'min': 1500.0, 'max': 2000.0}, {'current': 2925.023, 'min': 1500.0, 'max': 2000.0}, {'current': 2911.436, 'min': 1500.0, 'max': 2000.0}, {'current': 1461.806, 'min': 1500.0, 'max': 2000.0}, {'current': 2909.711, 'min': 1500.0, 'max': 2000.0}, {'current': 2915.859, 'min': 1500.0, 'max': 2000.0}, {'current': 1462.329, 'min': 1500.0, 'max': 2000.0}, {'current': 2921.083, 'min': 1500.0, 'max': 2000.0}, {'current': 2915.381, 'min': 1500.0, 'max': 2000.0}, {'current': 2911.68, 'min': 1500.0, 'max': 2000.0}, {'current': 2915.302, 'min': 1500.0, 'max': 2000.0}, {'current': 2924.44, 'min': 1500.0, 'max': 2000.0}, {'current': 1676.068, 'min': 1500.0, 'max': 2000.0}, {'current': 2912.428, 'min': 1500.0, 'max': 2000.0}, {'current': 2908.432, 'min': 1500.0, 'max': 2000.0}, {'current': 2914.244, 'min': 1500.0, 'max': 2000.0}, {'current': 2913.083, 'min': 1500.0, 'max': 2000.0}, {'current': 2914.778, 'min': 1500.0, 'max': 2000.0}, {'current': 2924.211, 'min': 1500.0, 'max': 2000.0}, {'current': 2917.098, 'min': 1500.0, 'max': 2000.0}, {'current': 2927.599, 'min': 1500.0, 'max': 2000.0}, {'current': 2907.623, 'min': 1500.0, 'max': 2000.0}, {'current': 2908.679, 'min': 1500.0, 'max': 2000.0}, {'current': 2920.54, 'min': 1500.0, 'max': 2000.0}, {'current': 2919.731, 'min': 1500.0, 'max': 2000.0}, {'current': 1665.432, 'min': 1500.0, 'max': 2000.0}, {'current': 2913.606, 'min': 1500.0, 'max': 2000.0}, {'current': 2913.322, 'min': 1500.0, 'max': 2000.0}, {'current': 1455.333, 'min': 1500.0, 'max': 2000.0}, {'current': 1462.146, 'min': 1500.0, 'max': 2000.0}, {'current': 1455.518, 'min': 1500.0, 'max': 2000.0}, {'current': 1455.803, 'min': 1500.0, 'max': 2000.0}, {'current': 2921.565, 'min': 1500.0, 'max': 2000.0}, {'current': 2922.408, 'min': 1500.0, 'max': 2000.0}, {'current': 2921.448, 'min': 1500.0, 'max': 2000.0}, {'current': 2921.344, 'min': 1500.0, 'max': 2000.0}, {'current': 2913.916, 'min': 1500.0, 'max': 2000.0}, {'current': 1470.738, 'min': 1500.0, 'max': 2000.0}, {'current': 2919.596, 'min': 1500.0, 'max': 2000.0}, {'current': 2924.578, 'min': 1500.0, 'max': 2000.0}, {'current': 2916.387, 'min': 1500.0, 'max': 2000.0}, {'current': 2909.744, 'min': 1500.0, 'max': 2000.0}, {'current': 2906.389, 'min': 1500.0, 'max': 2000.0}, {'current': 2919.542, 'min': 1500.0, 'max': 2000.0}, {'current': 2924.506, 'min': 1500.0, 'max': 2000.0}, {'current': 2924.108, 'min': 1500.0, 'max': 2000.0}, {'current': 2918.672, 'min': 1500.0, 'max': 2000.0}, {'current': 1432.064, 'min': 1500.0, 'max': 2000.0}, {'current': 2900.696, 'min': 1500.0, 'max': 2000.0}, {'current': 2918.749, 'min': 1500.0, 'max': 2000.0}, {'current': 2915.32, 'min': 1500.0, 'max': 2000.0}, {'current': 2042.181, 'min': 1500.0, 'max': 2000.0}, {'current': 2918.7, 'min': 1500.0, 'max': 2000.0}, {'current': 1455.122, 'min': 1500.0, 'max': 2000.0}, {'current': 1462.28, 'min': 1500.0, 'max': 2000.0}, {'current': 1456.986, 'min': 1500.0, 'max': 2000.0}, {'current': 2910.919, 'min': 1500.0, 'max': 2000.0}, {'current': 1456.648, 'min': 1500.0, 'max': 2000.0}, {'current': 1498.325, 'min': 1500.0, 'max': 2000.0}, {'current': 1799.974, 'min': 1500.0, 'max': 2000.0}, {'current': 1499.599, 'min': 1500.0, 'max': 2000.0}, {'current': 1498.779, 'min': 1500.0, 'max': 2000.0}, {'current': 3295.655, 'min': 1500.0, 'max': 2000.0}, {'current': 1650.048, 'min': 1500.0, 'max': 2000.0}, {'current': 1647.003, 'min': 1500.0, 'max': 2000.0}, {'current': 2368.416, 'min': 1500.0, 'max': 2000.0}, {'current': 3294.593, 'min': 1500.0, 'max': 2000.0}, {'current': 3299.149, 'min': 1500.0, 'max': 2000.0}, {'current': 3295.978, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.685, 'min': 1500.0, 'max': 2000.0}, {'current': 3301.25, 'min': 1500.0, 'max': 2000.0}, {'current': 1647.972, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.473, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.741, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.757, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.687, 'min': 1500.0, 'max': 2000.0}, {'current': 3299.34, 'min': 1500.0, 'max': 2000.0}, {'current': 1465.725, 'min': 1500.0, 'max': 2000.0}, {'current': 3299.158, 'min': 1500.0, 'max': 2000.0}, {'current': 1465.44, 'min': 1500.0, 'max': 2000.0}, {'current': 1649.225, 'min': 1500.0, 'max': 2000.0}, {'current': 1464.481, 'min': 1500.0, 'max': 2000.0}, {'current': 1458.754, 'min': 1500.0, 'max': 2000.0}, {'current': 1465.844, 'min': 1500.0, 'max': 2000.0}, {'current': 1467.027, 'min': 1500.0, 'max': 2000.0}, {'current': 3301.833, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.676, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.144, 'min': 1500.0, 'max': 2000.0}, {'current': 1463.12, 'min': 1500.0, 'max': 2000.0}, {'current': 3297.916, 'min': 1500.0, 'max': 2000.0}, {'current': 3296.685, 'min': 1500.0, 'max': 2000.0}, {'current': 1465.968, 'min': 1500.0, 'max': 2000.0}, {'current': 1468.135, 'min': 1500.0, 'max': 2000.0}, {'current': 3296.629, 'min': 1500.0, 'max': 2000.0}, {'current': 3301.949, 'min': 1500.0, 'max': 2000.0}, {'current': 1467.51, 'min': 1500.0, 'max': 2000.0}, {'current': 3295.226, 'min': 1500.0, 'max': 2000.0}, {'current': 3290.711, 'min': 1500.0, 'max': 2000.0}, {'current': 1496.734, 'min': 1500.0, 'max': 2000.0}, {'current': 1501.573, 'min': 1500.0, 'max': 2000.0}, {'current': 1501.061, 'min': 1500.0, 'max': 2000.0}, {'current': 1497.009, 'min': 1500.0, 'max': 2000.0}, {'current': 3302.532, 'min': 1500.0, 'max': 2000.0}, {'current': 1465.05, 'min': 1500.0, 'max': 2000.0}, {'current': 3295.607, 'min': 1500.0, 'max': 2000.0}, {'current': 1463.489, 'min': 1500.0, 'max': 2000.0}, {'current': 3300.847, 'min': 1500.0, 'max': 2000.0}, {'current': 1462.911, 'min': 1500.0, 'max': 2000.0}, {'current': 1463.561, 'min': 1500.0, 'max': 2000.0}, {'current': 1468.058, 'min': 1500.0, 'max': 2000.0}, {'current': 1465.764, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.711, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.157, 'min': 1500.0, 'max': 2000.0}, {'current': 3299.941, 'min': 1500.0, 'max': 2000.0}, {'current': 3297.697, 'min': 1500.0, 'max': 2000.0}, {'current': 3298.572, 'min': 1500.0, 'max': 2000.0}, {'current': 1466.556, 'min': 1500.0, 'max': 2000.0}, {'current': 3300.197, 'min': 1500.0, 'max': 2000.0}, {'current': 1465.586, 'min': 1500.0, 'max': 2000.0}, {'current': 1648.683, 'min': 1500.0, 'max': 2000.0}, {'current': 1464.641, 'min': 1500.0, 'max': 2000.0}, {'current': 3299.295, 'min': 1500.0, 'max': 2000.0}], 'disk': {'total': 3022.69425201416, 'used': 1936.3457069396973}, 'gpu': 'NVIDIA A40', 'gpu_count': 7, 'gpu_devices': [{'name': 'NVIDIA A40', 'memory_total': 48305799168}, {'name': 'NVIDIA A40', 'memory_total': 48305799168}, {'name': 'NVIDIA A40', 'memory_total': 48305799168}, {'name': 'NVIDIA A40', 'memory_total': 48305799168}, {'name': 'NVIDIA A40', 'memory_total': 48305799168}, {'name': 'NVIDIA A40', 'memory_total': 48305799168}, {'name': 'NVIDIA A40', 'memory_total': 48305799168}], 'memory': {'total': 1007.7658576965332}}
+2023-01-28 14:54:30,134 INFO    HandlerThread:3435398 [system_monitor.py:probe():182] Finished collecting system info
+2023-01-28 14:54:30,134 INFO    HandlerThread:3435398 [system_monitor.py:probe():185] Publishing system info
+2023-01-28 14:54:30,134 DEBUG   HandlerThread:3435398 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-01-28 14:54:30,135 DEBUG   HandlerThread:3435398 [system_info.py:_save_pip():67] Saving pip packages done
+2023-01-28 14:54:30,135 DEBUG   HandlerThread:3435398 [system_info.py:_save_conda():74] Saving list of conda packages installed into the current environment
+2023-01-28 14:54:30,884 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_created():275] file/dir created: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/requirements.txt
+2023-01-28 14:54:30,885 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_created():275] file/dir created: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/wandb-summary.json
+2023-01-28 14:54:30,885 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_created():275] file/dir created: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/conda-environment.yaml
+2023-01-28 14:54:32,887 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/conda-environment.yaml
+2023-01-28 14:54:33,128 DEBUG   HandlerThread:3435398 [system_info.py:_save_conda():86] Saving conda packages done
+2023-01-28 14:54:33,130 INFO    HandlerThread:3435398 [system_monitor.py:probe():187] Finished publishing system info
+2023-01-28 14:54:33,137 DEBUG   SenderThread:3435398 [sender.py:send():334] send: files
+2023-01-28 14:54:33,137 INFO    SenderThread:3435398 [sender.py:_save_file():1319] saving file wandb-metadata.json with policy now
+2023-01-28 14:54:33,143 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: stop_status
+2023-01-28 14:54:33,144 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: stop_status
+2023-01-28 14:54:33,339 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: log_artifact
+2023-01-28 14:54:33,469 DEBUG   SenderThread:3435398 [sender.py:send():334] send: telemetry
+2023-01-28 14:54:33,470 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: log_artifact
+2023-01-28 14:54:33,677 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: partial_history
+2023-01-28 14:54:33,689 INFO    Thread-16 :3435398 [upload_job.py:push():143] Uploaded file /tmp/tmp3gmds13awandb/l3jt16mq-wandb-metadata.json
+2023-01-28 14:54:33,888 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_created():275] file/dir created: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/media/table/table_0_6fbec3c4ee690463dac7.table.json
+2023-01-28 14:54:33,888 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_created():275] file/dir created: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/wandb-metadata.json
+2023-01-28 14:54:33,888 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_created():275] file/dir created: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/media/table
+2023-01-28 14:54:33,888 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_created():275] file/dir created: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/media
+2023-01-28 14:54:34,441 INFO    Thread-17 :3435398 [upload_job.py:push():143] Uploaded file /tmp/tmp3gmds13awandb/30dkxiik-media/table/table_0_6fbec3c4ee690463dac7.table.json
+2023-01-28 14:54:34,744 INFO    Thread-19 :3435398 [upload_job.py:push():101] Uploaded file /u/home/zhousiy/.local/share/wandb/artifacts/staging/tmpa4evn65j
+2023-01-28 14:54:35,639 INFO    SenderThread:3435398 [sender.py:send_request_log_artifact():1379] logged artifact run-tfjca0mi-table - {'id': 'QXJ0aWZhY3Q6MzQ0NDA3ODY4', 'digest': '52425287199971f924fdce69dd114781', 'state': 'PENDING', 'aliases': [], 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjUxMDY2NDYz', 'latestArtifact': None}, 'version': 'latest'}
+2023-01-28 14:54:35,639 DEBUG   SenderThread:3435398 [sender.py:send():334] send: files
+2023-01-28 14:54:35,639 INFO    SenderThread:3435398 [sender.py:_save_file():1319] saving file media/table/table_0_6fbec3c4ee690463dac7.table.json with policy now
+2023-01-28 14:54:35,639 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: status_report
+2023-01-28 14:54:35,640 DEBUG   SenderThread:3435398 [sender.py:send():334] send: history
+2023-01-28 14:54:35,640 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: summary_record
+2023-01-28 14:54:35,643 INFO    SenderThread:3435398 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-01-28 14:54:35,888 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/wandb-summary.json
+2023-01-28 14:54:35,889 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_created():275] file/dir created: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:54:36,246 INFO    Thread-20 :3435398 [upload_job.py:push():143] Uploaded file /tmp/tmp3gmds13awandb/zc6crc2g-media/table/table_0_6fbec3c4ee690463dac7.table.json
+2023-01-28 14:54:37,890 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:54:38,890 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:54:40,735 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: status_report
+2023-01-28 14:54:40,891 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:54:42,892 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:54:44,893 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:54:45,826 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: status_report
+2023-01-28 14:54:46,895 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:54:48,142 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-28 14:54:48,896 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:54:50,888 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: status_report
+2023-01-28 14:54:50,898 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:54:52,899 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:54:53,143 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-28 14:54:54,900 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:54:55,969 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: status_report
+2023-01-28 14:54:56,902 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:54:57,447 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: partial_history
+2023-01-28 14:54:57,449 DEBUG   SenderThread:3435398 [sender.py:send():334] send: history
+2023-01-28 14:54:57,450 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: summary_record
+2023-01-28 14:54:57,451 INFO    SenderThread:3435398 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-01-28 14:54:57,903 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/wandb-summary.json
+2023-01-28 14:54:58,144 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-28 14:54:58,903 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:54:59,904 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:00,472 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: partial_history
+2023-01-28 14:55:00,474 DEBUG   SenderThread:3435398 [sender.py:send():334] send: history
+2023-01-28 14:55:00,475 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: summary_record
+2023-01-28 14:55:00,479 INFO    SenderThread:3435398 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-01-28 14:55:00,904 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/wandb-summary.json
+2023-01-28 14:55:01,093 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: status_report
+2023-01-28 14:55:01,905 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:01,905 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/config.yaml
+2023-01-28 14:55:02,906 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:03,146 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-28 14:55:04,910 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:06,348 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: status_report
+2023-01-28 14:55:06,912 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:08,147 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-28 14:55:08,751 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: partial_history
+2023-01-28 14:55:08,752 DEBUG   SenderThread:3435398 [sender.py:send():334] send: history
+2023-01-28 14:55:08,754 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: summary_record
+2023-01-28 14:55:08,755 INFO    SenderThread:3435398 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-01-28 14:55:08,913 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:08,914 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/wandb-summary.json
+2023-01-28 14:55:09,914 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:10,914 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:11,139 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: partial_history
+2023-01-28 14:55:11,140 DEBUG   SenderThread:3435398 [sender.py:send():334] send: history
+2023-01-28 14:55:11,140 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: summary_record
+2023-01-28 14:55:11,141 INFO    SenderThread:3435398 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-01-28 14:55:11,468 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: status_report
+2023-01-28 14:55:11,915 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:11,915 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/wandb-summary.json
+2023-01-28 14:55:12,915 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:13,148 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-28 14:55:14,916 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:16,545 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: status_report
+2023-01-28 14:55:16,918 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:18,149 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-28 14:55:18,919 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:20,060 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: partial_history
+2023-01-28 14:55:20,061 DEBUG   SenderThread:3435398 [sender.py:send():334] send: history
+2023-01-28 14:55:20,063 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: summary_record
+2023-01-28 14:55:20,065 INFO    SenderThread:3435398 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-01-28 14:55:20,920 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:20,920 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/wandb-summary.json
+2023-01-28 14:55:21,920 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:22,066 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: status_report
+2023-01-28 14:55:22,439 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: partial_history
+2023-01-28 14:55:22,440 DEBUG   SenderThread:3435398 [sender.py:send():334] send: history
+2023-01-28 14:55:22,441 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: summary_record
+2023-01-28 14:55:22,442 INFO    SenderThread:3435398 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-01-28 14:55:22,921 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:22,922 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/wandb-summary.json
+2023-01-28 14:55:23,150 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-28 14:55:23,922 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:24,922 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:24,979 DEBUG   SenderThread:3435398 [sender.py:send():334] send: exit
+2023-01-28 14:55:24,979 INFO    SenderThread:3435398 [sender.py:send_exit():557] handling exit code: 255
+2023-01-28 14:55:24,980 INFO    SenderThread:3435398 [sender.py:send_exit():559] handling runtime: 55
+2023-01-28 14:55:24,980 INFO    SenderThread:3435398 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-01-28 14:55:24,981 INFO    SenderThread:3435398 [sender.py:send_exit():565] send defer
+2023-01-28 14:55:24,981 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: defer
+2023-01-28 14:55:24,981 INFO    HandlerThread:3435398 [handler.py:handle_request_defer():170] handle defer: 0
+2023-01-28 14:55:24,982 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: defer
+2023-01-28 14:55:24,982 INFO    SenderThread:3435398 [sender.py:send_request_defer():581] handle sender defer: 0
+2023-01-28 14:55:24,982 INFO    SenderThread:3435398 [sender.py:transition_state():585] send defer: 1
+2023-01-28 14:55:24,982 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: defer
+2023-01-28 14:55:24,982 INFO    HandlerThread:3435398 [handler.py:handle_request_defer():170] handle defer: 1
+2023-01-28 14:55:24,982 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: defer
+2023-01-28 14:55:24,983 INFO    SenderThread:3435398 [sender.py:send_request_defer():581] handle sender defer: 1
+2023-01-28 14:55:24,983 INFO    SenderThread:3435398 [sender.py:transition_state():585] send defer: 2
+2023-01-28 14:55:24,983 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: defer
+2023-01-28 14:55:24,983 INFO    HandlerThread:3435398 [handler.py:handle_request_defer():170] handle defer: 2
+2023-01-28 14:55:24,983 INFO    HandlerThread:3435398 [system_monitor.py:finish():161] Stopping system monitor
+2023-01-28 14:55:24,984 DEBUG   SystemMonitor:3435398 [system_monitor.py:_start():130] Starting system metrics aggregation loop
+2023-01-28 14:55:24,987 DEBUG   SystemMonitor:3435398 [system_monitor.py:_start():137] Finished system metrics aggregation loop
+2023-01-28 14:55:24,987 DEBUG   SystemMonitor:3435398 [system_monitor.py:_start():141] Publishing last batch of metrics
+2023-01-28 14:55:24,994 INFO    HandlerThread:3435398 [interfaces.py:finish():175] Joined cpu
+2023-01-28 14:55:24,995 INFO    HandlerThread:3435398 [interfaces.py:finish():175] Joined disk
+2023-01-28 14:55:25,923 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/wandb-summary.json
+2023-01-28 14:55:26,933 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:27,381 INFO    HandlerThread:3435398 [interfaces.py:finish():175] Joined gpu
+2023-01-28 14:55:27,382 INFO    HandlerThread:3435398 [interfaces.py:finish():175] Joined memory
+2023-01-28 14:55:27,382 INFO    HandlerThread:3435398 [interfaces.py:finish():175] Joined network
+2023-01-28 14:55:27,382 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: poll_exit
+2023-01-28 14:55:27,384 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: defer
+2023-01-28 14:55:27,384 INFO    SenderThread:3435398 [sender.py:send_request_defer():581] handle sender defer: 2
+2023-01-28 14:55:27,384 INFO    SenderThread:3435398 [sender.py:transition_state():585] send defer: 3
+2023-01-28 14:55:27,385 DEBUG   SenderThread:3435398 [sender.py:send():334] send: stats
+2023-01-28 14:55:27,387 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: poll_exit
+2023-01-28 14:55:27,388 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: defer
+2023-01-28 14:55:27,388 INFO    HandlerThread:3435398 [handler.py:handle_request_defer():170] handle defer: 3
+2023-01-28 14:55:27,388 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: status_report
+2023-01-28 14:55:27,388 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: defer
+2023-01-28 14:55:27,389 INFO    SenderThread:3435398 [sender.py:send_request_defer():581] handle sender defer: 3
+2023-01-28 14:55:27,389 INFO    SenderThread:3435398 [sender.py:transition_state():585] send defer: 4
+2023-01-28 14:55:27,389 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: defer
+2023-01-28 14:55:27,389 INFO    HandlerThread:3435398 [handler.py:handle_request_defer():170] handle defer: 4
+2023-01-28 14:55:27,389 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: defer
+2023-01-28 14:55:27,389 INFO    SenderThread:3435398 [sender.py:send_request_defer():581] handle sender defer: 4
+2023-01-28 14:55:27,389 INFO    SenderThread:3435398 [sender.py:transition_state():585] send defer: 5
+2023-01-28 14:55:27,390 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: defer
+2023-01-28 14:55:27,390 INFO    HandlerThread:3435398 [handler.py:handle_request_defer():170] handle defer: 5
+2023-01-28 14:55:27,391 DEBUG   SenderThread:3435398 [sender.py:send():334] send: summary
+2023-01-28 14:55:27,392 INFO    SenderThread:3435398 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-01-28 14:55:27,392 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: defer
+2023-01-28 14:55:27,392 INFO    SenderThread:3435398 [sender.py:send_request_defer():581] handle sender defer: 5
+2023-01-28 14:55:27,393 INFO    SenderThread:3435398 [sender.py:transition_state():585] send defer: 6
+2023-01-28 14:55:27,393 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: defer
+2023-01-28 14:55:27,393 INFO    HandlerThread:3435398 [handler.py:handle_request_defer():170] handle defer: 6
+2023-01-28 14:55:27,394 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: defer
+2023-01-28 14:55:27,394 INFO    SenderThread:3435398 [sender.py:send_request_defer():581] handle sender defer: 6
+2023-01-28 14:55:27,394 INFO    SenderThread:3435398 [sender.py:transition_state():585] send defer: 7
+2023-01-28 14:55:27,394 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: status_report
+2023-01-28 14:55:27,395 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: defer
+2023-01-28 14:55:27,395 INFO    HandlerThread:3435398 [handler.py:handle_request_defer():170] handle defer: 7
+2023-01-28 14:55:27,396 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: defer
+2023-01-28 14:55:27,396 INFO    SenderThread:3435398 [sender.py:send_request_defer():581] handle sender defer: 7
+2023-01-28 14:55:27,925 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/wandb-summary.json
+2023-01-28 14:55:28,290 INFO    SenderThread:3435398 [sender.py:transition_state():585] send defer: 8
+2023-01-28 14:55:28,290 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: defer
+2023-01-28 14:55:28,291 INFO    HandlerThread:3435398 [handler.py:handle_request_defer():170] handle defer: 8
+2023-01-28 14:55:28,292 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: defer
+2023-01-28 14:55:28,292 INFO    SenderThread:3435398 [sender.py:send_request_defer():581] handle sender defer: 8
+2023-01-28 14:55:28,309 INFO    SenderThread:3435398 [sender.py:transition_state():585] send defer: 9
+2023-01-28 14:55:28,310 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: defer
+2023-01-28 14:55:28,311 DEBUG   SenderThread:3435398 [sender.py:send():334] send: artifact
+2023-01-28 14:55:28,311 INFO    HandlerThread:3435398 [handler.py:handle_request_defer():170] handle defer: 9
+2023-01-28 14:55:28,926 INFO    Thread-13 :3435398 [dir_watcher.py:_on_file_modified():292] file/dir modified: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:29,055 INFO    SenderThread:3435398 [sender.py:send_artifact():1415] sent artifact job-git_github.com_danie1ll_BodyMeshGNN.git_training.py - {'id': 'QXJ0aWZhY3Q6MzQ0MjU5NTMw', 'digest': '378bde69bc5287058bf43f41325b5ccd', 'state': 'COMMITTED', 'aliases': [{'artifactCollectionName': 'job-git_github.com_danie1ll_BodyMeshGNN.git_training.py', 'alias': 'v15'}], 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjUwMjY2NzYy', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6MzQ0MjkzMTE2', 'versionIndex': 16}}, 'version': 'v15'}
+2023-01-28 14:55:29,056 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: defer
+2023-01-28 14:55:29,056 INFO    SenderThread:3435398 [sender.py:send_request_defer():581] handle sender defer: 9
+2023-01-28 14:55:29,056 INFO    SenderThread:3435398 [dir_watcher.py:finish():362] shutting down directory watcher
+2023-01-28 14:55:29,928 INFO    SenderThread:3435398 [dir_watcher.py:finish():392] scan: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files
+2023-01-28 14:55:29,928 INFO    SenderThread:3435398 [dir_watcher.py:finish():406] scan save: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/wandb-summary.json wandb-summary.json
+2023-01-28 14:55:29,928 INFO    SenderThread:3435398 [dir_watcher.py:finish():406] scan save: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log output.log
+2023-01-28 14:55:29,929 INFO    SenderThread:3435398 [dir_watcher.py:finish():406] scan save: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/conda-environment.yaml conda-environment.yaml
+2023-01-28 14:55:29,933 INFO    SenderThread:3435398 [dir_watcher.py:finish():406] scan save: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/wandb-metadata.json wandb-metadata.json
+2023-01-28 14:55:29,933 INFO    SenderThread:3435398 [dir_watcher.py:finish():406] scan save: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/requirements.txt requirements.txt
+2023-01-28 14:55:29,943 INFO    SenderThread:3435398 [dir_watcher.py:finish():406] scan save: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/config.yaml config.yaml
+2023-01-28 14:55:29,947 INFO    SenderThread:3435398 [dir_watcher.py:finish():406] scan save: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/media/table/table_0_6fbec3c4ee690463dac7.table.json media/table/table_0_6fbec3c4ee690463dac7.table.json
+2023-01-28 14:55:29,948 INFO    SenderThread:3435398 [sender.py:transition_state():585] send defer: 10
+2023-01-28 14:55:29,949 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: defer
+2023-01-28 14:55:29,953 INFO    HandlerThread:3435398 [handler.py:handle_request_defer():170] handle defer: 10
+2023-01-28 14:55:29,962 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: defer
+2023-01-28 14:55:29,963 INFO    SenderThread:3435398 [sender.py:send_request_defer():581] handle sender defer: 10
+2023-01-28 14:55:29,963 INFO    SenderThread:3435398 [file_pusher.py:finish():160] shutting down file pusher
+2023-01-28 14:55:30,510 INFO    Thread-24 :3435398 [upload_job.py:push():143] Uploaded file /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/requirements.txt
+2023-01-28 14:55:30,515 INFO    Thread-21 :3435398 [upload_job.py:push():143] Uploaded file /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/wandb-summary.json
+2023-01-28 14:55:30,523 INFO    Thread-23 :3435398 [upload_job.py:push():143] Uploaded file /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/conda-environment.yaml
+2023-01-28 14:55:30,532 INFO    Thread-25 :3435398 [upload_job.py:push():143] Uploaded file /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/config.yaml
+2023-01-28 14:55:30,543 INFO    Thread-22 :3435398 [upload_job.py:push():143] Uploaded file /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/files/output.log
+2023-01-28 14:55:30,744 INFO    Thread-12 :3435398 [sender.py:transition_state():585] send defer: 11
+2023-01-28 14:55:30,745 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: defer
+2023-01-28 14:55:30,746 INFO    HandlerThread:3435398 [handler.py:handle_request_defer():170] handle defer: 11
+2023-01-28 14:55:30,746 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: defer
+2023-01-28 14:55:30,747 INFO    SenderThread:3435398 [sender.py:send_request_defer():581] handle sender defer: 11
+2023-01-28 14:55:30,747 INFO    SenderThread:3435398 [file_pusher.py:join():165] waiting for file pusher
+2023-01-28 14:55:30,747 INFO    SenderThread:3435398 [sender.py:transition_state():585] send defer: 12
+2023-01-28 14:55:30,748 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: defer
+2023-01-28 14:55:30,748 INFO    HandlerThread:3435398 [handler.py:handle_request_defer():170] handle defer: 12
+2023-01-28 14:55:30,748 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: defer
+2023-01-28 14:55:30,748 INFO    SenderThread:3435398 [sender.py:send_request_defer():581] handle sender defer: 12
+2023-01-28 14:55:30,982 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-28 14:55:31,306 INFO    SenderThread:3435398 [sender.py:transition_state():585] send defer: 13
+2023-01-28 14:55:31,307 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: defer
+2023-01-28 14:55:31,307 INFO    HandlerThread:3435398 [handler.py:handle_request_defer():170] handle defer: 13
+2023-01-28 14:55:31,307 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: defer
+2023-01-28 14:55:31,307 INFO    SenderThread:3435398 [sender.py:send_request_defer():581] handle sender defer: 13
+2023-01-28 14:55:31,308 INFO    SenderThread:3435398 [sender.py:transition_state():585] send defer: 14
+2023-01-28 14:55:31,308 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: defer
+2023-01-28 14:55:31,308 INFO    HandlerThread:3435398 [handler.py:handle_request_defer():170] handle defer: 14
+2023-01-28 14:55:31,309 DEBUG   SenderThread:3435398 [sender.py:send():334] send: final
+2023-01-28 14:55:31,309 DEBUG   SenderThread:3435398 [sender.py:send():334] send: footer
+2023-01-28 14:55:31,309 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: defer
+2023-01-28 14:55:31,309 INFO    SenderThread:3435398 [sender.py:send_request_defer():581] handle sender defer: 14
+2023-01-28 14:55:31,310 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: poll_exit
+2023-01-28 14:55:31,310 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: server_info
+2023-01-28 14:55:31,310 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: get_summary
+2023-01-28 14:55:31,311 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: sampled_history
+2023-01-28 14:55:31,311 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: poll_exit
+2023-01-28 14:55:31,312 DEBUG   SenderThread:3435398 [sender.py:send_request():361] send_request: server_info
+2023-01-28 14:55:31,479 INFO    MainThread:3435398 [wandb_run.py:_footer_history_summary_info():3427] rendering history
+2023-01-28 14:55:31,480 INFO    MainThread:3435398 [wandb_run.py:_footer_history_summary_info():3459] rendering summary
+2023-01-28 14:55:31,480 INFO    MainThread:3435398 [wandb_run.py:_footer_sync_info():3383] logging synced files
+2023-01-28 14:55:31,480 DEBUG   HandlerThread:3435398 [handler.py:handle_request():144] handle_request: shutdown
+2023-01-28 14:55:31,481 INFO    HandlerThread:3435398 [handler.py:finish():841] shutting down handler
+2023-01-28 14:55:32,312 INFO    WriterThread:3435398 [datastore.py:close():299] close: /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_145429-tfjca0mi/run-tfjca0mi.wandb
+2023-01-28 14:55:32,482 INFO    SenderThread:3435398 [sender.py:finish():1491] shutting down sender
+2023-01-28 14:55:32,482 INFO    SenderThread:3435398 [file_pusher.py:finish():160] shutting down file pusher
+2023-01-28 14:55:32,482 INFO    SenderThread:3435398 [file_pusher.py:join():165] waiting for file pusher

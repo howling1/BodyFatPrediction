@@ -10,7 +10,8 @@ import torch
 from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split
 from torch_geometric.loader import DataLoader
-from model import FeatureSteeredConvolution, GAT_NET, SAGE_NET, GCN_NET, MeshProcessingNetwork
+from torch_geometric.nn import GCNConv, SAGEConv, GATConv
+from model import FeatureSteeredConvolution, MeshProcessingNetwork, ResGNN, DenseGNN, JKNet
 from datasets.in_memory import IMDataset
 import wandb
 
@@ -28,7 +29,7 @@ def train(model, trainloader, valloader, device, config):
 
     loss_criterion.to(device)
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=config['learning_rate'])
+    optimizer = torch.optim.Adam(model.parameters(), lr=config['learning_rate'], weight_decay=config['weight_decay'])
 
     model.train()
 
@@ -132,45 +133,95 @@ def main():
     random.shuffle(val_data_all)
     random.shuffle(test_data_all)
 
-    """ dev_data, test_data = train_test_split(dataset, test_size=0.2, random_state=42, shuffle=True)
-    train_data, val_data = train_test_split(dev_data, test_size=0.2, random_state=43, shuffle=True)
-
-    print("size of train_data:",len(train_data))
-    print("size of val_data:",len(val_data))
-    print("size of test_data:", len(test_data))
- """
-
     config = {
-        "experiment_name" : "sex_prediction_5k", # there should be a folder named exactly this under the folder runs/
+        "experiment_name" : "height_prediction_5k", # there should be a folder named exactly this under the folder runs/
         "batch_size" : 32,
         "epochs" : 2000,
-        "learning_rate" : 0.003,
+        "learning_rate" : 0.005,
+        "weight_decay": 0.01,
         "task" : "regression", # "regression" or "classification"
         "print_every_n" : 200,
         "validate_every_n" : 200}
 
     wandb.init(project = "mesh-gnn", config = config)
-
+    
     n_class = 1 if config["task"] == "regression" else 2
 
+
+# MeshProcressingNet params
     model_params = dict(
-        GNN_conv = SAGE_NET,
+        gnn_conv = GATConv,
         in_features = 3,
-        encoder_channels = [],
-        conv_channels = [32, 128, 64],
-        decoder_channels = [32, 8],
+        encoder_channels = [16],
+        conv_channels = [32, 64, 128, 64],
+        decoder_channels = [32],
         num_classes = n_class,
-        bn_or_dropout = 'dropedge', # bn, dropedge, droppath
-        gf_encoder_params = dict(
-        )
+        apply_dropedge = False,
+        apply_bn = True,
+        apply_dropout = False,
+        num_heads=4
     )
 
+
+# ResGNN params
+    # model_params = dict(
+    #     gnn_conv = SAGEConv,
+    #     in_features = 3,
+    #     inout_conv_channel = 64,
+    #     num_layers = 5,
+    #     num_skip_layers = 1,
+    #     encoder_channels = [1024],
+    #     decoder_channels = [256, 64],
+    #     num_classes = n_class,
+    #     aggregation = 'max', # mean, max
+    #     apply_dropedge = True,
+    #     apply_bn = True,
+    #     apply_dropout = True
+    # )
+
+# DenseGNN params
+    # model_params = dict(
+    #     gnn_conv = SAGEConv,
+    #     in_features = 3,
+    #     inout_conv_channel = 32,
+    #     num_layers = 5,
+    #     encoder_channels = [1024],
+    #     decoder_channels = [256, 64],
+    #     num_classes = n_class,
+    #     aggregation = 'max', # mean, max
+    #     apply_dropedge = True,
+    #     apply_bn = True,
+    #     apply_dropout = True,
+    # )
+
+
+# JKNet params
+#     model_params = dict(
+#         gnn_conv = SAGEConv,
+#         in_features = 3,
+#         num_classes = n_class,
+#     )
+
+    torch.cuda.set_device(3)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print("current GPU:", torch.cuda.get_device_name(device))
     print("using GPU:", torch.cuda.current_device())
 
     model = MeshProcessingNetwork(**model_params).to(device)
+    # model = ResGNN(**model_params).to(device)
+    # model = DenseGNN(**model_params).to(device)
+    # model = JKNet(**model_params).to(device)
     model = model.double()
+
+    param_log = {
+        'params':{
+            'network': str(model),
+            'config': str(config),
+            'model_params': str(model_params),
+        }
+    }
+
+    wandb.log({"table": pd.DataFrame(param_log)})
 
     train_loader = DataLoader(train_data_all, batch_size = config["batch_size"], shuffle = True)
     val_loader = DataLoader(val_data_all, batch_size = config["batch_size"], shuffle = True)
@@ -179,5 +230,4 @@ def main():
     train(model, train_loader, val_loader, device, config)
     
 if __name__ == "__main__":
-    torch.cuda.set_device(3)
     main()

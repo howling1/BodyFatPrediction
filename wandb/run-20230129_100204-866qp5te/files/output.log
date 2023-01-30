@@ -1,0 +1,30 @@
+current GPU: NVIDIA A40
+using GPU: 3
+0it [00:03, ?it/s]
+Traceback (most recent call last):
+  File "training.py", line 214, in <module>
+    main()
+  File "training.py", line 211, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 43, in train
+    prediction = model(data)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 386, in forward
+    copied_global_features = torch.cat([global_feature for i in range(local_features.size()[0])], dim=0)
+TypeError: expected Tensor as element 0 in argument 0, but got tuple
+(tensor([[3.0566, 4.4348, 2.4552,  ..., 0.3643, 5.6298, 4.9293],
+        [2.1299, 3.6803, 2.1850,  ..., 0.4208, 4.5117, 3.1958],
+        [1.5876, 3.6479, 1.8519,  ..., 0.3695, 4.3010, 3.8658],
+        ...,
+        [1.9782, 3.4518, 1.8485,  ..., 0.4257, 3.5835, 2.5157],
+        [2.6647, 3.8545, 1.8922,  ..., 0.3697, 3.7803, 2.7212],
+        [1.7420, 3.7350, 2.1458,  ..., 0.3866, 3.2750, 2.1796]],
+       device='cuda:3', dtype=torch.float64, grad_fn=<CppNode<ScatterMax>>), tensor([[  2643,   2841,   2919,  ...,   2238,   3484,   3170],
+        [  5827,   6036,   6781,  ...,   5727,   6781,   6936],
+        [  9781,   9260,  10432,  ...,   9522,   9888,  10373],
+        ...,
+        [104190, 104495, 104933,  ..., 103815, 104507, 104819],
+        [107965, 107423, 107606,  ..., 107550, 108731, 107643],
+        [111110, 111134, 112181,  ..., 110872, 112023, 110277]],
+       device='cuda:3'))

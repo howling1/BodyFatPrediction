@@ -1,0 +1,335 @@
+current GPU: NVIDIA A40
+using GPU: 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:39,  4.80it/s]
+
+10it [00:01,  7.78it/s]
+[001/00010] train_loss: 335.555
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:32,  5.75it/s]
+
+
+21it [00:04,  5.53it/s]
+[002/00021] train_loss: 66.205
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:42,  4.44it/s]
+
+
+32it [00:04,  7.95it/s]
+
+33it [00:10,  1.69s/it]
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:35,  5.30it/s]
+
+
+
+
+43it [00:09,  4.34it/s]
+
+51it [00:23,  1.94it/s]
+
+
+
+
+
+
+
+
+189it [00:39,  4.74it/s]
+
+
+50it [00:05,  8.83it/s]
+
+
+55it [00:13,  2.27s/it]
+
+
+
+
+
+
+
+
+
+
+
+
+
+189it [00:39,  4.75it/s]
+
+
+
+
+
+
+65it [00:13,  8.34it/s]
+
+74it [00:21,  2.49it/s]
+
+
+
+
+
+
+189it [00:35,  5.28it/s]
+
+
+
+
+
+76it [00:09,  8.01it/s]
+
+81it [00:19,  1.10it/s]
+
+
+
+
+
+
+
+
+
+
+
+189it [00:43,  4.37it/s]
+
+
+
+
+
+
+86it [00:12,  8.39it/s]
+
+93it [00:20,  2.26it/s]
+
+
+
+
+
+189it [00:32,  5.81it/s]
+
+
+
+
+
+
+
+98it [00:14,  6.10it/s]
+
+104it [00:28,  1.14it/s]
+
+
+
+
+
+
+
+
+189it [00:45,  4.16it/s]
+
+
+
+
+
+
+109it [00:12,  9.43it/s]
+
+119it [00:20,  4.88it/s]
+
+
+
+
+189it [00:29,  6.39it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+120it [00:23,  4.41it/s]
+
+122it [00:37,  2.96s/it]
+
+
+
+
+189it [00:45,  4.12it/s]
+
+
+
+
+
+
+
+127it [00:15,  8.33it/s]
+
+131it [00:16,  8.33it/s]
+
+
+
+
+
+189it [00:34,  5.54it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+142it [00:29,  8.70it/s]
+[013/00142] train_loss: 67.802
+
+
+189it [00:41,  4.56it/s]
+
+
+
+
+
+
+
+
+
+153it [00:17,  8.78it/s]
+[014/00153] train_loss: 64.767
+
+
+189it [00:28,  6.67it/s]
+
+
+
+
+
+
+
+
+
+162it [00:19,  8.65it/s]
+
+
+169it [00:31,  1.16it/s]
+
+
+189it [00:36,  5.23it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+175it [00:29,  8.98it/s]
+
+179it [00:37,  1.11it/s]
+189it [00:39,  4.84it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+186it [00:25,  5.11it/s]
+186it [00:36,  5.09it/s]
+Traceback (most recent call last):
+  File "training.py", line 206, in <module>
+    main()
+  File "training.py", line 203, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 78, in train
+    prediction = model(val_data).detach().cpu()
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 393, in forward
+    x = conv_layer(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 213, in forward
+    x = self.conv(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/gcn_conv.py", line 198, in forward
+    out = self.propagate(edge_index, x=x, edge_weight=edge_weight,
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/message_passing.py", line 454, in propagate
+    out = self.aggregate(out, **aggr_kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/message_passing.py", line 578, in aggregate
+    return self.aggr_module(inputs, index, ptr=ptr, dim_size=dim_size,
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/aggr/base.py", line 126, in __call__
+    if index.numel() > 0 and dim_size <= int(index.max()):
+KeyboardInterrupt

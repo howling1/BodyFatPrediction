@@ -1,0 +1,15 @@
+
+0it [00:02, ?it/s]
+Traceback (most recent call last):
+  File "training.py", line 199, in <module>
+    main()
+  File "training.py", line 196, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 43, in train
+    prediction = model(data)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 399, in forward
+    x += previous_outputs.get()
+RuntimeError: The size of tensor a (64) must match the size of tensor b (16) at non-singleton dimension 1
+cuda:3

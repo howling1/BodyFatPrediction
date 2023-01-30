@@ -1,0 +1,22 @@
+current GPU: NVIDIA A40
+using GPU: 3
+
+
+
+
+
+175it [00:11, 17.10it/s]
+189it [00:12, 15.48it/s]
+10it [00:00, 17.25it/s]
+
+
+
+94it [00:09,  9.53it/s]
+Traceback (most recent call last):
+  File "training.py", line 198, in <module>
+    main()
+  File "training.py", line 195, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 51, in train
+    train_loss_running += loss.item()
+KeyboardInterrupt

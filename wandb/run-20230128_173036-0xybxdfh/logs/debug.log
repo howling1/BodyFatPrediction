@@ -1,0 +1,24 @@
+2023-01-28 17:30:36,385 INFO    MainThread:3311476 [wandb_setup.py:_flush():68] Configure stats pid to 3311476
+2023-01-28 17:30:36,385 INFO    MainThread:3311476 [wandb_setup.py:_flush():68] Loading settings from /u/home/zhousiy/.config/wandb/settings
+2023-01-28 17:30:36,385 INFO    MainThread:3311476 [wandb_setup.py:_flush():68] Loading settings from /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/settings
+2023-01-28 17:30:36,385 INFO    MainThread:3311476 [wandb_setup.py:_flush():68] Loading settings from environment variables: {'_require_service': 'True'}
+2023-01-28 17:30:36,385 INFO    MainThread:3311476 [wandb_setup.py:_flush():68] Inferring run settings from compute environment: {'program_relpath': 'training.py', 'program': 'training.py'}
+2023-01-28 17:30:36,385 INFO    MainThread:3311476 [wandb_init.py:_log_setup():478] Logging user logs to /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_173036-0xybxdfh/logs/debug.log
+2023-01-28 17:30:36,385 INFO    MainThread:3311476 [wandb_init.py:_log_setup():479] Logging internal logs to /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230128_173036-0xybxdfh/logs/debug-internal.log
+2023-01-28 17:30:36,385 INFO    MainThread:3311476 [wandb_init.py:init():518] calling init triggers
+2023-01-28 17:30:36,385 INFO    MainThread:3311476 [wandb_init.py:init():521] wandb.init called with sweep_config: {}
+config: {'experiment_name': 'age_prediction_5k', 'batch_size': 32, 'epochs': 2000, 'learning_rate': 0.001, 'weight_decay': 0.01, 'task': 'regression', 'print_every_n': 200, 'validate_every_n': 200}
+2023-01-28 17:30:36,385 INFO    MainThread:3311476 [wandb_init.py:init():571] starting backend
+2023-01-28 17:30:36,385 INFO    MainThread:3311476 [wandb_init.py:init():575] setting up manager
+2023-01-28 17:30:36,392 INFO    MainThread:3311476 [backend.py:_multiprocessing_setup():106] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2023-01-28 17:30:36,397 INFO    MainThread:3311476 [wandb_init.py:init():582] backend started and connected
+2023-01-28 17:30:36,400 INFO    MainThread:3311476 [wandb_init.py:init():670] updated telemetry
+2023-01-28 17:30:36,702 INFO    MainThread:3311476 [wandb_init.py:init():710] communicating run to backend with 60.0 second timeout
+2023-01-28 17:30:37,131 INFO    MainThread:3311476 [wandb_run.py:_on_init():2121] communicating current version
+2023-01-28 17:30:37,218 INFO    MainThread:3311476 [wandb_run.py:_on_init():2125] got version response 
+2023-01-28 17:30:37,218 INFO    MainThread:3311476 [wandb_init.py:init():758] starting run threads in backend
+2023-01-28 17:30:42,156 INFO    MainThread:3311476 [wandb_run.py:_console_start():2101] atexit reg
+2023-01-28 17:30:42,157 INFO    MainThread:3311476 [wandb_run.py:_redirect():1959] redirect: SettingsConsole.WRAP_RAW
+2023-01-28 17:30:42,157 INFO    MainThread:3311476 [wandb_run.py:_redirect():2024] Wrapping output streams.
+2023-01-28 17:30:42,157 INFO    MainThread:3311476 [wandb_run.py:_redirect():2046] Redirects installed.
+2023-01-28 17:30:42,158 INFO    MainThread:3311476 [wandb_init.py:init():798] run started, returning control to user process

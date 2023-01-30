@@ -1,0 +1,93 @@
+current GPU: NVIDIA A40
+using GPU: 3
+
+
+
+
+
+181it [00:11, 17.49it/s]
+189it [00:11, 15.77it/s]
+10it [00:00, 18.21it/s]
+
+
+
+
+
+
+
+
+
+
+
+189it [00:29,  6.41it/s]
+1it [00:00,  6.13it/s]
+
+21it [00:01, 17.71it/s]
+
+
+
+
+189it [00:13, 13.69it/s]
+6it [00:00, 17.64it/s]
+
+32it [00:01, 17.99it/s]
+
+
+
+
+189it [00:14, 13.43it/s]
+
+42it [00:02, 18.19it/s]
+[004/00043] train_loss: 51.710
+
+
+
+
+
+
+189it [00:17, 11.04it/s]
+
+
+40it [00:05,  9.26it/s]
+
+54it [00:06, 11.15it/s]
+
+
+
+
+
+
+189it [00:25,  7.27it/s]
+
+58it [00:03, 17.20it/s]
+
+64it [00:03, 17.45it/s]
+
+
+
+
+189it [00:14, 13.18it/s]
+
+53it [00:03, 17.13it/s]
+Traceback (most recent call last):
+  File "training.py", line 199, in <module>
+    main()
+  File "training.py", line 196, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 43, in train
+    prediction = model(data)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 373, in forward
+    x = conv_layer(x, edge_index)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/gcn_conv.py", line 176, in forward
+    edge_index, edge_weight = gcn_norm(  # yapf: disable
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/conv/gcn_conv.py", line 68, in gcn_norm
+    deg = scatter_add(edge_weight, idx, dim=0, dim_size=num_nodes)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_scatter/scatter.py", line 29, in scatter_add
+    return scatter_sum(src, index, dim, out, dim_size)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_scatter/scatter.py", line 20, in scatter_sum
+    out = torch.zeros(size, dtype=src.dtype, device=src.device)
+KeyboardInterrupt
