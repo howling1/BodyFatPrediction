@@ -23,3 +23,7 @@ config: {}
 2023-02-06 17:05:33,838 INFO    Thread-2  :2728679 [wandb_run.py:_redirect():2024] Wrapping output streams.
 2023-02-06 17:05:33,838 INFO    Thread-2  :2728679 [wandb_run.py:_redirect():2046] Redirects installed.
 2023-02-06 17:05:33,839 INFO    Thread-2  :2728679 [wandb_init.py:init():798] run started, returning control to user process
+2023-02-06 17:30:14,124 INFO    Thread-2  :2728679 [wandb_run.py:_finish():1844] finishing run nlp_practical_tum/mesh-gnn_sweep/zmbctv2y
+2023-02-06 17:30:14,124 INFO    Thread-2  :2728679 [wandb_run.py:_atexit_cleanup():2070] got exitcode: 1
+2023-02-06 17:30:14,124 INFO    Thread-2  :2728679 [wandb_run.py:_restore():2053] restore
+2023-02-06 17:30:14,124 INFO    Thread-2  :2728679 [wandb_run.py:_restore():2059] restore done

@@ -135,17 +135,16 @@ def train(config=None):
             in_features = 3,
             num_hiddens = config.num_hiddens,
             num_layers = config.num_layers,
-            num_skip_layers = config.num_skip_layers,
             encoder_channels = config.encoder_channels,
             decoder_channels = [256, 32],
             num_classes = n_class,
             aggregation = config.aggregation, # mean, max
             apply_dropedge = config.apply_dropedge,
             apply_bn = True,
-            apply_dropout = True
+            apply_dropout = config.apply_dropedge,
         )
 
-        model = ResGNN(**model_params).to(device)
+        model = DenseGNN(**model_params).to(device)
         model = model.double()
         #-----------------------
 
@@ -182,17 +181,16 @@ def main():
     sweep_config['metric'] = metric
 
     parameters_dict = {
-        'num_hiddens' : { 'values' : [16, 32, 64]},   
+        'num_hiddens' : { 'values' : [8, 16, 32]},   
         'num_layers' : { 'values': [2, 4, 6, 8, 10]},
-        'num_skip_layers': { 'values': [1, 2]},
         'aggregation': {'values': ['max', 'mean']},   
         'apply_dropedge': {'values': [True, False]},
         'apply_dropout': {'values': [True, False]},
-        'encoder_channels': {'values': [[], [64]]},
+        'encoder_channels': {'values': [[], [64], [128]]},
         'learning_rate': { 'distribution': 'uniform', 'min': 0,  'max': 0.01 }, # need to give a distribution for it to pick the parameter while using 'random' search 
         'weight_decay': {'distribution': 'uniform', 'min': 0.0001,  'max': 0.02 },
-        'epochs' : { 'value' : 800}, # set parameter only single value if you don't want it to change during sweep
-        'batch_size' : {'values' : [16, 32, 64]},
+        'epochs' : { 'value' : 500}, # set parameter only single value if you don't want it to change during sweep
+        'batch_size' : {'values' : [16, 32]},
         'task' : { 'value' : 'regression' } # "regression" or "classification"
     }
 
@@ -200,7 +198,7 @@ def main():
 
     sweep_id = wandb.sweep(sweep_config, project="mesh-gnn_sweep") 
 
-    wandb.agent(sweep_id, train, count=5) # count parameter is necessary for random search, it stops after reaching count. grid search stops when all the possibilites finished.
+    wandb.agent(sweep_id, train, count=25) # count parameter is necessary for random search, it stops after reaching count. grid search stops when all the possibilites finished.
     
 if __name__ == "__main__":
     torch.cuda.set_device(0)
