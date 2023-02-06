@@ -399,9 +399,7 @@ class ResGNN(torch.nn.Module):
 
                 previous_outputs.append(x)
 
-            
-            local_features = torch.cat(previous_outputs, dim=1)
-            global_feature = scatter_mean(self.linear_encoder(local_features), batch, dim=0) if self.aggregation == 'mean' else scatter_max(self.linear_encoder(local_features), batch, dim=0)[0]
+            global_feature = scatter_mean(self.linear_encoder(x), batch, dim=0) if self.aggregation == 'mean' else scatter_max(self.linear_encoder(x), batch, dim=0)[0]
             output = self.final_projection(global_feature)
 
             return torch.squeeze(output, 1) if self.num_classes == 1 else output
@@ -498,7 +496,7 @@ class JKNet(nn.Module):
             in_features, 
             num_classes, 
             gnn_conv, # GAT not supported for now
-            mode='max', 
+            mode='cat', 
             num_layers=6, 
             hidden=16
             ):

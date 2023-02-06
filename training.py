@@ -18,7 +18,7 @@ import wandb
 REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path of the dir saving the .ply registered data
 INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
 FEATURES_PATH = "/vol/chameleon/projects/mesh_gnn/basic_features.csv"
-TARGET = "height"
+TARGET = "age"
 
 def train(model, trainloader, valloader, device, config):
     
@@ -134,7 +134,7 @@ def main():
     random.shuffle(test_data_all)
 
     config = {
-        "experiment_name" : "height_prediction_5k", # there should be a folder named exactly this under the folder runs/
+        "experiment_name" : "age_prediction_5k", # there should be a folder named exactly this under the folder runs/
         "batch_size" : 32,
         "epochs" : 2000,
         "learning_rate" : 0.005,
@@ -149,18 +149,18 @@ def main():
 
 
 # MeshProcressingNet params
-    model_params = dict(
-        gnn_conv = GATConv,
-        in_features = 3,
-        encoder_channels = [16],
-        conv_channels = [32, 64, 128, 64],
-        decoder_channels = [32],
-        num_classes = n_class,
-        apply_dropedge = False,
-        apply_bn = True,
-        apply_dropout = False,
-        num_heads=4
-    )
+    # model_params = dict(
+    #     gnn_conv = GATConv,
+    #     in_features = 3,
+    #     encoder_channels = [16],
+    #     conv_channels = [32, 64, 128, 64],
+    #     decoder_channels = [32],
+    #     num_classes = n_class,
+    #     apply_dropedge = False,
+    #     apply_bn = True,
+    #     apply_dropout = False,
+    #     num_heads=4
+    # )
 
 
 # ResGNN params
@@ -196,21 +196,21 @@ def main():
 
 
 # JKNet params
-#     model_params = dict(
-#         gnn_conv = SAGEConv,
-#         in_features = 3,
-#         num_classes = n_class,
-#     )
+    model_params = dict(
+        gnn_conv = SAGEConv,
+        in_features = 3,
+        num_classes = n_class,
+    )
 
     torch.cuda.set_device(3)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print("current GPU:", torch.cuda.get_device_name(device))
     print("using GPU:", torch.cuda.current_device())
 
-    model = MeshProcessingNetwork(**model_params).to(device)
+    # model = MeshProcessingNetwork(**model_params).to(device) 
     # model = ResGNN(**model_params).to(device)
     # model = DenseGNN(**model_params).to(device)
-    # model = JKNet(**model_params).to(device)
+    model = JKNet(**model_params).to(device)
     model = model.double()
 
     param_log = {
