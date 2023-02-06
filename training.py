@@ -137,8 +137,8 @@ def main():
         "experiment_name" : "age_prediction_5k", # there should be a folder named exactly this under the folder runs/
         "batch_size" : 32,
         "epochs" : 2000,
-        "learning_rate" : 0.005,
-        "weight_decay": 0.01,
+        "learning_rate" : 0.003,
+        "weight_decay": 0.005,
         "task" : "regression", # "regression" or "classification"
         "print_every_n" : 200,
         "validate_every_n" : 200}
@@ -152,7 +152,7 @@ def main():
     # model_params = dict(
     #     gnn_conv = GATConv,
     #     in_features = 3,
-    #     encoder_channels = [16],
+    #     encoder_channels = [],
     #     conv_channels = [32, 64, 128, 64],
     #     decoder_channels = [32],
     #     num_classes = n_class,
@@ -164,31 +164,31 @@ def main():
 
 
 # ResGNN params
-    # model_params = dict(
-    #     gnn_conv = SAGEConv,
-    #     in_features = 3,
-    #     inout_conv_channel = 64,
-    #     num_layers = 5,
-    #     num_skip_layers = 1,
-    #     encoder_channels = [1024],
-    #     decoder_channels = [256, 64],
-    #     num_classes = n_class,
-    #     aggregation = 'max', # mean, max
-    #     apply_dropedge = True,
-    #     apply_bn = True,
-    #     apply_dropout = True
-    # )
+    model_params = dict(
+        gnn_conv = SAGEConv,
+        in_features = 3,
+        num_hiddens = 32,
+        num_layers = 5,
+        num_skip_layers = 1,
+        encoder_channels = [128],
+        decoder_channels = [256, 32],
+        num_classes = n_class,
+        aggregation = 'max', # mean, max
+        apply_dropedge = True,
+        apply_bn = True,
+        apply_dropout = True
+    )
 
 # DenseGNN params
     # model_params = dict(
     #     gnn_conv = SAGEConv,
     #     in_features = 3,
-    #     inout_conv_channel = 32,
+    #     num_hiddens = 4,
     #     num_layers = 5,
-    #     encoder_channels = [1024],
-    #     decoder_channels = [256, 64],
+    #     encoder_channels = [],
+    #     decoder_channels = [4],
     #     num_classes = n_class,
-    #     aggregation = 'max', # mean, max
+    #     aggregation = 'mean', # mean, max
     #     apply_dropedge = True,
     #     apply_bn = True,
     #     apply_dropout = True,
@@ -196,11 +196,21 @@ def main():
 
 
 # JKNet params
-    model_params = dict(
-        gnn_conv = SAGEConv,
-        in_features = 3,
-        num_classes = n_class,
-    )
+    # model_params = dict(
+    #     gnn_conv = GATConv,
+    #     in_features = 3,
+    #     num_hiddens = 4,
+    #     num_layers = 3,
+    #     encoder_channels = [],
+    #     decoder_channels = [8],
+    #     num_classes = n_class,
+    #     jk_mode = 'lstm', # cat, max, lstm
+    #     aggregation = 'max', # mean, max
+    #     apply_dropedge = True,
+    #     apply_bn = True,
+    #     apply_dropout = True,
+    #     num_heads=4,
+    # )
 
     torch.cuda.set_device(3)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -208,9 +218,9 @@ def main():
     print("using GPU:", torch.cuda.current_device())
 
     # model = MeshProcessingNetwork(**model_params).to(device) 
-    # model = ResGNN(**model_params).to(device)
+    model = ResGNN(**model_params).to(device)
     # model = DenseGNN(**model_params).to(device)
-    model = JKNet(**model_params).to(device)
+    # model = JKNet(**model_params).to(device)
     model = model.double()
 
     param_log = {

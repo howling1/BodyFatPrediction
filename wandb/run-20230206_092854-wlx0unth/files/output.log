@@ -1,0 +1,12 @@
+current GPU: NVIDIA A40
+using GPU: 3
+Traceback (most recent call last):
+  File "training.py", line 242, in <module>
+    main()
+  File "training.py", line 222, in main
+    model = JKNet(**model_params).to(device)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 538, in __init__
+    self.jk = JumpingKnowledge(mode=jk_mode, num_layers = num_layers)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/nn/models/jumping_knowledge.py", line 49, in __init__
+    assert channels is not None, 'channels cannot be None for lstm'
+AssertionError: channels cannot be None for lstm

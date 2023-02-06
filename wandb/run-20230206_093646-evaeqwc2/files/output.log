@@ -1,0 +1,32 @@
+current GPU: NVIDIA A40
+using GPU: 3
+
+189it [00:06, 31.33it/s]
+8it [00:00, 39.00it/s]
+
+60it [00:03, 35.60it/s]
+77it [00:03, 21.22it/s]
+Traceback (most recent call last):
+  File "training.py", line 242, in <module>
+    main()
+  File "training.py", line 239, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 40, in train
+    for i, data in tqdm(enumerate(trainloader)):
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/tqdm/std.py", line 1195, in __iter__
+    for obj in iterable:
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 628, in __next__
+    data = self._next_data()
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 671, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 61, in fetch
+    return self.collate_fn(data)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/loader/dataloader.py", line 19, in __call__
+    return Batch.from_data_list(batch, self.follow_batch,
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/data/batch.py", line 76, in from_data_list
+    batch, slice_dict, inc_dict = collate(
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/data/collate.py", line 84, in collate
+    value, slices, incs = _collate(attr, values, data_list, stores,
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch_geometric/data/collate.py", line 155, in _collate
+    value = torch.cat(values, dim=cat_dim or 0, out=out)
+KeyboardInterrupt

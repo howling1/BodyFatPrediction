@@ -3,9 +3,9 @@ import torch.nn as nn
 import math
 from torch_scatter import scatter_mean, scatter_max
 import torch.nn.functional as F
-from torch_geometric.nn import GCNConv, SAGEConv, GATConv, MessagePassing, JumpingKnowledge
+from torch_geometric.nn import GATConv, MessagePassing, JumpingKnowledge
 from torch_geometric.utils import add_self_loops, remove_self_loops
-from torch_geometric.utils.dropout import dropout_edge, dropout_node, dropout_path
+from torch_geometric.utils.dropout import dropout_edge
 from itertools import tee
 
 
@@ -58,10 +58,10 @@ def get_conv_layers(channels: list, conv, num_heads=None, is_dense=False):
 
     return conv_layers
 
-def get_mlp_layers(channels: list, activation, output_activation=nn.Identity, apply_dropout=False):
+def get_mlp_layers(channels: list, activation=nn.ReLU, output_activation=nn.Identity, apply_dropout=False):
     """Define basic multilayered perceptron network."""
     if len(channels) == 1:
-        return None
+        return nn.Sequential(nn.Identity())
 
     layers = []
     *intermediate_layer_definitions, final_layer_definition = pairwise(channels)
@@ -286,15 +286,16 @@ class MeshProcessingNetwork(torch.nn.Module):
     ):
         super().__init__()
         self.num_classes = num_classes
+        encoder_channels = [in_features] + encoder_channels
         self.input_encoder = get_mlp_layers(
-            channels=[in_features] + encoder_channels,
+            channels=encoder_channels,
             activation=nn.ReLU,
             output_activation=nn.ReLU,
             apply_dropout=apply_dropout
         )
         self.gnn = GraphFeatureEncoder(
             gnn_conv=gnn_conv,
-            in_features=encoder_channels[-1] if len(encoder_channels) > 0 else in_features,
+            in_features=encoder_channels[-1],
             conv_channels=conv_channels,
             num_heads=num_heads,
             apply_dropedge=apply_dropedge,
@@ -326,7 +327,7 @@ class ResGNN(torch.nn.Module):
                 self, 
                 gnn_conv, 
                 in_features, 
-                inout_conv_channel: int, 
+                num_hiddens: int, 
                 num_layers: int,
                 num_skip_layers: int,
                 apply_dropedge: bool, 
@@ -346,7 +347,7 @@ class ResGNN(torch.nn.Module):
             self.num_skip_layers = num_skip_layers
             self.aggregation = aggregation
 
-            conv_channels = [inout_conv_channel for i in range(num_layers)]
+            conv_channels = [num_hiddens for i in range(num_layers)]
             conv_layers = get_conv_layers(
                 channels=[in_features] + conv_channels,
                 conv=gnn_conv,
@@ -358,22 +359,23 @@ class ResGNN(torch.nn.Module):
 
             if apply_bn:
                 self.bn_layers = nn.ModuleList(
-                    [nn.BatchNorm1d(inout_conv_channel * num_heads) for i in range(num_layers)] if gnn_conv == GATConv 
-                    else [nn.BatchNorm1d(inout_conv_channel) for i in range(num_layers)]
+                    [nn.BatchNorm1d(num_hiddens * num_heads) for i in range(num_layers)] if gnn_conv == GATConv 
+                    else [nn.BatchNorm1d(num_hiddens) for i in range(num_layers)]
                     )
 
-            conv_out_channel = inout_conv_channel * num_heads * num_layers if gnn_conv == GATConv else inout_conv_channel * num_layers
+            encoder_in = num_hiddens * num_heads if gnn_conv == GATConv else num_hiddens
+            encoder_channels = [encoder_in] + encoder_channels
 
             self.linear_encoder = get_mlp_layers(
-            [conv_out_channel] + encoder_channels,
-            activation=nn.ReLU,
-            output_activation=nn.ReLU,
+                encoder_channels,
+                activation=nn.ReLU,
+                output_activation=nn.ReLU,
             )
 
-            global_features_channel = encoder_channels[-1]
+            decoder_in = encoder_channels[-1]
 
             self.final_projection = get_mlp_layers(
-            [global_features_channel] + decoder_channels + [num_classes],
+            [decoder_in] + decoder_channels + [num_classes],
             activation=nn.ReLU,
             apply_dropout=apply_dropout
         )
@@ -381,7 +383,7 @@ class ResGNN(torch.nn.Module):
         def forward(self, data):
             x, edge_index, batch = data.x, data.edge_index, data.batch
 
-            previous_outputs = []
+            layer_out = []
 
             for i, (conv_layer, bn_layer) in enumerate(zip(self.conv_layers, self.bn_layers)):
                 if self.training and self.apply_dropedge:
@@ -394,10 +396,10 @@ class ResGNN(torch.nn.Module):
                     
                 x = F.relu(x)
 
-                if i % self.num_skip_layers == 0 and i != 0 and i != self.num_layers - 1:
-                    x += previous_outputs[i - self.num_skip_layers]
+                if i % self.num_skip_layers == 0 and i != 0:
+                    x = x + layer_out[i - self.num_skip_layers]
 
-                previous_outputs.append(x)
+                layer_out.append(x)
 
             global_feature = scatter_mean(self.linear_encoder(x), batch, dim=0) if self.aggregation == 'mean' else scatter_max(self.linear_encoder(x), batch, dim=0)[0]
             output = self.final_projection(global_feature)
@@ -409,7 +411,7 @@ class DenseGNN(torch.nn.Module):
                 self, 
                 gnn_conv, 
                 in_features, 
-                inout_conv_channel: int, 
+                num_hiddens: int, 
                 num_layers: int,
                 apply_dropedge: bool, 
                 apply_bn: bool,
@@ -427,7 +429,7 @@ class DenseGNN(torch.nn.Module):
             self.num_layers = num_layers
             self.aggregation = aggregation
 
-            conv_channels = [inout_conv_channel for i in range(num_layers)]
+            conv_channels = [num_hiddens for i in range(num_layers)]
             conv_layers = get_conv_layers(
                 channels=[in_features] + conv_channels,
                 conv=gnn_conv,
@@ -435,30 +437,28 @@ class DenseGNN(torch.nn.Module):
                 is_dense=True
             )
 
-            # for conv_layer in conv_layers
-
-
             self.conv_layers = nn.ModuleList(conv_layers)
             self.bn_layers = [None for _ in range(num_layers)]
 
             if apply_bn:
                 self.bn_layers = nn.ModuleList(
-                    [nn.BatchNorm1d(inout_conv_channel * num_heads) for i in range(num_layers)] if gnn_conv == GATConv 
-                    else [nn.BatchNorm1d(inout_conv_channel) for i in range(num_layers)]
+                    [nn.BatchNorm1d(num_hiddens * num_heads) for i in range(num_layers)] if gnn_conv == GATConv 
+                    else [nn.BatchNorm1d(num_hiddens) for i in range(num_layers)]
                     )
 
-            conv_out_channel = int(math.pow(2, num_layers - 1)) * inout_conv_channel * num_heads if gnn_conv == GATConv else int(math.pow(2, num_layers - 1)) * inout_conv_channel
+            encoder_in = int(math.pow(2, num_layers - 1)) * num_hiddens * num_heads if gnn_conv == GATConv else int(math.pow(2, num_layers - 1)) * num_hiddens
+            encoder_channels = [encoder_in] + encoder_channels
 
             self.linear_encoder = get_mlp_layers(
-            [conv_out_channel] + encoder_channels,
-            activation=nn.ReLU,
-            output_activation=nn.ReLU,
+                encoder_channels,
+                activation=nn.ReLU,
+                output_activation=nn.ReLU,
             )
 
-            global_features_channel = encoder_channels[-1]
+            decoder_in = encoder_channels[-1]
 
             self.final_projection = get_mlp_layers(
-            [global_features_channel] + decoder_channels + [num_classes],
+            [decoder_in] + decoder_channels + [num_classes],
             activation=nn.ReLU,
             apply_dropout=apply_dropout
             )
@@ -466,11 +466,9 @@ class DenseGNN(torch.nn.Module):
         def forward(self, data):
             x, edge_index, batch = data.x, data.edge_index, data.batch
 
-            # print(self.conv_layers)
+            layer_out = []
 
-            previous_outputs = []
-
-            for i, (conv_layer, bn_layer) in enumerate(zip(self.conv_layers, self.bn_layers)):
+            for conv_layer, bn_layer in zip(self.conv_layers, self.bn_layers):
                 if self.training and self.apply_dropedge:
                     edge_index, _ = dropout_edge(edge_index)
 
@@ -481,9 +479,9 @@ class DenseGNN(torch.nn.Module):
                     
                 x = F.relu(x)
 
-                x = torch.cat(previous_outputs + [x], dim=1)
+                x = torch.cat(layer_out + [x], dim=1)
 
-                previous_outputs.append(x)
+                layer_out.append(x)
 
             global_feature = scatter_mean(self.linear_encoder(x), batch, dim=0) if self.aggregation == 'mean' else scatter_max(self.linear_encoder(x), batch, dim=0)[0]
             output = self.final_projection(global_feature)
@@ -493,52 +491,89 @@ class DenseGNN(torch.nn.Module):
 class JKNet(nn.Module):
     def __init__(
             self,
+            gnn_conv,
+            num_hiddens,
             in_features, 
+            num_layers,
             num_classes, 
-            gnn_conv, # GAT not supported for now
-            mode='cat', 
-            num_layers=6, 
-            hidden=16
+            jk_mode, # cat, mean, lstm
+            apply_dropedge: bool, 
+            apply_bn: bool,
+            apply_dropout: bool,
+            encoder_channels: list,
+            aggregation: str, # mean, max
+            decoder_channels: list, 
+            num_heads: int = None # only applicable for GAT
             ):
         
         super(JKNet, self).__init__()
         self.num_layers = num_layers
-        self.mode = mode
-        self.conv0 = gnn_conv(in_features, hidden)
-        self.bn0 = nn.BatchNorm1d(hidden)
-        # self.dropout0 = nn.Dropout(p=0.5)
+        self.jk_mode = jk_mode
         self.num_classes = num_classes
+        self.aggregation = aggregation
+        self.apply_bn = apply_bn
+        self.apply_dropedge = apply_dropedge
+        self.num_heads = num_heads
 
-        for i in range(1, self.num_layers):
-            setattr(self, 'conv{}'.format(i), gnn_conv(hidden, hidden))
-            setattr(self, 'bn{}'.format(i), nn.BatchNorm1d(hidden))
-            # setattr(self, 'dropout{}'.format(i), nn.Dropout(p=0.5))
+        conv_channels = [num_hiddens for i in range(num_layers)]
+        conv_layers = get_conv_layers(
+            channels=[in_features] + conv_channels,
+            conv=gnn_conv,
+            num_heads=num_heads,
+        )
 
-        self.jk = JumpingKnowledge(mode=mode)
-        if mode == 'max':
-            self.fc = nn.Linear(hidden, num_classes)
-        elif mode == 'cat':
-            self.fc = nn.Linear(num_layers * hidden, num_classes)
+        self.conv_layers = nn.ModuleList(conv_layers)
+        self.bn_layers = [None for _ in range(num_layers)]
 
+        if apply_bn:
+            self.bn_layers = nn.ModuleList(
+                [nn.BatchNorm1d(num_hiddens * num_heads) for i in range(num_layers)] if gnn_conv == GATConv 
+                else [nn.BatchNorm1d(num_hiddens) for i in range(num_layers)]
+                )
+
+        self.jk = JumpingKnowledge(jk_mode, num_hiddens * num_heads, num_layers) if jk_mode == 'lstm' else JumpingKnowledge(jk_mode)
+        if jk_mode == 'max' or jk_mode == 'lstm':
+            encoder_in = num_hiddens * num_heads if gnn_conv == GATConv else num_hiddens
+        elif jk_mode == 'cat':
+            encoder_in = num_layers * num_hiddens * num_heads if gnn_conv == GATConv else num_hiddens * num_layers
+
+        encoder_channels = [encoder_in] + encoder_channels
+
+        self.linear_encoder = get_mlp_layers(
+            encoder_channels,
+            activation=nn.ReLU,
+            output_activation=nn.ReLU,
+            )
+
+        decoder_in = encoder_channels[-1]
+
+        self.final_projection = get_mlp_layers(
+            [decoder_in] + decoder_channels + [num_classes],
+            activation=nn.ReLU,
+            apply_dropout=apply_dropout
+            )
+
+        
     def forward(self, data):
         x, edge_index, batch = data.x, data.edge_index, data.batch
 
         layer_out = []  #save the result of every layer
-        for i in range(self.num_layers):
-            conv = getattr(self, 'conv{}'.format(i))
-            bn = getattr(self, 'bn{}'.format(i))
-            # dropout = getattr(self, 'dropout{}'.format(i))
-            if self.training:
+        for conv_layer, bn_layer in zip(self.conv_layers, self.bn_layers):
+            if self.training and self.apply_dropedge:
                 edge_index, _ = dropout_edge(edge_index)
-            x = F.relu(bn(conv(x, edge_index)))
+
+            x = conv_layer(x, edge_index)
+
+            if bn_layer is not None:
+                x = bn_layer(x)
+                
+            x = F.relu(x)
             layer_out.append(x)
 
-        h = self.jk(layer_out)  # JK layer
+        x = self.jk(layer_out)  # JK layer
 
-        h = scatter_mean(h, batch, dim=0)
+        global_feature = scatter_mean(self.linear_encoder(x), batch, dim=0) if self.aggregation == 'mean' else scatter_max(self.linear_encoder(x), batch, dim=0)[0]
+        output = self.final_projection(global_feature)
 
-        h = self.fc(h)
-
-
-        return torch.squeeze(h, 1) if self.num_classes == 1 else h
+        return torch.squeeze(output, 1) if self.num_classes == 1 else output
             

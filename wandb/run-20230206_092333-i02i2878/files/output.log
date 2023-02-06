@@ -1,0 +1,12 @@
+current GPU: NVIDIA A40
+using GPU: 3
+Traceback (most recent call last):
+  File "training.py", line 242, in <module>
+    main()
+  File "training.py", line 222, in main
+    model = JKNet(**model_params).to(device)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 546, in __init__
+    self.linear_encoder = get_mlp_layers(
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 67, in get_mlp_layers
+    *intermediate_layer_definitions, final_layer_definition = pairwise(channels)
+ValueError: not enough values to unpack (expected at least 1, got 0)

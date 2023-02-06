@@ -1,0 +1,33 @@
+2023-02-06 10:09:03,804 INFO    MainThread:1626221 [wandb_setup.py:_flush():68] Configure stats pid to 1626221
+2023-02-06 10:09:03,805 INFO    MainThread:1626221 [wandb_setup.py:_flush():68] Loading settings from /u/home/zhousiy/.config/wandb/settings
+2023-02-06 10:09:03,805 INFO    MainThread:1626221 [wandb_setup.py:_flush():68] Loading settings from /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/settings
+2023-02-06 10:09:03,805 INFO    MainThread:1626221 [wandb_setup.py:_flush():68] Loading settings from environment variables: {'_require_service': 'True'}
+2023-02-06 10:09:03,805 INFO    MainThread:1626221 [wandb_setup.py:_flush():68] Inferring run settings from compute environment: {'program_relpath': 'training.py', 'program': 'training.py'}
+2023-02-06 10:09:03,805 INFO    MainThread:1626221 [wandb_init.py:_log_setup():478] Logging user logs to /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230206_100903-j41tcucn/logs/debug.log
+2023-02-06 10:09:03,805 INFO    MainThread:1626221 [wandb_init.py:_log_setup():479] Logging internal logs to /data2/practical-wise2223/MeshBody/BodyMeshGNN/wandb/run-20230206_100903-j41tcucn/logs/debug-internal.log
+2023-02-06 10:09:03,805 INFO    MainThread:1626221 [wandb_init.py:init():518] calling init triggers
+2023-02-06 10:09:03,805 INFO    MainThread:1626221 [wandb_init.py:init():521] wandb.init called with sweep_config: {}
+config: {'experiment_name': 'age_prediction_5k', 'batch_size': 32, 'epochs': 2000, 'learning_rate': 0.005, 'weight_decay': 0.01, 'task': 'regression', 'print_every_n': 200, 'validate_every_n': 200}
+2023-02-06 10:09:03,805 INFO    MainThread:1626221 [wandb_init.py:init():571] starting backend
+2023-02-06 10:09:03,805 INFO    MainThread:1626221 [wandb_init.py:init():575] setting up manager
+2023-02-06 10:09:03,808 INFO    MainThread:1626221 [backend.py:_multiprocessing_setup():106] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2023-02-06 10:09:03,811 INFO    MainThread:1626221 [wandb_init.py:init():582] backend started and connected
+2023-02-06 10:09:03,813 INFO    MainThread:1626221 [wandb_init.py:init():670] updated telemetry
+2023-02-06 10:09:03,984 INFO    MainThread:1626221 [wandb_init.py:init():710] communicating run to backend with 60.0 second timeout
+2023-02-06 10:09:04,916 WARNING MainThread:1626221 [wandb_init.py:init():1129] interrupted
+Traceback (most recent call last):
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/sdk/wandb_init.py", line 1108, in init
+    run = wi.init()
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/sdk/wandb_init.py", line 713, in init
+    result = run_init_handle.wait(
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/sdk/lib/mailbox.py", line 273, in wait
+    found, abandoned = self._slot._get_and_clear(timeout=wait_timeout)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/sdk/lib/mailbox.py", line 120, in _get_and_clear
+    if self._wait(timeout=timeout):
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/sdk/lib/mailbox.py", line 116, in _wait
+    return self._event.wait(timeout=timeout)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/threading.py", line 558, in wait
+    signaled = self._cond.wait(timeout)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/threading.py", line 306, in wait
+    gotit = waiter.acquire(True, timeout)
+KeyboardInterrupt

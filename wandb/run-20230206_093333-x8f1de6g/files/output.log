@@ -1,0 +1,10 @@
+current GPU: NVIDIA A40
+using GPU: 3
+Traceback (most recent call last):
+  File "training.py", line 242, in <module>
+    main()
+  File "training.py", line 221, in main
+    model = DenseGNN(**model_params).to(device)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/model.py", line 452, in __init__
+    encoder_channels = encoder_in + encoder_channels
+TypeError: unsupported operand type(s) for +: 'int' and 'list'

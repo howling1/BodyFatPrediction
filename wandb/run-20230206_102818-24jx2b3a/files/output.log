@@ -1,0 +1,103 @@
+current GPU: NVIDIA A40
+using GPU: 3
+
+
+
+
+189it [00:12, 15.36it/s]
+10it [00:00, 16.74it/s]
+
+36it [00:04, 15.20it/s]
+
+
+
+
+189it [00:14, 13.36it/s]
+
+20it [00:01, 17.04it/s]
+
+36it [00:04, 10.67it/s]
+
+
+
+
+189it [00:14, 13.44it/s]
+
+32it [00:01, 16.90it/s]
+
+34it [00:04,  2.02it/s]
+
+
+
+
+189it [00:14, 13.43it/s]
+
+42it [00:02, 17.16it/s]
+
+70it [00:06, 15.78it/s]
+
+
+
+189it [00:13, 13.75it/s]
+
+52it [00:03, 16.91it/s]
+
+
+74it [00:07, 13.13it/s]
+
+
+
+189it [00:13, 13.52it/s]
+
+
+64it [00:03, 17.08it/s]
+
+76it [00:07,  7.92it/s]
+
+
+
+189it [00:13, 13.74it/s]
+
+
+76it [00:04, 17.19it/s]
+
+82it [00:07,  3.98it/s]
+
+
+
+189it [00:13, 13.89it/s]
+
+
+86it [00:05, 16.52it/s]
+[008/00087] train_loss: 523.000
+
+
+
+189it [00:13, 13.59it/s]
+
+
+98it [00:05, 16.68it/s]
+
+118it [00:09, 12.96it/s]
+
+
+189it [00:14, 13.34it/s]
+
+
+
+108it [00:06, 16.27it/s]
+
+116it [00:09,  4.85it/s]
+
+
+189it [00:14, 13.36it/s]
+
+90it [00:05, 16.60it/s]
+Traceback (most recent call last):
+  File "training.py", line 243, in <module>
+    main()
+  File "training.py", line 240, in main
+    train(model, train_loader, val_loader, device, config)
+  File "training.py", line 51, in train
+    train_loss_running += loss.item()
+KeyboardInterrupt
