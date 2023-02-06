@@ -120,12 +120,12 @@ def main():
     REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path of the dir saving the .ply registered data
     INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
     FEATURES_PATH = "/vol/chameleon/projects/mesh_gnn/basic_features.csv"
-    TARGET = "weight"
+    TARGET = "height"
 
     config = {
-        "experiment_name" : "weight_prediction_5k", # there should be a folder named exactly this under the folder runs/
+        "experiment_name" : "height_prediction_5k", # there should be a folder named exactly this under the folder runs/
         "batch_size" : 32,
-        "epochs" : 500,
+        "epochs" : 2000,
         "learning_rate" : 0.001,
         "weight_decay": 0.,
         "task" : "regression", # "regression" or "classification"
@@ -138,16 +138,15 @@ def main():
 
 # MeshProcressingNet params
     model_params = dict(
-        gnn_conv = GATConv,
+        gnn_conv = SAGEConv,
         in_features = 3,
-        encoder_channels = [16],
-        conv_channels = [32, 64, 128],
+        encoder_channels = [],
+        conv_channels = [32, 128],
         decoder_channels = [32],
         num_classes = n_class,
         apply_dropedge = True,
         apply_bn = True,
         apply_dropout = True,
-        num_heads=4
     )
 
 
