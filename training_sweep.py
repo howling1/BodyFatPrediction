@@ -8,14 +8,19 @@ import torch.nn.functional as F
 from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split
 from torch_geometric.loader import DataLoader
+from torch_geometric.nn import GCNConv, SAGEConv, GATConv
 
-from model import FeatureSteeredConvolution, MeshProcessingNetwork
+from models.feast_conv import FeatureSteeredConvolution
+from models.mesh_processing_net import MeshProcessingNetwork
+from models.jk_net import JKNet
+from models.dense_gnn import DenseGNN
+from models.res_gnn import ResGNN
 from datasets.in_memory import IMDataset
 
 REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path of the dir saving the .ply registered data
 INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
 FEATURES_PATH = "/vol/chameleon/projects/mesh_gnn/basic_features.csv"
-TARGET = "sex"
+TARGET = "age"
 
 def test(model, loader, device, task):
     model.eval()
@@ -126,22 +131,21 @@ def train(config=None):
         # initialize model parameters
         n_class = 1 if config.task == "regression" else 2
         model_params = dict(
-        GNN_conv = FeatureSteeredConvolution,
-        in_features = 3,
-        encoder_channels = [16],
-        conv_channels = config.conv_channels,
-        decoder_channels = [32, 8],
-        num_classes = n_class,
-        bn_or_dropout = config.bn_or_dropout, # bn, dropedge, droppath
-        gf_encoder_params = dict(
-            num_heads=1,
-            ensure_trans_invar=True,
-            bias=True,
-            with_self_loops=True
-            )
-        ) 
+            gnn_conv = SAGEConv,
+            in_features = 3,
+            num_hiddens = config.num_hiddens,
+            num_layers = config.num_layers,
+            num_skip_layers = config.num_skip_layers,
+            encoder_channels = config.encoder_channels,
+            decoder_channels = [256, 32],
+            num_classes = n_class,
+            aggregation = config.aggregation, # mean, max
+            apply_dropedge = config.apply_dropedge,
+            apply_bn = True,
+            apply_dropout = True
+        )
 
-        model = MeshProcessingNetwork(**model_params).to(device)
+        model = ResGNN(**model_params).to(device)
         model = model.double()
         #-----------------------
 
@@ -155,7 +159,7 @@ def train(config=None):
         #-----------------------
 
         #initialize optimizer and set model to train
-        optimizer = torch.optim.Adam(model.parameters(), lr = config.learning_rate)
+        optimizer = torch.optim.Adam(model.parameters(), lr = config.learning_rate, weight_decay=config.weight_decay)
 
         model.train()
 
@@ -164,8 +168,8 @@ def train(config=None):
             val_loss = val_epoch(model, val_loader, loss_criterion, device, config.task)
             wandb.log({"training_loss": training_loss, "val_loss":val_loss, "epoch": epoch})           
 
-def main():    
-    
+def main(): 
+
     sweep_config = {
         'method': 'random' # matches the parameters randomly, can use 'grid' as well to match each parameter with each other
     } 
@@ -178,12 +182,18 @@ def main():
     sweep_config['metric'] = metric
 
     parameters_dict = {
-        'conv_channels' : { 'values' : [[32,64], [32,128,64], [32,128,256,128,64]] },        
-        'bn_or_dropout' : { 'values' : ['dropedge', 'bn', 'droppath']},
+        'num_hiddens' : { 'values' : [16, 32, 64]},   
+        'num_layers' : { 'values': [2, 4, 6, 8, 10]},
+        'num_skip_layers': { 'values': [1, 2]},
+        'aggregation': {'values': ['max', 'mean']},   
+        'apply_dropedge': {'values': [True, False]},
+        'apply_dropout': {'values': [True, False]},
+        'encoder_channels': {'values': [[], [64]]},
         'learning_rate': { 'distribution': 'uniform', 'min': 0,  'max': 0.01 }, # need to give a distribution for it to pick the parameter while using 'random' search 
-        'epochs' : { 'value' : 1 }, # set parameter only single value if you don't want it to change during sweep
-        'batch_size' : {'value' : 16},
-        'task' : { 'value' : 'classification' } # "regression" or "classification"
+        'weight_decay': {'distribution': 'uniform', 'min': 0.0001,  'max': 0.02 },
+        'epochs' : { 'value' : 800}, # set parameter only single value if you don't want it to change during sweep
+        'batch_size' : {'values' : [16, 32, 64]},
+        'task' : { 'value' : 'regression' } # "regression" or "classification"
     }
 
     sweep_config['parameters'] = parameters_dict

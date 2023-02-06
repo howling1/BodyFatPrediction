@@ -1,0 +1,27 @@
+wandb_version: 1
+
+aggregation:
+  value: max
+apply_dropedge:
+  value: true
+apply_dropout:
+  value: false
+batch_size:
+  value: 64
+encoder_channels:
+  value:
+  - 64
+epochs:
+  value: 800
+learning_rate:
+  value: 0.0036722841150415497
+num_hiddens:
+  value: 64
+num_layers:
+  value: 6
+num_skip_layers:
+  value: 1
+task:
+  value: classification
+weight_decay:
+  value: 0.0001553675442114133

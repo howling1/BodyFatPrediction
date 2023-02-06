@@ -1,0 +1,1 @@
+{"training batch loss": 627.9097766412435, "_timestamp": 1675699395.203122, "_runtime": 24.71782898902893, "_step": 1061, "val batch loss": 65.14218145695473, "acc metric": -0.2843237278644912, "training_loss": 369.66547825965955, "val_loss": 74.67701775621751, "epoch": 1, "_wandb": {"runtime": 51}}

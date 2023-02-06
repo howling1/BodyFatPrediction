@@ -1,21 +1,41 @@
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
 import torch.nn.functional as F
+import wandb
+import torch
 import random
 
-import torch
+from tqdm import tqdm
 from sklearn.metrics import r2_score
-from sklearn.model_selection import train_test_split
 from torch_geometric.loader import DataLoader
 from torch_geometric.nn import GCNConv, SAGEConv, GATConv
+from sklearn.model_selection import train_test_split
+
 from models.feast_conv import FeatureSteeredConvolution
 from models.mesh_processing_net import MeshProcessingNetwork
 from models.jk_net import JKNet
 from models.dense_gnn import DenseGNN
 from models.res_gnn import ResGNN
 from datasets.in_memory import IMDataset
-import wandb
+
+def load_and_split_dataset(raw_data_root, dataset_root, basic_features_path, target):
+    dataset_female = IMDataset(raw_data_root, dataset_root, basic_features_path, target, 0)
+    dataset_male = IMDataset(raw_data_root, dataset_root, basic_features_path, target, 1)
+
+    dev_data_female, test_data_female = train_test_split(dataset_female, test_size=0.1, random_state=42, shuffle=True)
+    train_data_female, val_data_female = train_test_split(dev_data_female, test_size=0.33, random_state=43, shuffle=True)
+    dev_data_male, test_data_male = train_test_split(dataset_male, test_size=0.1, random_state=42, shuffle=True)
+    train_data_male, val_data_male = train_test_split(dev_data_male, test_size=0.33, random_state=43, shuffle=True)
+
+    train_data_all = train_data_male + train_data_female
+    val_data_all = val_data_male + val_data_female
+    test_data_all = test_data_male + test_data_female
+    random.shuffle(train_data_all)
+    random.shuffle(val_data_all)
+    random.shuffle(test_data_all)
+
+    return train_data_all, val_data_all, test_data_male, test_data_female
+
 
 def train(model, trainloader, valloader, device, config):
     
@@ -94,44 +114,6 @@ def train(model, trainloader, valloader, device, config):
                 # set model back to train
                 model.train()
 
-def test(model, loader, device, task):
-    model.eval()
- 
-    crit = torch.nn.MSELoss() if task == "regression" else torch.nn.CrossEntropyLoss()
-    predictions = torch.tensor([])
-    targets = torch.tensor([])
-    
-    with torch.no_grad():
-        for data in loader:
-            data = data.to(device)
-            pred = model(data).detach().cpu() if task == "regression" else F.softmax(model(data).detach().cpu(), dim=1)
-            target = data.y.detach().cpu()
-            predictions = torch.cat((predictions, pred))
-            targets = torch.cat((targets, target))
-
-    loss = crit(predictions, targets)
-    acc = r2_score(targets, predictions) if task == "regression" else np.mean((torch.argmax(predictions,1)==torch.argmax(targets,1)).numpy())
-
-    return loss, acc
-
-def load_and_split_dataset(raw_data_root, dataset_root, basic_features_path, target):
-    dataset_female = IMDataset(raw_data_root, dataset_root, basic_features_path, target, 0)
-    dataset_male = IMDataset(raw_data_root, dataset_root, basic_features_path, target, 1)
-
-    dev_data_female, test_data_female = train_test_split(dataset_female, test_size=0.1, random_state=42, shuffle=True)
-    train_data_female, val_data_female = train_test_split(dev_data_female, test_size=0.33, random_state=43, shuffle=True)
-    dev_data_male, test_data_male = train_test_split(dataset_male, test_size=0.1, random_state=42, shuffle=True)
-    train_data_male, val_data_male = train_test_split(dev_data_male, test_size=0.33, random_state=43, shuffle=True)
-
-    train_data_all = train_data_male + train_data_female
-    val_data_all = val_data_male + val_data_female
-    test_data_all = test_data_male + test_data_female
-    random.shuffle(train_data_all)
-    random.shuffle(val_data_all)
-    random.shuffle(test_data_all)
-
-    return train_data_all, val_data_all, test_data_male, test_data_female
-
 def main():    
     REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path of the dir saving the .ply registered data
     INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
@@ -153,35 +135,35 @@ def main():
     n_class = 1 if config["task"] == "regression" else 2
 
 # MeshProcressingNet params
-    model_params = dict(
-        gnn_conv = FeatureSteeredConvolution,
-        in_features = 3,
-        encoder_channels = [],
-        conv_channels = [32, 64, 128, 64],
-        decoder_channels = [32],
-        num_classes = n_class,
-        apply_dropedge = False,
-        apply_bn = True,
-        apply_dropout = False,
-        num_heads=4
-    )
+    # model_params = dict(
+    #     gnn_conv = FeatureSteeredConvolution,
+    #     in_features = 3,
+    #     encoder_channels = [],
+    #     conv_channels = [32, 64, 128, 64],
+    #     decoder_channels = [32],
+    #     num_classes = n_class,
+    #     apply_dropedge = False,
+    #     apply_bn = True,
+    #     apply_dropout = False,
+    #     num_heads=4
+    # )
 
 
 # ResGNN params
-    # model_params = dict(
-    #     gnn_conv = SAGEConv,
-    #     in_features = 3,
-    #     num_hiddens = 32,
-    #     num_layers = 5,
-    #     num_skip_layers = 1,
-    #     encoder_channels = [128],
-    #     decoder_channels = [256, 32],
-    #     num_classes = n_class,
-    #     aggregation = 'max', # mean, max
-    #     apply_dropedge = True,
-    #     apply_bn = True,
-    #     apply_dropout = True
-    # )
+    model_params = dict(
+        gnn_conv = SAGEConv,
+        in_features = 3,
+        num_hiddens = 32,
+        num_layers = 5,
+        num_skip_layers = 1,
+        encoder_channels = [128],
+        decoder_channels = [256, 32],
+        num_classes = n_class,
+        aggregation = 'max', # mean, max
+        apply_dropedge = True,
+        apply_bn = True,
+        apply_dropout = True
+    )
 
 # DenseGNN params
     # model_params = dict(
@@ -221,8 +203,8 @@ def main():
     print("current GPU:", torch.cuda.get_device_name(device))
     print("using GPU:", torch.cuda.current_device())
 
-    model = MeshProcessingNetwork(**model_params).to(device) 
-    # model = ResGNN(**model_params).to(device)
+    # model = MeshProcessingNetwork(**model_params).to(device) 
+    model = ResGNN(**model_params).to(device)
     # model = DenseGNN(**model_params).to(device)
     # model = JKNet(**model_params).to(device)
     model = model.double()
