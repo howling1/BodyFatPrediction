@@ -1,0 +1,43 @@
+current GPU: NVIDIA A40
+using GPU: 3
+
+
+
+
+182it [00:08, 20.72it/s]
+Traceback (most recent call last):
+  File "training.py", line 258, in <module>
+    main()
+  File "training.py", line 254, in main
+    wandb.log({"table": pd.DataFrame(test_result)})
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 370, in wrapper
+    return func(self, *args, **kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 333, in wrapper
+    return func(self, *args, **kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 1703, in log
+    self._log(data=data, step=step, commit=commit)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 1485, in _log
+    self._partial_history_callback(data, step, commit)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 1364, in _partial_history_callback
+    self._backend.interface.publish_partial_history(
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/sdk/interface/interface.py", line 568, in publish_partial_history
+    data = history_dict_to_json(run, data, step=user_step, ignore_copy_err=True)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/sdk/data_types/utils.py", line 52, in history_dict_to_json
+    payload[key] = val_to_json(
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/sdk/data_types/utils.py", line 77, in val_to_json
+    val = wandb.Table(dataframe=val)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/data_types.py", line 273, in __init__
+    self._init_from_dataframe(dataframe, columns, optional, dtype)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/data_types.py", line 330, in _init_from_dataframe
+    self.add_data(*tuple(dataframe[col].values[row] for col in self.columns))
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/data_types.py", line 472, in add_data
+    result_type = self._get_updated_result_type(data)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/wandb/data_types.py", line 493, in _get_updated_result_type
+    raise TypeError(
+TypeError: Data row contained incompatible types:
+{'params': -6.02926671088909} of type {'params': Number} is not assignable to {'params': None or Pythonobject(class_name:Tensor)}
+Key 'params':
+	Number not assignable to None or Pythonobject(class_name:Tensor)
+		Number not assignable to None
+	and
+		Number not assignable to Pythonobject(class_name:Tensor)

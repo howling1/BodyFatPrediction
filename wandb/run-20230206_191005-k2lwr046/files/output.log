@@ -1,0 +1,8 @@
+current GPU: NVIDIA A40
+using GPU: 3
+Traceback (most recent call last):
+  File "training.py", line 254, in <module>
+    main()
+  File "training.py", line 228, in main
+    test_loader_male = DataLoader(test_loader_male, batch_size = config["batch_size"])
+UnboundLocalError: local variable 'test_loader_male' referenced before assignment

@@ -17,6 +17,7 @@ from models.jk_net import JKNet
 from models.dense_gnn import DenseGNN
 from models.res_gnn import ResGNN
 from datasets.in_memory import IMDataset
+from helper_methods import evaluate
 
 def load_and_split_dataset(raw_data_root, dataset_root, basic_features_path, target):
     dataset_female = IMDataset(raw_data_root, dataset_root, basic_features_path, target, 0)
@@ -50,7 +51,7 @@ def train(model, trainloader, valloader, device, config):
 
     model.train()
 
-    best_accuracy = 0.
+    best_accuracy = float("-inf")
     train_loss_running = 0.
 
     for epoch in range(config['epochs']):
@@ -109,6 +110,7 @@ def train(model, trainloader, valloader, device, config):
                 wandb.log({"validation loss": loss_total_val / len(valloader), "validation accuracy": accuracy })
                 if accuracy > best_accuracy:
                     torch.save(model.state_dict(), f'runs/{config["experiment_name"]}/model_best.ckpt')
+                    torch.save(model, f'runs/{config["experiment_name"]}/model_best.pt')
                     best_accuracy = accuracy
 
                 # set model back to train
@@ -118,14 +120,14 @@ def main():
     REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path of the dir saving the .ply registered data
     INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
     FEATURES_PATH = "/vol/chameleon/projects/mesh_gnn/basic_features.csv"
-    TARGET = "age"
+    TARGET = "weight"
 
     config = {
-        "experiment_name" : "age_prediction_5k", # there should be a folder named exactly this under the folder runs/
+        "experiment_name" : "weight_prediction_5k", # there should be a folder named exactly this under the folder runs/
         "batch_size" : 32,
-        "epochs" : 2000,
-        "learning_rate" : 0.003,
-        "weight_decay": 0.005,
+        "epochs" : 500,
+        "learning_rate" : 0.001,
+        "weight_decay": 0.,
         "task" : "regression", # "regression" or "classification"
         "print_every_n" : 200,
         "validate_every_n" : 200}
@@ -135,35 +137,35 @@ def main():
     n_class = 1 if config["task"] == "regression" else 2
 
 # MeshProcressingNet params
-    # model_params = dict(
-    #     gnn_conv = FeatureSteeredConvolution,
-    #     in_features = 3,
-    #     encoder_channels = [],
-    #     conv_channels = [32, 64, 128, 64],
-    #     decoder_channels = [32],
-    #     num_classes = n_class,
-    #     apply_dropedge = False,
-    #     apply_bn = True,
-    #     apply_dropout = False,
-    #     num_heads=4
-    # )
+    model_params = dict(
+        gnn_conv = GATConv,
+        in_features = 3,
+        encoder_channels = [16],
+        conv_channels = [32, 64, 128],
+        decoder_channels = [32],
+        num_classes = n_class,
+        apply_dropedge = True,
+        apply_bn = True,
+        apply_dropout = True,
+        num_heads=4
+    )
 
 
 # ResGNN params
-    model_params = dict(
-        gnn_conv = SAGEConv,
-        in_features = 3,
-        num_hiddens = 32,
-        num_layers = 5,
-        num_skip_layers = 1,
-        encoder_channels = [128],
-        decoder_channels = [256, 32],
-        num_classes = n_class,
-        aggregation = 'max', # mean, max
-        apply_dropedge = True,
-        apply_bn = True,
-        apply_dropout = True
-    )
+    # model_params = dict(
+    #     gnn_conv = SAGEConv,
+    #     in_features = 3,
+    #     num_hiddens = 32,
+    #     num_layers = 5,
+    #     num_skip_layers = 1,
+    #     encoder_channels = [128],
+    #     decoder_channels = [256, 32],
+    #     num_classes = n_class,
+    #     aggregation = 'max', # mean, max
+    #     apply_dropedge = True,
+    #     apply_bn = True,
+    #     apply_dropout = True
+    # )
 
 # DenseGNN params
     # model_params = dict(
@@ -203,8 +205,8 @@ def main():
     print("current GPU:", torch.cuda.get_device_name(device))
     print("using GPU:", torch.cuda.current_device())
 
-    # model = MeshProcessingNetwork(**model_params).to(device) 
-    model = ResGNN(**model_params).to(device)
+    model = MeshProcessingNetwork(**model_params).to(device) 
+    # model = ResGNN(**model_params).to(device)
     # model = DenseGNN(**model_params).to(device)
     # model = JKNet(**model_params).to(device)
     model = model.double()
@@ -223,9 +225,36 @@ def main():
 
     train_loader = DataLoader(train_data_all, batch_size = config["batch_size"], shuffle = True)
     val_loader = DataLoader(val_data_all, batch_size = config["batch_size"], shuffle = True)
-    # test_loader = DataLoader(test_data_all, batch_size = config["batch_size"])
+    test_loader_female = DataLoader(test_data_female, batch_size = config["batch_size"])
+    test_loader_male = DataLoader(test_data_male, batch_size = config["batch_size"])
 
     train(model, train_loader, val_loader, device, config)
+
+    # testing
+    # model = MeshProcessingNetwork(**model_params).to(device) 
+    # model.load_state_dict(torch.load(f'runs/{config["experiment_name"]}/model_best.ckpt'))
+    model = torch.load(f'runs/{config["experiment_name"]}/model_best.pt')
     
+    loss_test_female, r2_test_female = evaluate(model, test_loader_female, device, config["task"])
+    loss_test_male, r2_test_male = evaluate(model, test_loader_male, device, config["task"])
+    ratio_male = len(test_data_male) / (len(test_data_female) + len(test_data_male))
+    ratio_female = len(test_data_female) / (len(test_data_female) + len(test_data_male))
+    loss_test = loss_test_female * ratio_female + loss_test_male * ratio_male
+    r2_test = r2_test_female * ratio_female + r2_test_male * ratio_male
+
+    test_result = {
+        'params':{
+            'loss_test_female': loss_test_female.item(),
+            'r2_test_female': r2_test_female.item(),
+            'loss_test_male': loss_test_male.item(),
+            'r2_test_male': r2_test_male.item(),
+            'loss_test': loss_test.item(),
+            'r2_test': r2_test.item()
+        }
+    }
+
+    wandb.log({"table": pd.DataFrame(test_result)})
+
+
 if __name__ == "__main__":
     main()

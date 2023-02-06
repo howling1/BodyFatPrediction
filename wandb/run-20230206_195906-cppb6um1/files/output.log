@@ -1,0 +1,54 @@
+current GPU: NVIDIA A40
+using GPU: 3
+
+
+
+182it [00:08, 20.97it/s]
+15it [00:00, 23.60it/s]
+[001/00017] train_loss: 1641.998
+
+
+
+182it [00:10, 17.45it/s]
+
+33it [00:01, 22.88it/s]
+
+42it [00:04,  5.89it/s]
+
+
+
+182it [00:10, 17.39it/s]
+45it [00:01, 23.55it/s]
+
+51it [00:02, 23.56it/s]
+
+
+
+182it [00:10, 17.61it/s]
+
+69it [00:02, 22.94it/s]
+
+72it [00:05,  3.37it/s]
+
+
+182it [00:10, 17.55it/s]
+Traceback (most recent call last):
+  File "training.py", line 258, in <module>
+    main()
+  File "training.py", line 236, in main
+    loss_test_female, r2_test_female = evaluate(model, test_loader_female, device, config["task"])
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/helper_methods.py", line 96, in evaluate
+    pred = model(data).detach().cpu() if task == "regression" else F.softmax(model(data).detach().cpu(), dim=1)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/data2/practical-wise2223/MeshBody/BodyMeshGNN/models/mesh_processing_net.py", line 54, in forward
+    x = self.input_encoder(x) if self.input_encoder != None else x
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/container.py", line 204, in forward
+    input = module(input)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1194, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/u/home/zhousiy/.conda/envs/BodyMeshGNN/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 114, in forward
+    return F.linear(input, self.weight, self.bias)
+RuntimeError: mat1 and mat2 must have the same dtype
