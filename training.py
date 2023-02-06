@@ -1,5 +1,3 @@
-from pathlib import Path
-import os
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -11,14 +9,13 @@ from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split
 from torch_geometric.loader import DataLoader
 from torch_geometric.nn import GCNConv, SAGEConv, GATConv
-from model import FeatureSteeredConvolution, MeshProcessingNetwork, ResGNN, DenseGNN, JKNet
+from models.feast_conv import FeatureSteeredConvolution
+from models.mesh_processing_net import MeshProcessingNetwork
+from models.jk_net import JKNet
+from models.dense_gnn import DenseGNN
+from models.res_gnn import ResGNN
 from datasets.in_memory import IMDataset
 import wandb
-
-REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path of the dir saving the .ply registered data
-INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
-FEATURES_PATH = "/vol/chameleon/projects/mesh_gnn/basic_features.csv"
-TARGET = "age"
 
 def train(model, trainloader, valloader, device, config):
     
@@ -117,9 +114,9 @@ def test(model, loader, device, task):
 
     return loss, acc
 
-def main():    
-    dataset_female = IMDataset(REGISTERED_ROOT, INMEMORY_ROOT, FEATURES_PATH, TARGET, 0)
-    dataset_male = IMDataset(REGISTERED_ROOT, INMEMORY_ROOT, FEATURES_PATH, TARGET, 1)
+def load_and_split_dataset(raw_data_root, dataset_root, basic_features_path, target):
+    dataset_female = IMDataset(raw_data_root, dataset_root, basic_features_path, target, 0)
+    dataset_male = IMDataset(raw_data_root, dataset_root, basic_features_path, target, 1)
 
     dev_data_female, test_data_female = train_test_split(dataset_female, test_size=0.1, random_state=42, shuffle=True)
     train_data_female, val_data_female = train_test_split(dev_data_female, test_size=0.33, random_state=43, shuffle=True)
@@ -132,6 +129,14 @@ def main():
     random.shuffle(train_data_all)
     random.shuffle(val_data_all)
     random.shuffle(test_data_all)
+
+    return train_data_all, val_data_all, test_data_male, test_data_female
+
+def main():    
+    REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path of the dir saving the .ply registered data
+    INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
+    FEATURES_PATH = "/vol/chameleon/projects/mesh_gnn/basic_features.csv"
+    TARGET = "age"
 
     config = {
         "experiment_name" : "age_prediction_5k", # there should be a folder named exactly this under the folder runs/
@@ -147,37 +152,36 @@ def main():
     
     n_class = 1 if config["task"] == "regression" else 2
 
-
 # MeshProcressingNet params
-    # model_params = dict(
-    #     gnn_conv = GATConv,
-    #     in_features = 3,
-    #     encoder_channels = [],
-    #     conv_channels = [32, 64, 128, 64],
-    #     decoder_channels = [32],
-    #     num_classes = n_class,
-    #     apply_dropedge = False,
-    #     apply_bn = True,
-    #     apply_dropout = False,
-    #     num_heads=4
-    # )
+    model_params = dict(
+        gnn_conv = FeatureSteeredConvolution,
+        in_features = 3,
+        encoder_channels = [],
+        conv_channels = [32, 64, 128, 64],
+        decoder_channels = [32],
+        num_classes = n_class,
+        apply_dropedge = False,
+        apply_bn = True,
+        apply_dropout = False,
+        num_heads=4
+    )
 
 
 # ResGNN params
-    model_params = dict(
-        gnn_conv = SAGEConv,
-        in_features = 3,
-        num_hiddens = 32,
-        num_layers = 5,
-        num_skip_layers = 1,
-        encoder_channels = [128],
-        decoder_channels = [256, 32],
-        num_classes = n_class,
-        aggregation = 'max', # mean, max
-        apply_dropedge = True,
-        apply_bn = True,
-        apply_dropout = True
-    )
+    # model_params = dict(
+    #     gnn_conv = SAGEConv,
+    #     in_features = 3,
+    #     num_hiddens = 32,
+    #     num_layers = 5,
+    #     num_skip_layers = 1,
+    #     encoder_channels = [128],
+    #     decoder_channels = [256, 32],
+    #     num_classes = n_class,
+    #     aggregation = 'max', # mean, max
+    #     apply_dropedge = True,
+    #     apply_bn = True,
+    #     apply_dropout = True
+    # )
 
 # DenseGNN params
     # model_params = dict(
@@ -217,8 +221,8 @@ def main():
     print("current GPU:", torch.cuda.get_device_name(device))
     print("using GPU:", torch.cuda.current_device())
 
-    # model = MeshProcessingNetwork(**model_params).to(device) 
-    model = ResGNN(**model_params).to(device)
+    model = MeshProcessingNetwork(**model_params).to(device) 
+    # model = ResGNN(**model_params).to(device)
     # model = DenseGNN(**model_params).to(device)
     # model = JKNet(**model_params).to(device)
     model = model.double()
@@ -232,6 +236,8 @@ def main():
     }
 
     wandb.log({"table": pd.DataFrame(param_log)})
+
+    train_data_all, val_data_all, test_data_male, test_data_female = load_and_split_dataset(REGISTERED_ROOT, INMEMORY_ROOT, FEATURES_PATH, TARGET)
 
     train_loader = DataLoader(train_data_all, batch_size = config["batch_size"], shuffle = True)
     val_loader = DataLoader(val_data_all, batch_size = config["batch_size"], shuffle = True)
