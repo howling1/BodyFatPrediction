@@ -20,7 +20,7 @@ from datasets.in_memory import IMDataset
 REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path of the dir saving the .ply registered data
 INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
 FEATURES_PATH = "/vol/chameleon/projects/mesh_gnn/basic_features.csv"
-TARGET = "age"
+TARGET = "height"
 
 def test(model, loader, device, task):
     model.eval()
@@ -133,18 +133,17 @@ def train(config=None):
         model_params = dict(
             gnn_conv = SAGEConv,
             in_features = 3,
-            num_hiddens = config.num_hiddens,
-            num_layers = config.num_layers,
             encoder_channels = config.encoder_channels,
-            decoder_channels = [256, 32],
+            conv_channels = config.conv_channels,
+            decoder_channels = [32, 8],
             num_classes = n_class,
-            aggregation = config.aggregation, # mean, max
             apply_dropedge = config.apply_dropedge,
-            apply_bn = True,
+            apply_bn = config.apply_bn,
             apply_dropout = config.apply_dropedge,
+            aggregation = config.aggregation
         )
 
-        model = DenseGNN(**model_params).to(device)
+        model = MeshProcessingNetwork(**model_params).to(device)
         model = model.double()
         #-----------------------
 
@@ -181,15 +180,15 @@ def main():
     sweep_config['metric'] = metric
 
     parameters_dict = {
-        'num_hiddens' : { 'values' : [8, 16, 32]},   
-        'num_layers' : { 'values': [2, 4, 6, 8, 10]},
         'aggregation': {'values': ['max', 'mean']},   
         'apply_dropedge': {'values': [True, False]},
         'apply_dropout': {'values': [True, False]},
-        'encoder_channels': {'values': [[], [64], [128]]},
-        'learning_rate': { 'distribution': 'uniform', 'min': 0,  'max': 0.01 }, # need to give a distribution for it to pick the parameter while using 'random' search 
-        'weight_decay': {'distribution': 'uniform', 'min': 0.0001,  'max': 0.02 },
-        'epochs' : { 'value' : 500}, # set parameter only single value if you don't want it to change during sweep
+        'apply_bn': {'values': [True, False]},
+        'encoder_channels': {'values': [[], [16]]},
+        'conv_channels': {'values': [[32, 128], [32, 64, 128]]},
+        'learning_rate': { 'distribution': 'uniform', 'min': 0.001,  'max': 0.01 }, # need to give a distribution for it to pick the parameter while using 'random' search 
+        'weight_decay': {'distribution': 'uniform', 'min': 0.0001,  'max': 0.01 },
+        'epochs' : { 'value' : 300}, # set parameter only single value if you don't want it to change during sweep
         'batch_size' : {'values' : [16, 32]},
         'task' : { 'value' : 'regression' } # "regression" or "classification"
     }
@@ -198,8 +197,8 @@ def main():
 
     sweep_id = wandb.sweep(sweep_config, project="mesh-gnn_sweep") 
 
-    wandb.agent(sweep_id, train, count=25) # count parameter is necessary for random search, it stops after reaching count. grid search stops when all the possibilites finished.
+    wandb.agent(sweep_id, train, count=20) # count parameter is necessary for random search, it stops after reaching count. grid search stops when all the possibilites finished.
     
 if __name__ == "__main__":
-    torch.cuda.set_device(0)
+    torch.cuda.set_device(3)
     main()
