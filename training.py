@@ -221,12 +221,12 @@ def main():
 
     test_result = {
         'params':{
-            'loss_test_female': 'loss_test_female: ' + loss_test_female.item(),
-            'r2_test_female': 'r2_test_female: ' + r2_test_female.item(),
-            'loss_test_male': 'loss_test_male: ' + loss_test_male.item(),
-            'r2_test_male': 'r2_test_male: ' + r2_test_male.item(),
-            'loss_test': 'loss_test: ' + loss_test.item(),
-            'r2_test': 'r2_test: ' + r2_test.item()
+            'loss_test_female': 'loss_test_female: ' + str(loss_test_female.item()),
+            'r2_test_female': 'r2_test_female: ' + str(r2_test_female.item()),
+            'loss_test_male': 'loss_test_male: ' + str(loss_test_male.item()),
+            'r2_test_male': 'r2_test_male: ' + str(r2_test_male.item()),
+            'loss_test': 'loss_test: ' + str(loss_test.item()),
+            'r2_test': 'r2_test: ' + str(r2_test.item())
         }
     }
 
