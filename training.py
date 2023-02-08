@@ -42,9 +42,6 @@ def train(model, trainloader, valloader, device, config):
 
     for epoch in range(config['epochs']):
         for i, data in tqdm(enumerate(trainloader)):  
-            if scheduler is not None:
-                scheduler.step()
-
             data = data.to(device)
             optimizer.zero_grad()
             prediction = model(data)
@@ -53,6 +50,8 @@ def train(model, trainloader, valloader, device, config):
             loss.to(device)
             loss.backward()
             optimizer.step()
+            if scheduler is not None:
+                scheduler.step()
             
             # loss logging
             train_loss_running += loss.item()
