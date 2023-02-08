@@ -17,25 +17,7 @@ from models.jk_net import JKNet
 from models.dense_gnn import DenseGNN
 from models.res_gnn import ResGNN
 from datasets.in_memory import IMDataset
-from helper_methods import evaluate
-
-def load_and_split_dataset(raw_data_root, dataset_root, basic_features_path, target):
-    dataset_female = IMDataset(raw_data_root, dataset_root, basic_features_path, target, 0)
-    dataset_male = IMDataset(raw_data_root, dataset_root, basic_features_path, target, 1)
-
-    dev_data_female, test_data_female = train_test_split(dataset_female, test_size=0.1, random_state=42, shuffle=True)
-    train_data_female, val_data_female = train_test_split(dev_data_female, test_size=0.33, random_state=43, shuffle=True)
-    dev_data_male, test_data_male = train_test_split(dataset_male, test_size=0.1, random_state=42, shuffle=True)
-    train_data_male, val_data_male = train_test_split(dev_data_male, test_size=0.33, random_state=43, shuffle=True)
-
-    train_data_all = train_data_male + train_data_female
-    val_data_all = val_data_male + val_data_female
-    test_data_all = test_data_male + test_data_female
-    random.shuffle(train_data_all)
-    random.shuffle(val_data_all)
-    random.shuffle(test_data_all)
-
-    return train_data_all, val_data_all, test_data_male, test_data_female
+from helper_methods import evaluate, load_and_split_dataset
 
 
 def train(model, trainloader, valloader, device, config):
@@ -120,7 +102,7 @@ def main():
     REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path of the dir saving the .ply registered data
     INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
     FEATURES_PATH = "/vol/chameleon/projects/mesh_gnn/basic_features.csv"
-    TARGET = "height"
+    TARGET = "age"
 
     config = {
         "experiment_name" : "height_prediction_5k", # there should be a folder named exactly this under the folder runs/
@@ -137,18 +119,18 @@ def main():
     n_class = 1 if config["task"] == "regression" else 2
 
 # MeshProcressingNet params
-    model_params = dict(
-        gnn_conv = SAGEConv,
-        in_features = 3,
-        encoder_channels = [],
-        conv_channels = [32, 128],
-        decoder_channels = [32, 8],
-        num_classes = n_class,
-        aggregation = 'mean',
-        apply_dropedge = True,
-        apply_bn = True,
-        apply_dropout = True,
-    )
+    # model_params = dict(
+    #     gnn_conv = SAGEConv,
+    #     in_features = 3,
+    #     encoder_channels = [],
+    #     conv_channels = [32, 128],
+    #     decoder_channels = [32, 8],
+    #     num_classes = n_class,
+    #     aggregation = 'mean',
+    #     apply_dropedge = True,
+    #     apply_bn = True,
+    #     apply_dropout = True,
+    # )
 
 
 # ResGNN params
@@ -199,26 +181,13 @@ def main():
         apply_dropout = True,
     )
 
-    torch.cuda.set_device(3)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print("current GPU:", torch.cuda.get_device_name(device))
-    print("using GPU:", torch.cuda.current_device())
 
     # model = MeshProcessingNetwork(**model_params).to(device) 
     # model = ResGNN(**model_params).to(device)
     # model = DenseGNN(**model_params).to(device)
     model = JKNet(**model_params).to(device)
     model = model.double()
-
-    param_log = {
-        'params':{
-            'network': str(model),
-            'config': str(config),
-            'model_params': str(model_params),
-        }
-    }
-
-    wandb.log({"table": pd.DataFrame(param_log)})
 
     train_data_all, val_data_all, test_data_male, test_data_female = load_and_split_dataset(REGISTERED_ROOT, INMEMORY_ROOT, FEATURES_PATH, TARGET)
 
@@ -243,12 +212,12 @@ def main():
 
     test_result = {
         'params':{
-            'loss_test_female': loss_test_female.item(),
-            'r2_test_female': r2_test_female.item(),
-            'loss_test_male': loss_test_male.item(),
-            'r2_test_male': r2_test_male.item(),
-            'loss_test': loss_test.item(),
-            'r2_test': r2_test.item()
+            'loss_test_female': 'loss_test_female: ' + loss_test_female.item(),
+            'r2_test_female': 'r2_test_female: ' + r2_test_female.item(),
+            'loss_test_male': 'loss_test_male: ' + loss_test_male.item(),
+            'r2_test_male': 'r2_test_male: ' + r2_test_male.item(),
+            'loss_test': 'loss_test: ' + loss_test.item(),
+            'r2_test': 'r2_test: ' + r2_test.item()
         }
     }
 
@@ -256,4 +225,6 @@ def main():
 
 
 if __name__ == "__main__":
+    torch.cuda.set_device(3)
+    print("using GPU:", torch.cuda.current_device())
     main()

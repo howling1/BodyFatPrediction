@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "training.py", line 199, in <module>
-    main()
-  File "training.py", line 192, in main
-    train_loader = DataLoader(train_data_all, batch_size = config["batch_size"], shuffle = True).to(device)
-AttributeError: 'DataLoader' object has no attribute 'to'

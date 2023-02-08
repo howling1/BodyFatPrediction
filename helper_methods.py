@@ -102,3 +102,21 @@ def evaluate(model, loader, device, task):
     acc = r2_score(targets, predictions) if task == "regression" else np.mean((torch.argmax(predictions,1)==torch.argmax(targets,1)).numpy())
 
     return loss, acc
+
+def load_and_split_dataset(raw_data_root, dataset_root, basic_features_path, target):
+    dataset_female = IMDataset(raw_data_root, dataset_root, basic_features_path, target, 0)
+    dataset_male = IMDataset(raw_data_root, dataset_root, basic_features_path, target, 1)
+
+    dev_data_female, test_data_female = train_test_split(dataset_female, test_size=0.1, random_state=42, shuffle=True)
+    train_data_female, val_data_female = train_test_split(dev_data_female, test_size=0.33, random_state=43, shuffle=True)
+    dev_data_male, test_data_male = train_test_split(dataset_male, test_size=0.1, random_state=42, shuffle=True)
+    train_data_male, val_data_male = train_test_split(dev_data_male, test_size=0.33, random_state=43, shuffle=True)
+
+    train_data_all = train_data_male + train_data_female
+    val_data_all = val_data_male + val_data_female
+    test_data_all = test_data_male + test_data_female
+    random.shuffle(train_data_all)
+    random.shuffle(val_data_all)
+    random.shuffle(test_data_all)
+
+    return train_data_all, val_data_all, test_data_male, test_data_female

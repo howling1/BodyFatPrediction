@@ -16,31 +16,12 @@ from models.jk_net import JKNet
 from models.dense_gnn import DenseGNN
 from models.res_gnn import ResGNN
 from datasets.in_memory import IMDataset
+from helper_methods import load_and_split_dataset
 
 REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path of the dir saving the .ply registered data
 INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
 FEATURES_PATH = "/vol/chameleon/projects/mesh_gnn/basic_features.csv"
 TARGET = "age"
-
-def test(model, loader, device, task):
-    model.eval()
- 
-    crit = torch.nn.L1Loss() if task == "regression" else torch.nn.CrossEntropyLoss()
-    predictions = torch.tensor([])
-    targets = torch.tensor([])
-    
-    with torch.no_grad():
-        for data in loader:
-            data = data.to(device)
-            pred = model(data).detach().cpu() if task == "regression" else F.softmax(model(data).detach().cpu(), dim=1)
-            target = data.y.detach().cpu()
-            predictions = torch.cat((predictions, pred))
-            targets = torch.cat((targets, target))
-
-    loss = crit(predictions, targets)
-    acc = r2_score(targets, predictions) if task == "regression" else np.mean((torch.argmax(predictions,1)==torch.argmax(targets,1)).numpy())
-
-    return loss, acc
 
 def val_epoch(model, valloader, loss_criterion, device, task):
     cumu_loss = 0
@@ -98,25 +79,6 @@ def train_epoch(model, trainloader, optimizer, loss_criterion, device):
 def train(config=None):
     #set device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print("current GPU:", torch.cuda.get_device_name(device))
-    print("using GPU:", torch.cuda.current_device())
-    #---------------------
-
-    #initialize dataloaders
-    dataset_female = IMDataset(REGISTERED_ROOT, INMEMORY_ROOT, FEATURES_PATH, TARGET, 0)
-    dataset_male = IMDataset(REGISTERED_ROOT, INMEMORY_ROOT, FEATURES_PATH, TARGET, 1)
-
-    dev_data_female, test_data_female = train_test_split(dataset_female, test_size=0.1, random_state=42, shuffle=True)
-    train_data_female, val_data_female = train_test_split(dev_data_female, test_size=0.33, random_state=43, shuffle=True)
-    dev_data_male, test_data_male = train_test_split(dataset_male, test_size=0.1, random_state=42, shuffle=True)
-    train_data_male, val_data_male = train_test_split(dev_data_male, test_size=0.33, random_state=43, shuffle=True)
-
-    train_data_all = train_data_male + train_data_female
-    val_data_all = val_data_male + val_data_female
-    test_data_all = test_data_male + test_data_female
-    random.shuffle(train_data_all)
-    random.shuffle(val_data_all)
-    random.shuffle(test_data_all)
     #----------------------------
 
     # Initialize a new wandb run
@@ -125,9 +87,11 @@ def train(config=None):
         # this config will be set by Sweep Controller
         config = wandb.config
 
+        train_data_all, val_data_all, test_data_male, test_data_female = load_and_split_dataset(REGISTERED_ROOT, INMEMORY_ROOT, FEATURES_PATH, TARGET)
+
         train_loader = DataLoader(train_data_all, batch_size = config.batch_size, shuffle = True)
         val_loader = DataLoader(val_data_all, batch_size = config.batch_size, shuffle = True)
-        
+
         # initialize model parameters
         n_class = 1 if config.task == "regression" else 2
         model_params = dict(
@@ -169,7 +133,6 @@ def train(config=None):
             wandb.log({"training_loss": training_loss, "val_loss":val_loss, "epoch": epoch})           
 
 def main(): 
-
     sweep_config = {
         'method': 'random' # matches the parameters randomly, can use 'grid' as well to match each parameter with each other
     } 
@@ -204,4 +167,5 @@ def main():
     
 if __name__ == "__main__":
     torch.cuda.set_device(3)
+    print("using GPU:", torch.cuda.current_device())
     main()
