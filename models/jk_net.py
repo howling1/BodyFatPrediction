@@ -50,7 +50,11 @@ class JKNet(nn.Module):
                 else [nn.BatchNorm1d(num_hiddens) for i in range(num_layers)]
                 )
 
-        self.jk = JumpingKnowledge(jk_mode, num_hiddens * num_heads, num_layers) if jk_mode == 'lstm' else JumpingKnowledge(jk_mode)
+        if jk_mode == 'lstm':
+            self.jk = JumpingKnowledge(jk_mode, num_hiddens * num_heads, num_layers) if gnn_conv == GATConv else JumpingKnowledge(jk_mode, num_hiddens, num_layers)
+        else: 
+            self.jk = JumpingKnowledge(jk_mode)
+
         if jk_mode == 'max' or jk_mode == 'lstm':
             encoder_in = num_hiddens * num_heads if gnn_conv == GATConv else num_hiddens
         elif jk_mode == 'cat':

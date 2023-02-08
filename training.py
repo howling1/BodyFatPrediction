@@ -184,31 +184,30 @@ def main():
 
 
 # JKNet params
-    # model_params = dict(
-    #     gnn_conv = GATConv,
-    #     in_features = 3,
-    #     num_hiddens = 4,
-    #     num_layers = 3,
-    #     encoder_channels = [],
-    #     decoder_channels = [8],
-    #     num_classes = n_class,
-    #     jk_mode = 'lstm', # cat, max, lstm
-    #     aggregation = 'max', # mean, max
-    #     apply_dropedge = True,
-    #     apply_bn = True,
-    #     apply_dropout = True,
-    #     num_heads=4,
-    # )
+    model_params = dict(
+        gnn_conv = SAGEConv,
+        in_features = 3,
+        num_hiddens = 4,
+        num_layers = 3,
+        encoder_channels = [],
+        decoder_channels = [8],
+        num_classes = n_class,
+        jk_mode = 'max', # cat, max, lstm
+        aggregation = 'max', # mean, max
+        apply_dropedge = False,
+        apply_bn = True,
+        apply_dropout = True,
+    )
 
     torch.cuda.set_device(3)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print("current GPU:", torch.cuda.get_device_name(device))
     print("using GPU:", torch.cuda.current_device())
 
-    model = MeshProcessingNetwork(**model_params).to(device) 
+    # model = MeshProcessingNetwork(**model_params).to(device) 
     # model = ResGNN(**model_params).to(device)
     # model = DenseGNN(**model_params).to(device)
-    # model = JKNet(**model_params).to(device)
+    model = JKNet(**model_params).to(device)
     model = model.double()
 
     param_log = {

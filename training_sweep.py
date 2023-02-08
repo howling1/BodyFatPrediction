@@ -20,7 +20,7 @@ from datasets.in_memory import IMDataset
 REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path of the dir saving the .ply registered data
 INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
 FEATURES_PATH = "/vol/chameleon/projects/mesh_gnn/basic_features.csv"
-TARGET = "height"
+TARGET = "age"
 
 def test(model, loader, device, task):
     model.eval()
@@ -133,17 +133,19 @@ def train(config=None):
         model_params = dict(
             gnn_conv = SAGEConv,
             in_features = 3,
+            num_hiddens = config.num_hiddens,
+            num_layers = config.num_layers,
             encoder_channels = config.encoder_channels,
-            conv_channels = config.conv_channels,
-            decoder_channels = [32, 8],
+            decoder_channels = [256, 32],
             num_classes = n_class,
+            aggregation = config.aggregation, # mean, max
             apply_dropedge = config.apply_dropedge,
-            apply_bn = config.apply_bn,
+            apply_bn = True,
             apply_dropout = config.apply_dropedge,
-            aggregation = config.aggregation
+            jk_mode = config.jk_mode
         )
 
-        model = MeshProcessingNetwork(**model_params).to(device)
+        model = JKNet(**model_params).to(device)
         model = model.double()
         #-----------------------
 
@@ -180,17 +182,18 @@ def main():
     sweep_config['metric'] = metric
 
     parameters_dict = {
-        'aggregation': {'value': 'max'},   
-        'apply_dropedge': {'values': [True, False]},
+        'num_hiddens' : { 'values' : [16, 32, 64]},   
+        'num_layers' : { 'values': [4, 6, 8, 10, 12, 16]},
+        'aggregation': {'values': ['max', 'mean']},   
+        'apply_dropedge': {'value': False},
         'apply_dropout': {'values': [True, False]},
-        'apply_bn': {'values': [True, False]},
-        'encoder_channels': {'value': []},
-        'conv_channels': {'value': [32, 64, 128]},
-        'learning_rate': { 'distribution': 'uniform', 'min': 0.001,  'max': 0.005 }, # need to give a distribution for it to pick the parameter while using 'random' search 
-        'weight_decay': {'distribution': 'uniform', 'min': 0.001,  'max': 0.005 },
-        'epochs' : { 'value' : 300}, # set parameter only single value if you don't want it to change during sweep
+        'encoder_channels': {'values': [[], [128]]},
+        'learning_rate': { 'distribution': 'uniform', 'min': 0,  'max': 0.01 }, # need to give a distribution for it to pick the parameter while using 'random' search 
+        'weight_decay': {'distribution': 'uniform', 'min': 0.0001,  'max': 0.01 },
+        'epochs' : { 'value' : 400}, # set parameter only single value if you don't want it to change during sweep
         'batch_size' : {'value' : 32},
-        'task' : { 'value' : 'regression' } # "regression" or "classification"
+        'task' : { 'value' : 'regression' }, # "regression" or "classification"
+        'jk_mode': {'values': ['cat', 'mean', 'lstm']},
     }
 
     sweep_config['parameters'] = parameters_dict
