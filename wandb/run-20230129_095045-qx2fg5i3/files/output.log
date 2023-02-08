@@ -1,8 +1,0 @@
-current GPU: NVIDIA A40
-using GPU: 3
-Traceback (most recent call last):
-  File "training.py", line 214, in <module>
-    main()
-  File "training.py", line 193, in main
-    model = ResGNN(**model_params).to(device)
-TypeError: __init__() got an unexpected keyword argument 'aggregation'

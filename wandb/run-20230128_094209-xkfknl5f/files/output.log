@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "training.py", line 195, in <module>
-    main()
-  File "training.py", line 184, in main
-    model = ResGNN(**model_params).to(device)
-NameError: name 'device' is not defined
