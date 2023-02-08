@@ -210,16 +210,6 @@ def main():
     model = JKNet(**model_params).to(device)
     model = model.double()
 
-    param_log = {
-        'params':{
-            'network': str(model),
-            'config': str(config),
-            'model_params': str(model_params),
-        }
-    }
-
-    wandb.log({"table": pd.DataFrame(param_log)})
-
     train_data_all, val_data_all, test_data_male, test_data_female = load_and_split_dataset(REGISTERED_ROOT, INMEMORY_ROOT, FEATURES_PATH, TARGET)
 
     train_loader = DataLoader(train_data_all, batch_size = config["batch_size"], shuffle = True)
@@ -243,12 +233,12 @@ def main():
 
     test_result = {
         'params':{
-            'loss_test_female': loss_test_female.item(),
-            'r2_test_female': r2_test_female.item(),
-            'loss_test_male': loss_test_male.item(),
-            'r2_test_male': r2_test_male.item(),
-            'loss_test': loss_test.item(),
-            'r2_test': r2_test.item()
+            'loss_test_female': 'loss_test_female' + loss_test_female.item(),
+            'r2_test_female': 'r2_test_female' + r2_test_female.item(),
+            'loss_test_male': 'loss_test_male' + loss_test_male.item(),
+            'r2_test_male': 'r2_test_male' + r2_test_male.item(),
+            'loss_test': 'loss_test' + loss_test.item(),
+            'r2_test': 'r2_test' + r2_test.item()
         }
     }
 
