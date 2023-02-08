@@ -180,16 +180,16 @@ def main():
     sweep_config['metric'] = metric
 
     parameters_dict = {
-        'aggregation': {'values': ['max', 'mean']},   
+        'aggregation': {'value': 'max'},   
         'apply_dropedge': {'values': [True, False]},
         'apply_dropout': {'values': [True, False]},
         'apply_bn': {'values': [True, False]},
-        'encoder_channels': {'values': [[], [16]]},
-        'conv_channels': {'values': [[32, 128], [32, 64, 128]]},
-        'learning_rate': { 'distribution': 'uniform', 'min': 0.001,  'max': 0.01 }, # need to give a distribution for it to pick the parameter while using 'random' search 
-        'weight_decay': {'distribution': 'uniform', 'min': 0.0001,  'max': 0.01 },
+        'encoder_channels': {'value': []},
+        'conv_channels': {'value': [32, 64, 128]},
+        'learning_rate': { 'distribution': 'uniform', 'min': 0.001,  'max': 0.005 }, # need to give a distribution for it to pick the parameter while using 'random' search 
+        'weight_decay': {'distribution': 'uniform', 'min': 0.001,  'max': 0.005 },
         'epochs' : { 'value' : 300}, # set parameter only single value if you don't want it to change during sweep
-        'batch_size' : {'values' : [16, 32]},
+        'batch_size' : {'value' : 32},
         'task' : { 'value' : 'regression' } # "regression" or "classification"
     }
 
