@@ -43,7 +43,6 @@ def train(model, trainloader, valloader, device, config):
     for epoch in range(config['epochs']):
         for i, data in tqdm(enumerate(trainloader)):  
             if scheduler is not None:
-                print("test")
                 scheduler.step()
 
             data = data.to(device)
