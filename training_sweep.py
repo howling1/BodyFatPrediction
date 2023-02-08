@@ -25,7 +25,7 @@ TARGET = "age"
 def test(model, loader, device, task):
     model.eval()
  
-    crit = torch.nn.MSELoss() if task == "regression" else torch.nn.CrossEntropyLoss()
+    crit = torch.nn.L1Loss() if task == "regression" else torch.nn.CrossEntropyLoss()
     predictions = torch.tensor([])
     targets = torch.tensor([])
     
@@ -151,7 +151,7 @@ def train(config=None):
 
         #initialize criterion
         if config.task== "regression" :
-            loss_criterion = torch.nn.MSELoss()
+            loss_criterion = torch.nn.L1Loss()
         elif config.task== "classification": 
             loss_criterion = torch.nn.CrossEntropyLoss()
 
@@ -193,7 +193,7 @@ def main():
         'epochs' : { 'value' : 400}, # set parameter only single value if you don't want it to change during sweep
         'batch_size' : {'value' : 32},
         'task' : { 'value' : 'regression' }, # "regression" or "classification"
-        'jk_mode': {'values': ['cat', 'mean', 'lstm']},
+        'jk_mode': {'values': ['cat', 'max', 'lstm']},
     }
 
     sweep_config['parameters'] = parameters_dict

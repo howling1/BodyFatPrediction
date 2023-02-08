@@ -187,13 +187,13 @@ def main():
     model_params = dict(
         gnn_conv = SAGEConv,
         in_features = 3,
-        num_hiddens = 4,
-        num_layers = 3,
+        num_hiddens = 32,
+        num_layers = 6,
         encoder_channels = [],
-        decoder_channels = [8],
+        decoder_channels = [32, 8],
         num_classes = n_class,
         jk_mode = 'max', # cat, max, lstm
-        aggregation = 'max', # mean, max
+        aggregation = 'mean', # mean, max
         apply_dropedge = False,
         apply_bn = True,
         apply_dropout = True,
