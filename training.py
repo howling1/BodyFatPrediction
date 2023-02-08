@@ -29,7 +29,11 @@ def train(model, trainloader, valloader, device, config):
 
     loss_criterion.to(device)
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=config['learning_rate'], weight_decay=config['weight_decay'])
+    optimizer = torch.optim.Adam(model.parameters(), lr=config['base_lr'], weight_decay=config['weight_decay'])
+    scheduler = None
+    if config['cyclical_lr']:
+        step_size_up = len(trainloader) * 5
+        scheduler = torch.optim.lr_scheduler.CyclicLR(optimizer=optimizer, base_lr=config['base_lr'], max_lr=config['max_lr'], step_size_up=step_size_up, cycle_momentum=False)
 
     model.train()
 
@@ -38,6 +42,10 @@ def train(model, trainloader, valloader, device, config):
 
     for epoch in range(config['epochs']):
         for i, data in tqdm(enumerate(trainloader)):  
+            if scheduler is not None:
+                print("test")
+                scheduler.step()
+
             data = data.to(device)
             optimizer.zero_grad()
             prediction = model(data)
@@ -102,14 +110,16 @@ def main():
     REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path of the dir saving the .ply registered data
     INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
     FEATURES_PATH = "/vol/chameleon/projects/mesh_gnn/basic_features.csv"
-    TARGET = "age"
+    TARGET = "weight"
 
     config = {
-        "experiment_name" : "height_prediction_5k", # there should be a folder named exactly this under the folder runs/
+        "experiment_name" : "weight_prediction_5k", # there should be a folder named exactly this under the folder runs/
         "batch_size" : 32,
-        "epochs" : 2000,
-        "learning_rate" : 0.003,
-        "weight_decay": 0.001,
+        "epochs" : 50,
+        "cyclical_lr": False,
+        "base_lr" : 0.001,
+        "max_lr": 0.005, # only applicable when cyclical_lr is True
+        "weight_decay": 0.,
         "task" : "regression", # "regression" or "classification"
         "print_every_n" : 200,
         "validate_every_n" : 200}
@@ -119,18 +129,19 @@ def main():
     n_class = 1 if config["task"] == "regression" else 2
 
 # MeshProcressingNet params
-    # model_params = dict(
-    #     gnn_conv = SAGEConv,
-    #     in_features = 3,
-    #     encoder_channels = [],
-    #     conv_channels = [32, 128],
-    #     decoder_channels = [32, 8],
-    #     num_classes = n_class,
-    #     aggregation = 'mean',
-    #     apply_dropedge = True,
-    #     apply_bn = True,
-    #     apply_dropout = True,
-    # )
+    model_params = dict(
+        gnn_conv = GATConv,
+        in_features = 3,
+        encoder_channels = [16],
+        conv_channels = [32, 64, 128, 64],
+        decoder_channels = [32],
+        num_classes = n_class,
+        aggregation = 'mean',
+        apply_dropedge = False,
+        apply_bn = True,
+        apply_dropout = False,
+        num_heads=4
+    )
 
 
 # ResGNN params
@@ -166,27 +177,27 @@ def main():
 
 
 # JKNet params
-    model_params = dict(
-        gnn_conv = SAGEConv,
-        in_features = 3,
-        num_hiddens = 32,
-        num_layers = 6,
-        encoder_channels = [],
-        decoder_channels = [32, 8],
-        num_classes = n_class,
-        jk_mode = 'max', # cat, max, lstm
-        aggregation = 'mean', # mean, max
-        apply_dropedge = False,
-        apply_bn = True,
-        apply_dropout = True,
-    )
+    # model_params = dict(
+    #     gnn_conv = SAGEConv,
+    #     in_features = 3,
+    #     num_hiddens = 32,
+    #     num_layers = 6,
+    #     encoder_channels = [],
+    #     decoder_channels = [32, 8],
+    #     num_classes = n_class,
+    #     jk_mode = 'max', # cat, max, lstm
+    #     aggregation = 'mean', # mean, max
+    #     apply_dropedge = False,
+    #     apply_bn = True,
+    #     apply_dropout = True,
+    # )
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    # model = MeshProcessingNetwork(**model_params).to(device) 
+    model = MeshProcessingNetwork(**model_params).to(device) 
     # model = ResGNN(**model_params).to(device)
     # model = DenseGNN(**model_params).to(device)
-    model = JKNet(**model_params).to(device)
+    # model = JKNet(**model_params).to(device)
     model = model.double()
 
     train_data_all, val_data_all, test_data_male, test_data_female = load_and_split_dataset(REGISTERED_ROOT, INMEMORY_ROOT, FEATURES_PATH, TARGET)
