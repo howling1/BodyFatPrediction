@@ -212,21 +212,24 @@ def main():
     # model.load_state_dict(torch.load(f'runs/{config["experiment_name"]}/model_best.ckpt'))
     model = torch.load(f'runs/{config["experiment_name"]}/model_best.pt')
     
-    loss_test_female, r2_test_female = evaluate(model, test_loader_female, device, config["task"])
-    loss_test_male, r2_test_male = evaluate(model, test_loader_male, device, config["task"])
+    loss_test_female, acc_test_female = evaluate(model, test_loader_female, device, config['task'])
+    loss_test_male, acc_test_male = evaluate(model, test_loader_male, device, config['task'])
     ratio_male = len(test_data_male) / (len(test_data_female) + len(test_data_male))
     ratio_female = len(test_data_female) / (len(test_data_female) + len(test_data_male))
     loss_test = loss_test_female * ratio_female + loss_test_male * ratio_male
-    r2_test = r2_test_female * ratio_female + r2_test_male * ratio_male
+    acc_test = acc_test_female * ratio_female + acc_test_male * ratio_male
+
+    loss_name = 'MSE' if config['task'] == "regression" else 'Crossentropy'
+    acc_name = 'R2' if config['task'] == "regression" else 'Accuracy'
 
     test_result = {
         'params':{
-            'loss_test_female': 'loss_test_female: ' + str(loss_test_female.item()),
-            'r2_test_female': 'r2_test_female: ' + str(r2_test_female.item()),
-            'loss_test_male': 'loss_test_male: ' + str(loss_test_male.item()),
-            'r2_test_male': 'r2_test_male: ' + str(r2_test_male.item()),
-            'loss_test': 'loss_test: ' + str(loss_test.item()),
-            'r2_test': 'r2_test: ' + str(r2_test.item())
+            'loss_test_female': loss_name + '_test_female: ' + str(loss_test_female.item()),
+            'acc_test_female': acc_name + '_test_female: ' + str(acc_test_female.item()),
+            'loss_test_male': loss_name + '_test_male: ' + str(loss_test_male.item()),
+            'acc_test_male': acc_name + '_test_male: ' + str(acc_test_male.item()),
+            'loss_test': loss_name + '_test: ' + str(loss_test.item()),
+            'acc_test': acc_name + '_test: ' + str(acc_test.item())
         }
     }
 
@@ -237,3 +240,5 @@ if __name__ == "__main__":
     torch.cuda.set_device(3)
     print("using GPU:", torch.cuda.current_device())
     main()
+
+
