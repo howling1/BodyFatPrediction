@@ -3,7 +3,6 @@ import pandas as pd
 import torch.nn.functional as F
 import wandb
 import torch
-import random
 
 from tqdm import tqdm
 from sklearn.metrics import r2_score
@@ -105,22 +104,22 @@ def train(model, trainloader, valloader, device, config):
                 model.train()
 
 def main():    
-    REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path of the dir saving the .ply registered data
-    INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
-    FEATURES_PATH = "/vol/chameleon/projects/mesh_gnn/basic_features.csv"
-    TARGET = "weight"
+    REGISTERED_ROOT = "D:/ADLM_Data/registered_1" # the path of the dir saving the .ply registered data
+    INMEMORY_ROOT = 'D:/ADLM_Data/registered1_InMemoryDataset_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
+    FEATURES_PATH = "D:/ADLM_Data/basic_features.csv"   
+    TARGET = "height"
 
     config = {
-        "experiment_name" : "weight_prediction_5k", # there should be a folder named exactly this under the folder runs/
-        "batch_size" : 32,
+        "experiment_name" : "height_prediction_1k", # there should be a folder named exactly this under the folder runs/
+        "batch_size" : 8,
         "epochs" : 50,
-        "cyclical_lr": False,
-        "base_lr" : 0.001,
-        "max_lr": 0.005, # only applicable when cyclical_lr is True
-        "weight_decay": 0.,
+        "cyclical_lr": True,
+        "base_lr" : 0.0008,
+        "max_lr": 0.004, # only applicable when cyclical_lr is True
+        "weight_decay": 0.005,
         "task" : "regression", # "regression" or "classification"
-        "print_every_n" : 200,
-        "validate_every_n" : 200}
+        "print_every_n" : 1000,
+        "validate_every_n" : 1000}
 
     wandb.init(project = "mesh-gnn", config = config)
     
@@ -128,18 +127,18 @@ def main():
 
 # MeshProcressingNet params
     model_params = dict(
-        gnn_conv = GATConv,
+        gnn_conv = SAGEConv,
         in_features = 3,
-        encoder_channels = [16],
-        conv_channels = [32, 64, 128, 64],
-        decoder_channels = [32],
+        encoder_channels = [],
+        conv_channels = [32, 64, 128],
+        decoder_channels = [32, 8],
         num_classes = n_class,
-        aggregation = 'mean',
+        aggregation = 'max',
         apply_dropedge = False,
         apply_bn = True,
         apply_dropout = False,
-        num_heads=4
     )
+
 
 
 # ResGNN params
@@ -234,6 +233,6 @@ def main():
 
 
 if __name__ == "__main__":
-    torch.cuda.set_device(3)
+    torch.cuda.set_device(0)
     print("using GPU:", torch.cuda.current_device())
     main()
