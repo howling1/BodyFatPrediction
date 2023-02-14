@@ -4,12 +4,12 @@ Pre-process includes decimation, registration and creating in memory dataset to 
 Tasks that are avaliable : Sex, BMI, Height, Weight and Age prediction.
 Architectures we have tested: GAT, FeaStNet, SAGE, GCN
 
-`notebooks/` includes exploratory analysis Jupyter Notebook files. Visualizations of the meshes and some statistics for the data can be seen there.
-`models/` includes different GNN architectures
-`preprocess/` includes the scripts for decimation and registration processes
-`runs/` folder to keep the model checkpoints (empty)
+`notebooks/` includes exploratory analysis Jupyter Notebook files. Visualizations of the meshes and some statistics for the data can be seen there.\
+`models/` includes different GNN architectures\
+`preprocess/` includes the scripts for decimation and registration processes\
+`runs/` folder to keep the model checkpoints (empty)\
 
-`helper_methods.py` has functions for utilization
-`testing.py` is to test a trained model
-`training.py` is to experiment with different models and parameters
-`training_sweep.py` is for hyperparameter optimization with Wandb Sweep
+`helper_methods.py` has functions for utilization\
+`testing.py` is to test a trained model\
+`training.py` is to experiment with different models and parameters\
+`training_sweep.py` is for hyperparameter optimization with Wandb Sweep\
