@@ -4,6 +4,7 @@ Pre-process includes decimation, registration and creating in memory dataset to 
 Tasks that are avaliable : Sex, BMI, Height, Weight and Age prediction.
 Architectures we have tested: GAT, FeaStNet, SAGE, GCN
 
+`datasets/` includes the class for InMemoryDataset initialization.\
 `notebooks/` includes exploratory analysis Jupyter Notebook files. Visualizations of the meshes and some statistics for the data can be seen there.\
 `models/` includes different GNN architectures\
 `preprocess/` includes the scripts for decimation and registration processes\
