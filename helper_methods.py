@@ -9,7 +9,6 @@ from torch_geometric.nn import GATConv
 from models.feast_conv import FeatureSteeredConvolution
 from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split
-
 from datasets.in_memory import IMDataset
 
 def pairwise(iterable):
@@ -84,6 +83,14 @@ def get_mlp_layers(channels: list, activation=nn.ReLU, output_activation=nn.Iden
     return nn.Sequential(*layers)
 
 def evaluate(model, loader, device, task):
+    """
+    Function for validation
+    :param model: initialized model
+    :param loader: data loader
+    :param device: torch device
+    :param task: type of the prediction task
+        ["classification","regression"]
+    """
     model.eval()
  
     crit = torch.nn.MSELoss() if task == "regression" else torch.nn.CrossEntropyLoss()
@@ -104,6 +111,13 @@ def evaluate(model, loader, device, task):
     return loss, acc
 
 def load_and_split_dataset(raw_data_root, dataset_root, basic_features_path, target):
+    """
+    Wrapper function for IMDataset
+    :param raw_data_root: path for the input mesh data 
+    :param dataset_root: path where the in memory dataset will be written
+    :param basic_features_path: path of the "basic_features.csv"
+    :param target: name of the feature to be predicted
+    """
     dataset_female = IMDataset(raw_data_root, dataset_root, basic_features_path, target, 0)
     dataset_male = IMDataset(raw_data_root, dataset_root, basic_features_path, target, 1)
 

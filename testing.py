@@ -4,13 +4,13 @@ import torch
 
 if __name__ == "__main__":
     # ------------------configure the metadata for testing-------------
-    torch.cuda.set_device(3)
-    REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path of the dir saving the .ply registered data
-    INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
+    torch.cuda.set_device(0)
+    REGISTERED_ROOT = "/data1/practical-wise2223/registered_5" # the path for saving the .ply registered data
+    INMEMORY_ROOT = '/data1/practical-wise2223/registered5_gender_seperation_root' # the path to save all the artifacts related of the InMemoryDataset
     FEATURES_PATH = "/vol/chameleon/projects/mesh_gnn/basic_features.csv" # the path of the feature file
-    TARGET = "age"
-    experiment_name = 'age_prediction_GAT_5k' # the dir path your model is saved
-    task = "regression" #regression or classification
+    TARGET = "age" # target variable to be predicted
+    experiment_name = 'age_prediction_GAT_5k' # the path your model is saved
+    task = "regression" # regression or classification
     # ------------------------------------------------------------------
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

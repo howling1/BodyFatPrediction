@@ -3,13 +3,10 @@ import pandas as pd
 import torch.nn.functional as F
 import wandb
 import torch
-
 from tqdm import tqdm
 from sklearn.metrics import r2_score
 from torch_geometric.loader import DataLoader
 from torch_geometric.nn import GCNConv, SAGEConv, GATConv
-from sklearn.model_selection import train_test_split
-
 from models.feast_conv import FeatureSteeredConvolution
 from models.mesh_processing_net import MeshProcessingNetwork
 from models.jk_net import JKNet
@@ -20,7 +17,27 @@ from helper_methods import evaluate, load_and_split_dataset
 
 
 def train(model, trainloader, valloader, device, config):
-    
+    """
+    Function for simple training
+    :param model: initialized model
+    :param trainloader: train data loader
+    :param valloader: validation data loade
+    :param optimizer: initialized optimizer
+    :param loss_criterion: loss function
+    :param device: torch device
+    :param config:
+                "experiment_name" : model name which will be saved as the best validation results, 
+                                    there should be a matching folder under runs/
+                "batch_size" : batch size
+                "epochs" : epoch number
+                "cyclical_lr": [True,False] # True for cyclical learning rate 
+                "base_lr" : learning rate
+                "max_lr":  only applicable when cyclical_lr is True
+                "weight_decay": weight decay ,
+                "task" :  "regression" or "classification"
+                "print_every_n" : frequency of logging the batch loss,
+                "validate_every_n" : frequency for validation
+    """
     if config["task"]== "regression" :
         loss_criterion = torch.nn.MSELoss()
     elif config["task"]== "classification": 
@@ -121,11 +138,10 @@ def main():
         "print_every_n" : 1000,
         "validate_every_n" : 1000}
 
-    wandb.init(project = "mesh-gnn", config = config)
-    
+    wandb.init(project = "mesh-gnn", config = config)    
     n_class = 1 if config["task"] == "regression" else 2
 
-# MeshProcressingNet params
+# template for  MeshProcressingNet params
     model_params = dict(
         gnn_conv = SAGEConv,
         in_features = 3,
@@ -139,9 +155,7 @@ def main():
         apply_dropout = False,
     )
 
-
-
-# ResGNN params
+# template for ResGNN params
     # model_params = dict(
     #     gnn_conv = SAGEConv,
     #     in_features = 3,
@@ -157,7 +171,7 @@ def main():
     #     apply_dropout = True
     # )
 
-# DenseGNN params
+# template for  DenseGNN params
     # model_params = dict(
     #     gnn_conv = SAGEConv,
     #     in_features = 3,
@@ -173,7 +187,7 @@ def main():
     # )
 
 
-# JKNet params
+# template for JKNet params
     # model_params = dict(
     #     gnn_conv = SAGEConv,
     #     in_features = 3,

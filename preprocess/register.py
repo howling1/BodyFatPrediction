@@ -2,7 +2,6 @@ from pathlib import Path
 import glob
 import numpy as np
 from tqdm import tqdm
-
 import open3d as o3d
 
 
@@ -13,7 +12,14 @@ THRESHOLD = 0.02
 EXTENSION = ".ply"
 
 def registering_ICP(DATA_ROOT, TARGET_ROOT, TARGET_SAMPLE, THRESHOLD, EXTENSION):
-
+    """
+    Function to decimate the mesh data in the given folder
+    :param DATA_ROOT: path for the input mesh data 
+    :param TARGET_ROOT: path where the registered data will be saved
+    :param TARGET_SAMPLE: path to the target mesh that'll be used in the ICP
+    :param THRESHOLD: threshold for ICP 
+    :param EXTENSION: extension of the files that will be saved
+    """
     for file in tqdm(glob.glob(str(DATA_ROOT / "*.ply"))):
         _path = file.replace('\\', '/')
 
