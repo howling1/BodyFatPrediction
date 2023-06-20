@@ -14,6 +14,9 @@ from models.dense_gnn import DenseGNN
 from models.res_gnn import ResGNN
 from datasets.in_memory import IMDataset
 from helper_methods import evaluate, load_and_split_dataset
+from models.shrinkage_loss import RegressionShrinkageLoss
+from torch.optim.lr_scheduler import CosineAnnealingLR
+from torch.nn.utils import clip_grad_norm_
 
 
 def train(model, trainloader, valloader, device, config):
@@ -39,7 +42,7 @@ def train(model, trainloader, valloader, device, config):
                 "validate_every_n" : frequency for validation
     """
     if config["task"]== "regression" :
-        loss_criterion = torch.nn.MSELoss()
+        loss_criterion = RegressionShrinkageLoss()
     elif config["task"]== "classification": 
         loss_criterion = torch.nn.CrossEntropyLoss()
 
@@ -47,10 +50,9 @@ def train(model, trainloader, valloader, device, config):
 
     optimizer = torch.optim.Adam(model.parameters(), lr=config['base_lr'], weight_decay=config['weight_decay'])
     scheduler = None
-    if config['cyclical_lr']:
-        step_size_up = len(trainloader) * 5
-        scheduler = torch.optim.lr_scheduler.CyclicLR(optimizer=optimizer, base_lr=config['base_lr'], max_lr=config['max_lr'], step_size_up=step_size_up, cycle_momentum=False)
-
+    if config['decayed_lr']:
+            scheduler = CosineAnnealingLR(optimizer, config['epochs'])
+    
     model.train()
 
     best_accuracy = float("-inf")
@@ -65,6 +67,10 @@ def train(model, trainloader, valloader, device, config):
             loss = loss_criterion(prediction, label)  
             loss.to(device)
             loss.backward()
+
+            if config['clip_norm'] is not None:
+                clip_grad_norm_(model.parameters(), config['clip_norm'])
+
             optimizer.step()
             if scheduler is not None:
                 scheduler.step()
@@ -111,29 +117,32 @@ def train(model, trainloader, valloader, device, config):
                     accuracy = r2_score(_labels, _predictions)
 
                 print(f'[{epoch:03d}/{i:05d}] val_loss: {loss_total_val / len(valloader):.3f}, val_accuracy: {accuracy:.3f}')
-                wandb.log({"validation loss": loss_total_val / len(valloader), "validation accuracy": accuracy })
+                wandb.log({"validation loss": loss_total_val / len(valloader), "validation accuracy": accuracy, "epoch": epoch})
+        
                 if accuracy > best_accuracy:
                     torch.save(model.state_dict(), f'runs/{config["experiment_name"]}/model_best.ckpt')
                     torch.save(model, f'runs/{config["experiment_name"]}/model_best.pt')
                     best_accuracy = accuracy
+                    wandb.log({"best_val_acc": best_accuracy}) 
 
                 # set model back to train
                 model.train()
 
 def main():    
-    REGISTERED_ROOT = "D:/ADLM_Data/registered_1" # the path of the dir saving the .ply registered data
-    INMEMORY_ROOT = 'D:/ADLM_Data/registered1_InMemoryDataset_root' # the root dir path to save all the artifacts ralated of the InMemoryDataset
-    FEATURES_PATH = "D:/ADLM_Data/basic_features.csv"   
-    TARGET = "height"
+    REGISTERED_ROOT = "/vol/space/projects/ukbb/projects/silhouette/registered_5" # the path of the dir saving the .ply registered data
+    INMEMORY_ROOT = '/vol/space/projects/ukbb/projects/silhouette/imdataset/registered5_multi-task' # the root dir path to save all the artifacts ralated of the InMemoryDataset
+    FEATURES_PATH = "/vol/space/projects/ukbb/projects/silhouette/ukb668815_imaging.csv"   
+    IDS_PATH = "/vol/space/projects/ukbb/projects/silhouette/eids_filtered.npy"
+    TARGET = "multi"
 
     config = {
-        "experiment_name" : "height_prediction_1k", # there should be a folder named exactly this under the folder runs/
-        "batch_size" : 8,
-        "epochs" : 50,
-        "cyclical_lr": True,
-        "base_lr" : 0.0008,
-        "max_lr": 0.004, # only applicable when cyclical_lr is True
-        "weight_decay": 0.005,
+        "experiment_name" : "mt_sage_5k", # there should be a folder named exactly this under the folder runs/
+        "batch_size" : 32,
+        "epochs" : 100,
+        "base_lr" : 0.001,
+        "decayed_lr": True,
+        "weight_decay": 0.,
+        "clip_norm": 1,
         "task" : "regression", # "regression" or "classification"
         "print_every_n" : 1000,
         "validate_every_n" : 1000}
@@ -147,12 +156,13 @@ def main():
         in_features = 3,
         encoder_channels = [],
         conv_channels = [32, 64, 128],
-        decoder_channels = [32, 8],
+        decoder_channels = [512, 128, 32],
         num_classes = n_class,
         aggregation = 'max',
         apply_dropedge = False,
         apply_bn = True,
         apply_dropout = False,
+        # num_heads = 1,
     )
 
 # template for ResGNN params
@@ -211,7 +221,7 @@ def main():
     # model = JKNet(**model_params).to(device)
     model = model.double()
 
-    train_data_all, val_data_all, test_data_male, test_data_female = load_and_split_dataset(REGISTERED_ROOT, INMEMORY_ROOT, FEATURES_PATH, TARGET)
+    train_data_all, val_data_all, test_data_male, test_data_female = load_and_split_dataset(REGISTERED_ROOT, INMEMORY_ROOT, FEATURES_PATH, IDS_PATH, TARGET)
 
     train_loader = DataLoader(train_data_all, batch_size = config["batch_size"], shuffle = True)
     val_loader = DataLoader(val_data_all, batch_size = config["batch_size"], shuffle = True)
@@ -225,8 +235,8 @@ def main():
     # model.load_state_dict(torch.load(f'runs/{config["experiment_name"]}/model_best.ckpt'))
     model = torch.load(f'runs/{config["experiment_name"]}/model_best.pt')
     
-    loss_test_female, acc_test_female = evaluate(model, test_loader_female, device, config['task'])
-    loss_test_male, acc_test_male = evaluate(model, test_loader_male, device, config['task'])
+    loss_test_female, acc_test_female = evaluate(model, test_loader_female, device, config)
+    loss_test_male, acc_test_male = evaluate(model, test_loader_male, device, config)
     ratio_male = len(test_data_male) / (len(test_data_female) + len(test_data_male))
     ratio_female = len(test_data_female) / (len(test_data_female) + len(test_data_male))
     loss_test = loss_test_female * ratio_female + loss_test_male * ratio_male
