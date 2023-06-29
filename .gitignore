@@ -1,0 +1,9 @@
+*.csv
+*.ckpt
+*.pt
+*.log
+
+/wandb
+/__pycache__
+/best-models
+/tensorboard_logs
