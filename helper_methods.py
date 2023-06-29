@@ -93,8 +93,8 @@ def evaluate(model, loader, device, config):
     model.eval()
  
     crit = torch.nn.MSELoss() if config['task'] == "regression" else torch.nn.CrossEntropyLoss()
-    predictions = torch.tensor([]).to(device)
-    targets = torch.tensor([]).to(device)
+    predictions = torch.tensor([]).float().to(device)
+    targets = torch.tensor([]).float().to(device)
     
     with torch.no_grad():
         for data in loader:

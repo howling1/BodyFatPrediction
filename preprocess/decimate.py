@@ -8,9 +8,9 @@ from skimage.measure import marching_cubes
 
 DATA_ROOT = Path("/vol/chameleon/projects/mesh_gnn/body_segmentations")
 TARGET_ROOT = "/data1/practical-wise2223/decimated_5"
-FACES = 5000
+FACES = 1000
 EXTENSION = ".ply"
-LIMIT = 10000
+LIMIT = 50000
 COUNT = 0
 
 def process(DATA_ROOT, TARGET_ROOT, FACES, EXTENSION, LIMIT, COUNT):

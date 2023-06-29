@@ -58,22 +58,24 @@ class IMDataset(InMemoryDataset):
         female_data_list = []
 
         if self.target_name == "vat":
-            col = "22407-2.0"
+            cols = ["22407-2.0"]
         elif self.target_name == "asat":
-            col = "22408-2.0"
+            cols = ["22408-2.0"]
+        elif self.target_name == "all":
+            cols = ["22407-2.0", "22408-2.0"]
 
-        features = pd.read_csv(self.basic_features_path, usecols =["eid", "31-0.0", col])
+        features = pd.read_csv(self.basic_features_path, usecols =["eid", "31-0.0"] + cols)
 
-        for file_path in self.raw_file_names:
+        for file_path in tqdm(self.raw_file_names):
             _id = int(os.path.splitext(os.path.basename(file_path))[0])
             _sex = int(features[features['eid']==_id]["31-0.0"].values[0]) #female: 0, male: 1
-            _y = torch.tensor(features[features['eid']==_id][col].values).double()
-            if torch.isnan(_y[0]):
+            _y = torch.tensor(features[features['eid']==_id][cols].values[0]).float()
+            if torch.isnan(_y).any().item():
                 continue
             
             _mesh = o3d.io.read_triangle_mesh(file_path)
-            _vertices = torch.from_numpy(np.asarray(_mesh.vertices)).double()
-            _triangles = _mesh.triangles 
+            _vertices = torch.from_numpy(np.asarray(_mesh.vertices)).float()
+            _triangles = _mesh.triangles
 
             """
             necessary to get the edge connectivity since the original data has only face connectivity
