@@ -73,9 +73,9 @@ def train_cv(model_params, female_dataset, male_dataset, device, config):
         female_valloader = DataLoader(val_female, batch_size = config["batch_size"])
         male_valloader = DataLoader(val_male, batch_size = config["batch_size"])
 
-        # model = MeshProcessingNetwork(**model_params).float().to(device)
+        model = MeshProcessingNetwork(**model_params).float().to(device)
         # model = DenseGNN(**model_params).float().to(device)
-        model = Graphormer(**model_params).float().to(device)
+        # model = Graphormer(**model_params).float().to(device)
         
         start = time.time()
         train(model, trainloader, valloader, config, device, run_n)
