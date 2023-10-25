@@ -2,20 +2,16 @@ import wandb
 import torch
 import os
 import torch.nn as nn
-from helper_functions import get_data_and_labels, get_dataloaders, train, evaluate
+from helper_functions import train, evaluate
 from torchvision import models
 import numpy as np
 import pandas as pd
-from models import RegressionShrinkageLoss, CNN
+from models import CNN
 from sklearn.model_selection import train_test_split, KFold
 from torch.utils.data import TensorDataset, DataLoader
-from codecarbon import EmissionsTracker
 import time
 
 def main():
-    # DATA_ROOT = "/vol/space/projects/ukbb/projects/silhouette/silhouettes/v1"
-    # IDS_PATH = "/vol/space/projects/ukbb/projects/silhouette/eids_filtered.npy"
-    # FEATURES_ROOT = "/vol/space/projects/ukbb/projects/silhouette/ukb668815_imaging.csv"
     TENSOR_PATH = "/vol/space/projects/ukbb/projects/silhouette/silhouettes/sih_male_female"
     MODEL_ROOT = "./best-models/"
     
@@ -25,7 +21,7 @@ def main():
         "freeze" : False,
         # config for training
         "batch_size" : 32,
-        "epochs" : 100,
+        "epochs" : 20,
         "decayed_lr": True,
         "base_lr" : 1e-4,
         "clip_norm": 1.0, # set to None if not needed
@@ -35,11 +31,8 @@ def main():
         # config for densenet
         "fc_dims" : [512,128,32],
         "out_dim" : 2,
-        "early_stopping_patience" : 30
         }
     
-    # ids = np.load(IDS_PATH)
-    # data_male, data_female, targets_male, targets_female = get_data_and_labels(DATA_ROOT, ids, FEATURES_ROOT)
     data_male = torch.load(TENSOR_PATH + "/male_data.pt")
     data_female = torch.load(TENSOR_PATH + "/female_data.pt")
     targets_male = torch.load(TENSOR_PATH + "/male_targets.pt")
@@ -95,7 +88,10 @@ def main():
         female_valloader = DataLoader(val_female_dataset, batch_size = config["batch_size"])
         male_valloader = DataLoader(val_male_dataset, batch_size = config["batch_size"])
 
+        # create a densenet model
         model = create_model(config, device)
+
+        # # create a CNN model
         # model = CNN(img_width=392, 
         #         img_height=363, 
         #         input_channel=3, 
@@ -108,13 +104,10 @@ def main():
         #         regularization="bn",
         #         ).to(device).float() 
 
-        tracker = EmissionsTracker()
-        tracker.start()
         start = time.time()
         train(model, trainloader, valloader, config, device, run_n)
         end = time.time()
         duration = end-start
-        emissions = tracker.stop()
 
         model = torch.load(f'./best-models/{config["experiment_name"]}/run{run_n}_model_best.pt')
 
@@ -126,10 +119,11 @@ def main():
         acc_test_male = evaluate(model, male_testloader, device)
         acc_test = evaluate(model, testloader, device)
 
+        wandb.init(project = "silhouette-prediction", config = config, name=str(run_n), reinit=True) 
+
         test_result = {
             'params':{
                 'duration': "duration:" + str(duration),
-                'emissions': "emissions:" + str(emissions),
                 'acc_val_female': 'R2_val_female: ' + str(np.array(acc_val_female).tolist()),
                 'acc_val_male': 'R2_val_male: ' + str(np.array(acc_val_male).tolist()),
                 'acc_val': 'R2_val: ' + str(np.array(acc_val).tolist()),
@@ -143,6 +137,7 @@ def main():
         run_n += 1
 
 def create_model(config, device):
+    """create a densenet model"""
     model = models.densenet121(weights=config['pretrain'])
     
     num_ftrs = model.classifier.in_features

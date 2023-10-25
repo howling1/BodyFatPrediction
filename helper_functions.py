@@ -8,18 +8,21 @@ import wandb
 import torch.nn.functional as F
 from PIL import Image as im
 from sklearn.metrics import r2_score
-from sklearn.model_selection import train_test_split, KFold
+from sklearn.model_selection import train_test_split
 from torch.utils.data import TensorDataset, DataLoader
-from joblib import Memory
 from torch.optim.lr_scheduler import CosineAnnealingLR
 from models import RegressionShrinkageLoss
 import torch.nn as nn
-from codecarbon import EmissionsTracker
-
-# CACHED_DIR = "/vol/space/projects/ukbb/projects/silhouette/silhouettes/v1_cached"
-# memory = Memory(location=CACHED_DIR, verbose=0)
 
 def process(DATA_ROOT, LIMIT, TARGET_ROOT, SIZE, EXTENSION):
+    """
+    create coronal and sagittal ssilhouettes from segamentation and concatenate them together for the whole dataset
+    :param DATA_ROOT: path for the segmentation data 
+    :param TARGET_ROOT: path where the generated silhouette imgs will be saved
+    :param EXTENSION: extension of the files that will be saved
+    :param LIMIT: how many files to process
+    :param SIZE: the size of a generated silhouette img
+    """
     COUNT = 0
 
     for file in tqdm(os.listdir(DATA_ROOT)):
@@ -47,6 +50,7 @@ def process(DATA_ROOT, LIMIT, TARGET_ROOT, SIZE, EXTENSION):
             break
 
 def create_silhouette(body_segment_data: np.ndarray, direction: int) -> np.ndarray:
+    """create silhouette from segmentation according to the given direction"""
     tmp = body_segment_data.mean(axis=direction)
     shape = tmp.shape
     oneD_data = np.ravel(tmp)
@@ -66,6 +70,7 @@ def create_silhouette(body_segment_data: np.ndarray, direction: int) -> np.ndarr
     return slh
 
 def cat_silhouette(slh_coronal: np.ndarray, slh_sagittal: np.ndarray, size: tuple) -> im.Image:
+    """concatenate coronal and sagittal silhouettes"""
     concatenated_slh = np.concatenate((slh_coronal, slh_sagittal), 0)
     slh_image = im.fromarray(concatenated_slh)
 
@@ -73,6 +78,7 @@ def cat_silhouette(slh_coronal: np.ndarray, slh_sagittal: np.ndarray, size: tupl
 
 # @memory.cache
 def read_jpgs(root_path: str, ids: list):
+    """read jpg images in the root_path and save them in one numpy array"""
     file_names = (pd.Series(ids).astype(str) + ".jpg").values.tolist()
     imgs = []
 
@@ -122,8 +128,8 @@ def get_dataloaders(data, targets, batch_size):
     return train_loader, val_loader, test_loader
 
 def train(model, trainloader, valloader, config, device, run_n):
+    """train model"""
     loss_criterion = RegressionShrinkageLoss().to(device)
-    # loss_criterion = nn.MSELoss().to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=config['base_lr'], weight_decay=config['weight_decay'])
     scheduler = None
     if config['decayed_lr']:
@@ -131,8 +137,6 @@ def train(model, trainloader, valloader, config, device, run_n):
 
     model.train()
 
-    # best_accuracy = float("-inf")
-    patience_counter = 0
     best_loss = float("+inf")
     train_loss_running = 0.
     training_n = 0
@@ -212,19 +216,12 @@ def train(model, trainloader, valloader, config, device, run_n):
                     torch.save(model, f'./best-models/{config["experiment_name"]}/run{run_n}_model_best.pt')
                     torch.save(model.state_dict(), f'./best-models/{config["experiment_name"]}/run{run_n}_model_best.ckpt')
 
-                    
-                # else:
-                #     patience_counter += 1
-                #     print("patience_counter:", patience_counter)
-                #     if patience_counter >= config["early_stopping_patience"]:
-                #         print(f"Early stopping at epoch {epoch+1}")
-                #         return
-
                 # set model back to train
                 model.train()
 
 
 def evaluate(model, loader, device):
+    """evaluate model"""
     model.eval()
  
     predictions = torch.tensor([]).to(device)
