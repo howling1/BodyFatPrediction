@@ -9,6 +9,7 @@ from torch_geometric.utils.dropout import dropout_edge
 from helper_methods import get_conv_layers, get_mlp_layers
 
 class DenseGNN(torch.nn.Module):
+        """DenseGNN. GNN can be GCN, GAT, or GraphSAGE"""
         def __init__(
                 self, 
                 gnn_conv, 

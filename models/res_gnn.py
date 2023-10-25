@@ -8,6 +8,7 @@ from torch_geometric.utils.dropout import dropout_edge
 from helper_methods import get_conv_layers, get_mlp_layers
 
 class ResGNN(torch.nn.Module):
+        """ResGNN. GNN can be GCN, GAT, or GraphSAGE"""
         def __init__(
                 self, 
                 gnn_conv, 

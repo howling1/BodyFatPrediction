@@ -3,7 +3,6 @@ import open3d as o3d
 import os
 from tqdm import tqdm
 import numpy as np
-import math
 import pandas as pd
 import torch
 from torch_geometric.data import InMemoryDataset, Data

@@ -4,7 +4,10 @@ import math
 import torch.nn.functional as F
 import numpy as np
 import random
+import glob
+
 from itertools import tee
+import open3d as o3d
 from torch_geometric.nn import GATConv
 from models.feast_conv import FeatureSteeredConvolution
 from sklearn.metrics import r2_score
@@ -100,6 +103,7 @@ def evaluate(model, loader, device, config):
         for data in loader:
             data = data.to(device)
             pred = model(data) if config['task'] == "regression" else F.softmax(model(data), dim=1)
+            # pred = pred.reshape((-1, config["num_classes"]))
             target = data.y.reshape((-1, config["num_classes"]))
             predictions = torch.cat((predictions, pred))
             targets = torch.cat((targets, target))
@@ -135,7 +139,6 @@ def load_and_split_dataset(raw_data_root, dataset_root, basic_features_path, ids
 
     # return train_data_all, val_data_all, test_data_all
     return train_data_all, val_data_all, test_data_male, test_data_female
-
 
 
     

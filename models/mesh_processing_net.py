@@ -7,7 +7,7 @@ from helper_methods import get_mlp_layers
 from models.gnn_encoder import GraphFeatureEncoder
 
 class MeshProcessingNetwork(torch.nn.Module):
-    """Mesh processing network."""
+    """Mesh processing network, including GCN, GAT, GraphSAGE"""
     def __init__(
         self,
         gnn_conv,
@@ -52,12 +52,16 @@ class MeshProcessingNetwork(torch.nn.Module):
             apply_dropout=apply_dropout
         )
 
-
     def forward(self, data):
         x, edge_index, batch = data.x, data.edge_index, data.batch
         x = self.input_encoder(x) if self.input_encoder != None else x
         x = self.gnn(x, edge_index)
-        x = scatter_mean(x, batch, dim=0) if self.aggregation == 'mean' else scatter_max(x, batch, dim=0)[0]
+
+        if self.aggregation == 'mean':
+            x = scatter_mean(x, batch, dim=0)
+        elif self.aggregation == 'max':
+            x = scatter_max(x, batch, dim=0)[0]
+
         x = self.final_projection(x)
 
         return torch.squeeze(x, 1) if self.num_classes == 1 else x

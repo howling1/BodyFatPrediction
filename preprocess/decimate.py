@@ -42,6 +42,20 @@ def process(DATA_ROOT, TARGET_ROOT, FACES, EXTENSION, LIMIT, COUNT):
 
                 decimated_mesh = o3d.geometry.TriangleMesh.simplify_quadric_decimation(mesh, FACES)
 
+                # delete nodes whose degree is 0
+                vertices = np.asarray(decimated_mesh.vertices)
+                triangles = np.asarray(decimated_mesh.triangles)
+                vertex_degrees = np.zeros(len(vertices), dtype=int)
+                for i in range(len(triangles)):
+                    v1, v2, v3 = triangles[i]
+                    vertex_degrees[v1] += 1
+                    vertex_degrees[v2] += 1
+                    vertex_degrees[v3] += 1
+
+                zero_degree_vertices = np.where(vertex_degrees == 0)[0]
+                decimated_mesh.remove_vertices_by_index(zero_degree_vertices)
+
+                # save decimated mesh
                 _target_path =  TARGET_ROOT + "/" + _id + EXTENSION
                 o3d.io.write_triangle_mesh( _target_path, decimated_mesh)
                 COUNT += 1
